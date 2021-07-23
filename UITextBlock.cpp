@@ -29,7 +29,7 @@ UITextBlock::UITextBlock(char* bg, char* text, float x, float y, float width, fl
 bool
 UITextBlock::LoadTextures(CPVRTString* const pErrorStr)
 {
-    m_bg.LoadTextures(pErrorStr);
+    return m_bg.LoadTextures(pErrorStr);
 }
 
 void
@@ -46,10 +46,18 @@ UITextBlock::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated
     GLint vHeight;                          // Viewport height
 	glGetIntegerv(GL_VIEWPORT, viewport);
 
+	vWidth = viewport[2];
+	vHeight = viewport[3];
+	// fprintf(stderr, "Viewport dimensions: %d %d\n", vWidth, vHeight);
+
     m_bg.Render(uiMVPMatrixLoc);
 
     m_print2D = new Print2D(print3D, isRotated);
+
+	// fprintf(stderr, "Text coordinates: %f %f\n", (100*(m_x - m_insetX)/vWidth)+50, (100*(m_y - m_insetY)/vHeight)+50);
     m_print2D -> renderText((100*(m_x - m_insetX)/vWidth)+50, (100*(m_y - m_insetY)/vHeight)+50, m_textScale, m_color, m_text);
+	
+    // m_print2D -> renderText(0, 0, m_textScale, m_color, m_text);
     return true;
 }
 

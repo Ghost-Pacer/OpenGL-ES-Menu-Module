@@ -6,11 +6,11 @@
 class UIElement
 {
     public:
-        virtual bool LoadTextures(CPVRTString* const pErrorStr);
-        virtual void BuildVertices();
-        virtual bool Render(GLuint uiMVPMatrixLoc);
-        virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated);
-        virtual bool Text();
+        virtual bool LoadTextures(CPVRTString* const pErrorStr) = 0;
+        virtual void BuildVertices() = 0;
+        virtual bool Render(GLuint uiMVPMatrixLoc) = 0;
+        virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated) = 0;
+        virtual bool Text() = 0;
 };
 
 #endif _UIELEMENT_H
