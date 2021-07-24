@@ -11,6 +11,9 @@ class UIElement
         virtual bool Render(GLuint uiMVPMatrixLoc) = 0;
         virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated) = 0;
         virtual bool Text() = 0;
+		virtual void UpdateFrame(CPVRTMap<char*, void*> valueMap) = 0;
+		virtual void Hide() = 0;
+		virtual void Show() = 0;
 };
 
 #endif _UIELEMENT_H

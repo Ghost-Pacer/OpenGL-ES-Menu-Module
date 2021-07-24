@@ -362,6 +362,11 @@ UIImage::CreateAndDisplay(GLuint uiMVPMatrixLoc)
 	Render(uiMVPMatrixLoc);
 }
 
+void
+UIImage::UpdateFrame(CPVRTMap<char*, void*> valueMap) {
+	return;
+}
+
 /*!****************************************************************************
  @Function		GetPosition
  @Description	Returns image position as 2d vector

@@ -1,8 +1,9 @@
-#include "UITextBlock.h"
+#include "UIButton.h"
 
-UITextBlock::UITextBlock()
+UIButton::UIButton()
 {
-    m_bg = UIImage();
+    m_activeBG = UIImage();
+	m_inactiveBG = UIImage();
     m_text = NULL;
     m_x = 0;
     m_y = 0;
@@ -13,22 +14,24 @@ UITextBlock::UITextBlock()
     m_print2D = NULL;
 }
 
-UITextBlock::UITextBlock(char* text, float x, float y, GLuint color)
+UIButton::UIButton(char* text, float x, float y, GLuint color)
 {
-	m_bg = UIImage(c_UITBDefaults.bg, x, y, c_UITBDefaults.width, c_UITBDefaults.height);
+	m_activeBG = UIImage(c_UIBDefaults.activeBG, x, y, c_UIBDefaults.width, c_UIBDefaults.height);
+	m_inactiveBG = UIImage(c_UIBDefaults.inactiveBG, x, y, c_UIBDefaults.width, c_UIBDefaults.height);
 	m_text = text;
 	m_x = x;
 	m_y = y;
-	m_insetX = c_UITBDefaults.insetX;
-	m_insetY = c_UITBDefaults.insetY;
-	m_textScale = c_UITBDefaults.textScale;
+	m_insetX = c_UIBDefaults.insetX;
+	m_insetY = c_UIBDefaults.insetY;
+	m_textScale = c_UIBDefaults.textScale;
 	m_color = color;
 	m_print2D = NULL;
 }
 
-UITextBlock::UITextBlock(char* bg, char* text, float x, float y, float width, float height, float insetX, float insetY, float textScale, GLuint color)
+UIButton::UIButton(char* activeBG, char* inactiveBG, char* text, float x, float y, float width, float height, float insetX, float insetY, float textScale, GLuint color)
 {
-    m_bg = UIImage(bg, x, y, width, height);
+    m_activeBG = UIImage(activeBG, x, y, width, height);
+	m_inactiveBG = UIImage(inactiveBG, x, y, width, height);
     m_text = text;
     m_x = x;
     m_y = y;
@@ -39,24 +42,28 @@ UITextBlock::UITextBlock(char* bg, char* text, float x, float y, float width, fl
     m_print2D = NULL;
 }
 
-bool
-UITextBlock::LoadTextures(CPVRTString* const pErrorStr)
+void
+UIButton::ToggleActive()
 {
-    return m_bg.LoadTextures(pErrorStr);
+	m_active = !m_active;
+}
+
+bool
+UIButton::LoadTextures(CPVRTString* const pErrorStr)
+{
+    return (m_activeBG.LoadTextures(pErrorStr) && m_inactiveBG.LoadTextures(pErrorStr));
 }
 
 void
-UITextBlock::BuildVertices()
+UIButton::BuildVertices()
 {
-    m_bg.BuildVertices();
+    m_activeBG.BuildVertices();
+	m_inactiveBG.BuildVertices();
 }
 
 bool
-UITextBlock::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
+UIButton::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
 {
-	if (m_hidden) {
-		return true;
-	}
     GLint viewport[4];
     GLint vWidth;                           // Viewport width
     GLint vHeight;                          // Viewport height
@@ -66,10 +73,14 @@ UITextBlock::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated
 	vHeight = viewport[3];
 	// fprintf(stderr, "Viewport dimensions: %d %d\n", vWidth, vHeight);
 
-    m_bg.Render(uiMVPMatrixLoc);
+	if (m_active) {
+		m_activeBG.Render(uiMVPMatrixLoc);
+	} else {
+		m_inactiveBG.Render(uiMVPMatrixLoc);
+	}
 
     m_print2D = new Print2D(print3D, isRotated);
-	
+
 	float textWidth;
 	float textHeight;
 
@@ -87,39 +98,13 @@ UITextBlock::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated
  @Description	UITextBlock implements a different version of UIElement::Render
 ******************************************************************************/
 bool
-UITextBlock::Render(GLuint uiMVPMatrixLoc)
+UIButton::Render(GLuint uiMVPMatrixLoc)
 {
     return false;
 }
 
 bool
-UITextBlock::Text()
+UIButton::Text()
 {
     return true;
-}
-
-void
-UITextBlock::UpdateFrame(CPVRTMap<char*, void*> valueMap)
-{
-	if (valueMap.Exists("NewText")) {
-		char* newText = (char*)(valueMap["NewText"]);
-		m_text = newText;
-	} else {
-		fprintf(stderr, "Invalid call to UITextBlock->UpdateFrame");
-		return;
-	}
-}
-
-void
-UITextBlock::Hide()
-{
-	m_bg.Hide();
-	m_hidden = true;
-}
-
-void
-UITextBlock::Show()
-{
-	m_bg.Show();
-	m_hidden = false;
 }
