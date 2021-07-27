@@ -6,16 +6,16 @@ UISummaryView::UISummaryView()
 	for ( int i = 0; i < c_numSUMElements; i ++ ) {
 		SUMLayoutSpec spec = c_SUMLayouSpecs[i];
 		switch(spec.type) {
-			case distance:
+			case SVDistance:
 				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF);
 				break;
-			case energy:
+			case SVEnergy:
 				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF);
 				break;
-			case pace:
+			case SVPace:
 				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF);
 				break;
-			case calories:
+			case SVCalories:
 				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF);
 				break;
 			default:

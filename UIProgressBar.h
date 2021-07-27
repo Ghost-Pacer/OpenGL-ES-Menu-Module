@@ -18,13 +18,19 @@
 #define _UIPROGRESSBAR_H
 
 // Names of pvr textures for the bar and it's background
-const char c_progBGTex[] = "progBG.pvr";
-const char c_progTex[] = "progress.pvr";
+const char c_progBGRTex[] = "progBGR.pvr";
+const char c_progRTex[] = "progR.pvr";
+const char c_progBGBTex[] = "progBGB.pvr";
+const char c_progBTex[] = "progB.pvr";
+const char c_progBGGTex[] = "progBGG.pvr";
+const char c_progGTex[] = "progG.pvr";
 
 const float c_defaultPBWidth = 350;
 const float c_defaultPBHeight = 18;
 const float c_defaultPBInsetX = 12;
 const float c_defaultPBInsetY = 12;
+
+enum PBType { PBR, PBG, PBB };
 
 /*!****************************************************************************
  Object Class. A UIProgressBar is a C++ class that displays a Progress Bar that can
@@ -42,6 +48,7 @@ class UIProgressBar : public UIElement
         // functions
         UIProgressBar();
         UIProgressBar(float x, float y, float initialCompletion);
+        UIProgressBar(PBType type, float x, float y, float initialCompletion);
         UIProgressBar(float x, float y, float width, float height, float insetX, float insetY, float initialCompletion);
 		virtual bool LoadTextures(CPVRTString* const pErrorStr);
         virtual void BuildVertices();

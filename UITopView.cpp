@@ -2,13 +2,14 @@
 
 UITopView::UITopView()
 {
-	m_state = main;
+	m_state = UIMain;
 	hidden = true;
 }
 
-UITopView::UITopView(TVState startingState)
+UITopView::UITopView(UIState startingState, UIWorkoutMode startingWorkoutMode)
 {
 	m_state = startingState;
+	m_startingWorkoutMode = startingWorkoutMode;
 	hidden = false;
 
 	// Add UIElements
@@ -18,16 +19,22 @@ UITopView::UITopView(TVState startingState)
 
 	for (int i = 0 ; i < c_tvNumElementPositions; i ++) {
 		switch(c_TVLayoutSpecs[i].type) {
-			case leftTB:
+			case TVLeftTB:
 				mainElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor);
 				infoElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor);
 				pauseElements[i] = NULL;
 				break;
-			case rightTB:
+			case TVRightTB:
 				mainElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor);
 				infoElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor);
 				pauseElements[i] = NULL;
 				break;
+			case TVWorkoutView:
+				mainElements[i] = new UIWorkoutView(m_startingWorkoutMode);
+				infoElements[i] = mainElements[i];
+				pauseElements[i] = mainElements[i];
+				break;
+			/*
 			case progBG:
 				mainElements[i] = new UIImage("progContainer.pvr", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVLayoutSpecs[i].width, c_TVLayoutSpecs[i].height);
 				infoElements[i] = mainElements[i], pauseElements[i] = mainElements[i];
@@ -48,15 +55,16 @@ UITopView::UITopView(TVState startingState)
 				mainElements[i] = new UIProgressBar(c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, 1);
 				infoElements[i] = mainElements[i], pauseElements[i] = mainElements[i];
 				break;
+			*/
 			default:
 				mainElements[i] = NULL, infoElements[i] = NULL, pauseElements[i] = NULL;
 				break;
 		}
 	}
 
-	m_stateMap[main] = mainElements;
-	m_stateMap[info] = infoElements;
-	m_stateMap[pause] = pauseElements;
+	m_stateMap[UIMain] = mainElements;
+	m_stateMap[UIInfo] = infoElements;
+	m_stateMap[UIPause] = pauseElements;
 
 	// fprintf(stderr, "Map size: %d\n", m_stateMap.GetSize());
 	// for (int i = main; i != end; i ++) {
@@ -88,9 +96,9 @@ UITopView::LoadTextures(CPVRTString* const pErrorString)
 		return false;
 	}
 	fprintf(stderr, "Map size: %d\n", m_stateMap.GetSize());
-	for (int i = main; i != summary; i ++) {
+	for (int i = UIMain; i != UISummary; i ++) {
 		fprintf(stderr, "State: %d\n", i);
-		TVState iState = static_cast<TVState>(i);
+		UIState iState = static_cast<UIState>(i);
 		UIElement** elementArray = m_stateMap[iState];
 		fprintf(stderr, "Array pointer %p: \n", elementArray);
 		fprintf(stderr, "Size: %d\n", sizeof(elementArray));
@@ -166,11 +174,11 @@ UITopView::Update(UIMessage updateMessage)
 			if (elementArray[i] == NULL) {
 				continue;
 			}
-			if (c_TVLayoutSpecs[i].type == leftTB) {
+			if (c_TVLayoutSpecs[i].type == TVLeftTB) {
 				fprintf(stderr, "Message sent from UITopView\n");
 				delegateMessage = updateMessage.Delegate(UIRank);
 				elementArray[i]->Update(delegateMessage);
-			} else if (c_TVLayoutSpecs[i].type == progBar) {
+			} else if (c_TVLayoutSpecs[i].type == TVWorkoutView) {
 				fprintf(stderr, "Message sent from UITopView\n");
 				delegateMessage = updateMessage.Delegate(UIStageProgress);
 				elementArray[i]->Update(delegateMessage);
@@ -206,11 +214,11 @@ UITopView::Show()
 }
 
 void
-UITopView::SetState(TVState state)
+UITopView::SetState(UIState state)
 {
 	this->m_state = state;
-	for (int i = main; i != summary; i ++) {
-		TVState iState = static_cast<TVState>(i);
+	for (int i = UIMain; i != UISummary; i ++) {
+		UIState iState = static_cast<UIState>(i);
 		UIElement** elementArray = m_stateMap[iState];
 		for (int i = 0 ; i < c_tvNumElementPositions; i ++) {
 			if (elementArray[i] != NULL) {
@@ -224,7 +232,7 @@ UITopView::SetState(TVState state)
 	}
 }
 
-TVState
+UIState
 UITopView::GetState()
 {
 	return m_state;

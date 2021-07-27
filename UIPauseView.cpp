@@ -7,13 +7,13 @@ UIPauseView::UIPauseView()
 	for ( int i = 0; i < c_numPVElements; i ++ ) {
 		PVLayoutSpec layoutSpec = c_PVLayoutSpecs[i];
 		switch(layoutSpec.type) {
-			case icon:
+			case PVIcon:
 				m_elements[i] = new UIImage("pause.pvr", layoutSpec.x, layoutSpec.y, layoutSpec.width, layoutSpec.height);
 				break;
-			case resumeButton:
+			case PVResumeButton:
 				m_elements[i] = new UIButton("Resume", layoutSpec.x, layoutSpec.y, 0xFF0000FF, 0xFF000000);
 				break;
-			case endButton:
+			case PVEndButton:
 				m_elements[i] = new UIButton("End", layoutSpec.x, layoutSpec.y, 0xFF0000FF, 0xFF000000);
 				break;
 			default:
@@ -62,14 +62,14 @@ UIPauseView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated
 void
 UIPauseView::Update(UIMessage updateMessage)
 {
-	if (m_elements[resumeButton] != NULL && m_elements[endButton] != NULL
+	if (m_elements[PVResumeButton] != NULL && m_elements[PVEndButton] != NULL
 		 && updateMessage.ReadAction() == UIToggleActiveButton) {
 		fprintf(stderr, "Message received from UILayer\n");
 		m_resume = !m_resume;
 		updateMessage.Write(UIButtonActive, m_resume);
-		m_elements[resumeButton]->Update(updateMessage);
+		m_elements[PVResumeButton]->Update(updateMessage);
 		updateMessage.Write(UIButtonActive, !m_resume);
-		m_elements[endButton]->Update(updateMessage);
+		m_elements[PVEndButton]->Update(updateMessage);
 	}
 }
 

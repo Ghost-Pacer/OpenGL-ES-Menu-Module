@@ -5,7 +5,7 @@
 #ifndef _UISUMMARYVIEW_H
 #define _UISUMMARYVIEW_H
 
-enum SUMElement { completeIcon, distance, energy, pace, calories };
+enum SUMElement { SVCompleteIcon, SVDistance, SVEnergy, SVPace, SVCalories };
 
 struct SUMLayoutSpec {
 	SUMElement type;
@@ -15,11 +15,11 @@ struct SUMLayoutSpec {
 const int c_numSUMElements = 5;
 
 const SUMLayoutSpec c_SUMLayouSpecs[] = {
-	{ completeIcon, 0, 0, 80, 80 },
-	{ distance, -115, -130, 220, 70 },
-	{ energy, 115, -130, 220, 70 },
-	{ pace, -115, -225, 220, 70 },
-	{ calories, 115, -225, 220, 70 }
+	{ SVCompleteIcon, 0, 0, 80, 80 },
+	{ SVDistance, -115, -130, 220, 70 },
+	{ SVEnergy, 115, -130, 220, 70 },
+	{ SVPace, -115, -225, 220, 70 },
+	{ SVCalories, 115, -225, 220, 70 }
 };
 
 class UISummaryView

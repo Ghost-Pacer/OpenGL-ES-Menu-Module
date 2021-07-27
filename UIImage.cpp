@@ -72,8 +72,8 @@ UIImage::LoadTextures(CPVRTString* const pErrorStr)
         return false;
     }
 
-    char* filename = (char*)malloc(strlen(m_texName) + strlen("../../../") + 1);
-    sprintf(filename, "../../../%s", m_texName);
+    char* filename = (char*)malloc(strlen(m_texName) + strlen("../../../assets/") + 1);
+    sprintf(filename, "../../../assets/%s", m_texName);
 
     FILE* fp;
     fp = fopen(filename, "rb");

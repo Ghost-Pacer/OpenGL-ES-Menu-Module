@@ -6,7 +6,7 @@
 #ifndef _UIPAUSEVIEW_H
 #define _UIPAUSEVIEW_H
 
-enum PVElement { icon, resumeButton, endButton };
+enum PVElement { PVIcon, PVResumeButton, PVEndButton };
 
 struct PVLayoutSpec {
 	PVElement type;
@@ -16,9 +16,9 @@ struct PVLayoutSpec {
 const int c_numPVElements = 3;
 
 const PVLayoutSpec c_PVLayoutSpecs[] = {
-	{ icon, 0, 0, 85, 115 },
-	{ resumeButton, 0, -190, 360, 40 },
-	{ endButton, 0, -255, 360, 40 }
+	{ PVIcon, 0, 0, 85, 115 },
+	{ PVResumeButton, 0, -190, 360, 40 },
+	{ PVEndButton, 0, -255, 360, 40 }
 };
 
 class UIPauseView : public UIElement
