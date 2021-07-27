@@ -108,7 +108,7 @@ UITextBlock::Update(UIMessage updateMessage)
 		if (messageContents == NULL) {
 			continue;
 		}
-		fprintf(stderr, "Message received: %s", messageContents);
+		fprintf(stderr, "Message received: %s\n", messageContents);
 		if (strcmp(messageContents, "0") != 0) {
 			m_text = messageContents;
 		}

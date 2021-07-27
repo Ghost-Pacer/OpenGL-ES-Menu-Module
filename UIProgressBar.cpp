@@ -101,8 +101,6 @@ UIProgressBar::BuildVertices()
 {
     m_bg.BuildVertices();
     m_progress.BuildVertices();
-    m_progress.Scale(m_completion, 1, 1);
-    m_progress.Move((m_width-m_insetX)*(m_completion-1)/2, 0);
 }
 
 /*!****************************************************************************
@@ -138,8 +136,8 @@ void
 UIProgressBar::SetCompletion(float newCompletion)
 {
     float xTranslation = (m_width-m_insetX)*(newCompletion-m_completion)/2;
-    m_progress.Scale(newCompletion, 1, 1);
-    m_progress.Move(xTranslation, 0);
+	m_progress.Scale(newCompletion, 1, 1);
+	m_progress.Move(xTranslation, 0);
     m_completion = newCompletion;
 }
 
@@ -157,6 +155,11 @@ UIProgressBar::GetCompletion()
 void
 UIProgressBar::Update(UIMessage updateMessage)
 {
+	float messageContents = updateMessage.Read(UIStageProgress);
+	fprintf(stderr, "Message received to UIProgressBar, contents: %f\n", messageContents);
+	if (messageContents >= 0 && messageContents <= 1) {
+		SetCompletion(messageContents);
+	}
 }
 
 /*!****************************************************************************

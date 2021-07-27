@@ -170,6 +170,10 @@ UITopView::Update(UIMessage updateMessage)
 				fprintf(stderr, "Message sent from UITopView\n");
 				delegateMessage = updateMessage.Delegate(UIRank);
 				elementArray[i]->Update(delegateMessage);
+			} else if (c_TVLayoutSpecs[i].type == progBar) {
+				fprintf(stderr, "Message sent from UITopView\n");
+				delegateMessage = updateMessage.Delegate(UIStageProgress);
+				elementArray[i]->Update(delegateMessage);
 			}
 		}
 	}
