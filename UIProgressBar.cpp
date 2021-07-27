@@ -123,7 +123,10 @@ UIProgressBar::Render(GLuint uiMVPMatrixLoc)
 bool
 UIProgressBar::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
 {
-   return false;
+    m_bg.Render(uiMVPMatrixLoc);
+    m_progress.Render(uiMVPMatrixLoc);
+
+	return true;
 }
 
 /*!****************************************************************************
@@ -152,15 +155,8 @@ UIProgressBar::GetCompletion()
 }
 
 void
-UIProgressBar::UpdateFrame(CPVRTMap<char*, void*> valueMap)
+UIProgressBar::Update(UIMessage updateMessage)
 {
-	if (valueMap.Exists("PBCompletion")) {
-		float newCompletion = *(float*)(valueMap["PBCompletion"]);
-		SetCompletion(newCompletion);
-	} else {
-		fprintf(stderr, "Invalid call to UIProgressBar->UpdateFrame");
-		return;
-	}
 }
 
 /*!****************************************************************************

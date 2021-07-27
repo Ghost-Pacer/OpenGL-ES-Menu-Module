@@ -4,23 +4,23 @@
 #include "UIProgressBar.h"
 #include "UITextBlock.h"
 
-#ifndef _UIINFOVIEW_
-#define _UIINFOVIEW_
+#ifndef _UITOPVIEW_
+#define _UITOPVIEW_
 
-enum IVState { main, info, pause, end };
+enum TVState { main, info, pause, summary };
 
-enum IVElement { leftTV, rightTV, progBar, warmup, workout, cooldown, progBG };
+enum TVElement { leftTB, rightTB, progBar, warmup, workout, cooldown, progBG };
 
-struct IVLayoutSpec {
-	IVElement type;
+struct TVLayoutSpec {
+	TVElement type;
 	float x, y, width, height;
 };
 
-const int c_ivNumElementPositions = 7;
+const int c_tvNumElementPositions = 7;
 
-const IVLayoutSpec c_IVLayoutSpecs[] = {
-	{ leftTV, -115, 300, 220, 70 },
-	{ rightTV, 115, 300, 220, 70 },
+const TVLayoutSpec c_TVLayoutSpecs[] = {
+	{ leftTB, -115, 300, 220, 70 },
+	{ rightTB, 115, 300, 220, 70 },
 	{ progBG, 0, 235, 450, 30 },
 	{ progBar, 40, 235, 350, 18 },
 	{ warmup, -200, 235, 12, 16 },
@@ -28,27 +28,27 @@ const IVLayoutSpec c_IVLayoutSpecs[] = {
 	{ cooldown, -152, 235, 12, 16 }
 };
 
-const GLuint c_IVDefaultTextColor = 0xFF0000FF;
+const GLuint c_TVDefaultTextColor = 0xFF0000FF;
 
-class UIInfoView : public UIElement
+class UITopView : public UIElement
 {
 	protected:
-		IVState m_state;
-		CPVRTMap<IVState, UIElement**> m_stateMap;
+		TVState m_state;
+		CPVRTMap<TVState, UIElement**> m_stateMap;
 		bool hidden;
 	public:
-		UIInfoView();
-		UIInfoView(IVState startingState);
+		UITopView();
+		UITopView(TVState startingState);
 		virtual bool LoadTextures(CPVRTString* const pErrorString);
 		virtual void BuildVertices();
 		virtual bool Render(GLuint uiMVPMatrixLoc);
 		virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated);
 		virtual bool Text();
-		virtual void UpdateFrame(CPVRTMap<char*, void*> valueMap);
+		virtual void Update(UIMessage updateMessage);
 		virtual void Hide();
 		virtual void Show();
-		void SetState(IVState state);
-		IVState GetState();
+		void SetState(TVState state);
+		TVState GetState();
 };
 
 #endif

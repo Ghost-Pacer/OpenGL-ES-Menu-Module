@@ -261,15 +261,17 @@ UIImage::Draw(GLuint uiMVPMatrixLoc)
 	pos.z = 0;
 
     // Builds scaling, sizing, and translation matrices
-	PVRTMat4 mTrans, mScale, mSize;
+	PVRTMat4 mTrans, mScale, mSize, mRotation;
 	PVRTMatrixTranslation(mTrans, pos.x, pos.y, pos.z);
     mScale = PVRTMat4::Scale(m_scale);
     mSize = PVRTMat4::Scale({m_width/(vWidth/2), m_height/(vHeight/2), 1});
+	mRotation = PVRTMat4::RotationZ(M_PI);
 
     // Applies scaling and translations
 	PVRTMat4 mModelView, mMVP;
-	mModelView =  mTrans * mScale * mSize;
+	mModelView =  mTrans * mScale * mSize * mRotation;
 	mMVP = mModelView;
+
 
 	glUniformMatrix4fv(uiMVPMatrixLoc, 1, GL_FALSE, mMVP.f);
 		
@@ -335,7 +337,23 @@ UIImage::Render(GLuint uiMVPMatrixLoc)
 bool
 UIImage::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
 {
-	return false;
+    glEnableVertexAttribArray(VERTEX_ARRAY);
+	glEnableVertexAttribArray(NORMAL_ARRAY);
+	glEnableVertexAttribArray(COLOR_ARRAY);
+	glEnableVertexAttribArray(TEXCOORD_ARRAY);
+
+    Draw(uiMVPMatrixLoc);
+
+    // unbind the vertex buffers as we don't need them bound anymore
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	glDisableVertexAttribArray(VERTEX_ARRAY);
+	glDisableVertexAttribArray(NORMAL_ARRAY);
+	glDisableVertexAttribArray(COLOR_ARRAY);
+	glDisableVertexAttribArray(TEXCOORD_ARRAY);
+
+	return true;
 }
 
 /*!****************************************************************************
@@ -363,8 +381,8 @@ UIImage::CreateAndDisplay(GLuint uiMVPMatrixLoc)
 }
 
 void
-UIImage::UpdateFrame(CPVRTMap<char*, void*> valueMap) {
-	return;
+UIImage::Update(UIMessage updateMessage)
+{
 }
 
 /*!****************************************************************************

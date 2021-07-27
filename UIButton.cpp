@@ -14,7 +14,7 @@ UIButton::UIButton()
     m_print2D = NULL;
 }
 
-UIButton::UIButton(char* text, float x, float y, GLuint color)
+UIButton::UIButton(char* text, float x, float y, GLuint activeColor, GLuint inactiveColor)
 {
 	m_activeBG = UIImage(c_UIBDefaults.activeBG, x, y, c_UIBDefaults.width, c_UIBDefaults.height);
 	m_inactiveBG = UIImage(c_UIBDefaults.inactiveBG, x, y, c_UIBDefaults.width, c_UIBDefaults.height);
@@ -24,11 +24,13 @@ UIButton::UIButton(char* text, float x, float y, GLuint color)
 	m_insetX = c_UIBDefaults.insetX;
 	m_insetY = c_UIBDefaults.insetY;
 	m_textScale = c_UIBDefaults.textScale;
-	m_color = color;
+	m_activeColor = activeColor;
+	m_inactiveColor = inactiveColor;
 	m_print2D = NULL;
 }
 
-UIButton::UIButton(char* activeBG, char* inactiveBG, char* text, float x, float y, float width, float height, float insetX, float insetY, float textScale, GLuint color)
+UIButton::UIButton(char* activeBG, char* inactiveBG, char* text, float x, float y, float width, float height, 
+	float insetX, float insetY, float textScale, GLuint activeColor, GLuint inactiveColor)
 {
     m_activeBG = UIImage(activeBG, x, y, width, height);
 	m_inactiveBG = UIImage(inactiveBG, x, y, width, height);
@@ -38,7 +40,8 @@ UIButton::UIButton(char* activeBG, char* inactiveBG, char* text, float x, float 
     m_insetX = insetX;
     m_insetY = insetY;
     m_textScale = textScale;
-    m_color = color;
+	m_activeColor = activeColor;
+	m_inactiveColor = inactiveColor;
     m_print2D = NULL;
 }
 
@@ -71,7 +74,6 @@ UIButton::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
 
 	vWidth = viewport[2];
 	vHeight = viewport[3];
-	// fprintf(stderr, "Viewport dimensions: %d %d\n", vWidth, vHeight);
 
 	if (m_active) {
 		m_activeBG.Render(uiMVPMatrixLoc);
@@ -86,25 +88,23 @@ UIButton::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
 
 	print3D->MeasureText(&textWidth, &textHeight, m_textScale, m_text);
 
-	// fprintf(stderr, "Text coordinates: %f %f\n", (100*(m_x - m_insetX)/vWidth)+50, (100*(m_y - m_insetY)/vHeight)+50);
-    m_print2D -> renderText((100*(m_x - (textWidth+m_insetX)/2)/vWidth)+50, -(100*(m_y + (textHeight+m_insetY)/2)/vHeight)+50, m_textScale, m_color, m_text);
+	GLuint textColor;
+	if (m_active) {
+		textColor = m_activeColor;
+		// fprintf(stderr, "Active status + %d\n", m_active);
+		// fprintf(stderr, "Text color : %x\n", textColor);
+	} else {
+		textColor = m_inactiveColor;
+		// fprintf(stderr, "Text color : %x\n", textColor);
+	}
+    m_print2D -> renderText((100*(m_x - (textWidth+m_insetX)/2)/vWidth)+50, -(100*(m_y + (textHeight+m_insetY)/2)/vHeight)+50, m_textScale, textColor, m_text);
 	
-    // m_print2D -> renderText(0, 0, m_textScale, m_color, m_text);
     return true;
 }
 
-/*!****************************************************************************
- @Function		Render
- @Description	UITextBlock implements a different version of UIElement::Render
-******************************************************************************/
-bool
-UIButton::Render(GLuint uiMVPMatrixLoc)
+void
+UIButton::Update(UIMessage updateMessage)
 {
-    return false;
-}
-
-bool
-UIButton::Text()
-{
-    return true;
+	m_active = updateMessage.Read(UIButtonActive);
+	fprintf(stderr, "Active status + %d\n", m_active);
 }

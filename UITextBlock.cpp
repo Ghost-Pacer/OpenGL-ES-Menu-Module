@@ -99,14 +99,19 @@ UITextBlock::Text()
 }
 
 void
-UITextBlock::UpdateFrame(CPVRTMap<char*, void*> valueMap)
+UITextBlock::Update(UIMessage updateMessage)
 {
-	if (valueMap.Exists("NewText")) {
-		char* newText = (char*)(valueMap["NewText"]);
-		m_text = newText;
-	} else {
-		fprintf(stderr, "Invalid call to UITextBlock->UpdateFrame");
-		return;
+	char* newText;
+	for ( int i = UISpeedMPM; i <= UIDistanceM; i ++ ) {
+		UIText iState = static_cast<UIText>(i);
+		char* messageContents = updateMessage.Read(iState);
+		if (messageContents == NULL) {
+			continue;
+		}
+		fprintf(stderr, "Message received: %s", messageContents);
+		if (strcmp(messageContents, "0") != 0) {
+			m_text = messageContents;
+		}
 	}
 }
 

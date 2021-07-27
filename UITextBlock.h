@@ -33,7 +33,7 @@ class UITextBlock : public UIElement
         virtual bool Render(GLuint uiMVPMatrixLoc);
         virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated);
         virtual bool Text();
-		virtual void UpdateFrame(CPVRTMap<char*, void*> valueMap);
+		virtual void Update(UIMessage updateMessage);
 		virtual void Hide();
 		virtual void Show();
 };

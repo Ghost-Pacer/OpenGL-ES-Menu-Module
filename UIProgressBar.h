@@ -49,7 +49,7 @@ class UIProgressBar : public UIElement
 		virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated);
         void SetCompletion(float newCompletion);
         float GetCompletion();
-		virtual void UpdateFrame(CPVRTMap<char*, void*> valueMap);
+		virtual void Update(UIMessage updateMessage);
 		virtual void Hide();
 		virtual void Show();
 		bool Text();
