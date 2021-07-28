@@ -29,11 +29,14 @@ bool
 UISummaryView::LoadTextures(CPVRTString* const pErrorStr)
 {
 	for ( int i = 0; i < c_numSUMElements; i ++ ) {
-		if (m_elements[i] == NULL || !m_elements[i]->LoadTextures(pErrorStr)) {
+		if (m_elements[i] == NULL) {
+			continue;
+		} else if (!m_elements[i]->LoadTextures(pErrorStr)) {
 			fprintf(stderr, "UISummaryView element failed to load\n");
 			return false;
 		}
 	}
+	return true;
 }
 
 void
@@ -53,16 +56,44 @@ UISummaryView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotat
 		return true;
 	}
 	for ( int i = 0; i < c_numSUMElements; i ++ ) {
-		if (m_elements[i] == NULL || m_elements[i]->Render(uiMVPMatrixLoc, print3D, isRotated)) {
+		if (m_elements[i] == NULL) {
+			continue;
+		} else if (!m_elements[i]->Render(uiMVPMatrixLoc, print3D, isRotated)) {
 			fprintf(stderr, "UISummaryView element failed to render\n");
 		}
 	}
+	return true;
 }
 
 void
 UISummaryView::Update(UIMessage updateMessage)
 {
-	
+	UIMessage delegateMessage;
+	m_hidden = !(updateMessage.ReadState() == UISummary);
+	for (int i = 0 ; i < c_numSUMElements; i ++) {
+		if (m_elements[i] == NULL) {
+			continue;
+		}
+		SUMElement type = c_SUMLayouSpecs[i].type;
+		switch(type) {
+			case SVDistance:
+				delegateMessage = updateMessage.Delegate(UIDistanceM);
+				m_elements[i]->Update(delegateMessage);
+				break;
+			case SVPace:
+				delegateMessage = updateMessage.Delegate(UISpeedMPM);
+				m_elements[i]->Update(delegateMessage);
+				break;
+			case SVCalories:
+				delegateMessage = updateMessage.Delegate(UICalories);
+				m_elements[i]->Update(delegateMessage);
+				break;
+			case SVEnergy:
+				delegateMessage = updateMessage.Delegate(UIEnergyKJ);
+				m_elements[i]->Update(delegateMessage);
+				break;
+		}
+	}
 }
 
 void

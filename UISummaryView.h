@@ -22,12 +22,13 @@ const SUMLayoutSpec c_SUMLayouSpecs[] = {
 	{ SVCalories, 115, -225, 220, 70 }
 };
 
-class UISummaryView
+class UISummaryView : public UIElement
 {
 	protected:
 		UIElement** m_elements;
 		bool m_hidden;
 	public:
+		UISummaryView();
         virtual bool LoadTextures(CPVRTString* const pErrorStr);
         virtual void BuildVertices();
         virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated);

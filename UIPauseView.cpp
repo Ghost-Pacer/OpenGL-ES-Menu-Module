@@ -62,6 +62,13 @@ UIPauseView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated
 void
 UIPauseView::Update(UIMessage updateMessage)
 {
+	if (updateMessage.ReadState() != UIPause) {
+		fprintf(stderr, "State: UISummary\n");
+		m_hidden = true;
+		return;
+	} else {
+		m_hidden = false;
+	}
 	if (m_elements[PVResumeButton] != NULL && m_elements[PVEndButton] != NULL
 		 && updateMessage.ReadAction() == UIToggleActiveButton) {
 		fprintf(stderr, "Message received from UILayer\n");

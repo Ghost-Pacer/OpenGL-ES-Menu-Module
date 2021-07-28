@@ -36,11 +36,11 @@ class UIWorkoutView : public UIElement
 {
     protected:
         bool m_hidden;
-        UIWorkoutMode m_state;
-        CPVRTMap<UIWorkoutMode, UIElement**> m_stateMap;
+        UIWorkoutStage m_state;
+        CPVRTMap<UIWorkoutStage, UIElement**> m_stateMap;
     public:
         UIWorkoutView();
-        UIWorkoutView(UIWorkoutMode startingState);
+        UIWorkoutView(UIWorkoutStage startingState);
 		virtual bool LoadTextures(CPVRTString* const pErrorString);
 		virtual void BuildVertices();
 		virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated);

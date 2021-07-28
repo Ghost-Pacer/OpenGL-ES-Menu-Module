@@ -101,8 +101,9 @@ UITextBlock::Text()
 void
 UITextBlock::Update(UIMessage updateMessage)
 {
+	fprintf(stderr, "Message\n");
 	char* newText;
-	for ( int i = UISpeedMPM; i <= UIDistanceM; i ++ ) {
+	for ( int i = UISpeedMPM; i != UINone; i ++ ) {
 		UIText iState = static_cast<UIText>(i);
 		char* messageContents = updateMessage.Read(iState);
 		if (messageContents == NULL) {

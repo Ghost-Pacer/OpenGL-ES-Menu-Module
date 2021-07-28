@@ -1,6 +1,6 @@
 #include "UIWorkoutView.h"
 
-UIWorkoutView::UIWorkoutView(UIWorkoutMode startingState)
+UIWorkoutView::UIWorkoutView(UIWorkoutStage startingState)
 {
     m_state = startingState;
     m_hidden = false;
@@ -78,7 +78,7 @@ bool
 UIWorkoutView::LoadTextures(CPVRTString* const pErrorString)
 {
     for ( int i = UIWarmup; i <= UICooldown; i ++ ) {
-        UIWorkoutMode iState = static_cast<UIWorkoutMode>(i);
+        UIWorkoutStage iState = static_cast<UIWorkoutStage>(i);
         if (!m_stateMap.Exists(iState)) {
             continue;
         }
@@ -106,7 +106,7 @@ void
 UIWorkoutView::BuildVertices()
 {
     for ( int i = UIWarmup; i <= UICooldown; i ++ ) {
-        UIWorkoutMode iState = static_cast<UIWorkoutMode>(i);
+        UIWorkoutStage iState = static_cast<UIWorkoutStage>(i);
         if (!m_stateMap.Exists(iState)) {
             continue;
         }
@@ -146,6 +146,8 @@ UIWorkoutView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotat
 void
 UIWorkoutView::Update(UIMessage updateMessage)
 {
+	m_state = updateMessage.ReadWorkoutStage();
+
     UIElement** elementArray = m_stateMap[m_state];
 	UIMessage delegateMessage;
 	if (elementArray != NULL) {

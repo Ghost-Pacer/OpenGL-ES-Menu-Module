@@ -3,14 +3,14 @@
 UITopView::UITopView()
 {
 	m_state = UIMain;
-	hidden = true;
+	m_hidden = true;
 }
 
-UITopView::UITopView(UIState startingState, UIWorkoutMode startingWorkoutMode)
+UITopView::UITopView(UIState startingState, UIWorkoutStage startingWorkoutMode)
 {
 	m_state = startingState;
 	m_startingWorkoutMode = startingWorkoutMode;
-	hidden = false;
+	m_hidden = false;
 
 	// Add UIElements
 	UIElement** mainElements = new UIElement*[c_tvNumElementPositions];
@@ -65,6 +65,7 @@ UITopView::UITopView(UIState startingState, UIWorkoutMode startingWorkoutMode)
 	m_stateMap[UIMain] = mainElements;
 	m_stateMap[UIInfo] = infoElements;
 	m_stateMap[UIPause] = pauseElements;
+	m_stateMap[UISummary] = NULL;
 
 	// fprintf(stderr, "Map size: %d\n", m_stateMap.GetSize());
 	// for (int i = main; i != end; i ++) {
@@ -124,6 +125,9 @@ UITopView::BuildVertices()
 {
 	for (int i = 0; i < m_stateMap.GetSize(); i ++) {
 		UIElement** elementArray = *m_stateMap.GetDataAtIndex(i);
+		if (elementArray == NULL) {
+			continue;
+		}
 		for (int i = 0 ; i < c_tvNumElementPositions; i ++) {
 			if (elementArray[i] != NULL) {
 				elementArray[i]->BuildVertices();
@@ -141,6 +145,10 @@ UITopView::Render(GLuint uiMVPMatrixLoc)
 bool
 UITopView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
 {
+	if (m_hidden) {
+		return true;
+	}
+
 	UIElement** elementArray = m_stateMap[m_state];
 
 	if (elementArray != NULL) {
@@ -167,6 +175,11 @@ UITopView::Text()
 void
 UITopView::Update(UIMessage updateMessage)
 {
+	if (updateMessage.ReadState() == UISummary) {
+		m_hidden = true;
+		return;
+	}
+	m_state = updateMessage.ReadState();
 	UIElement** elementArray = m_stateMap[m_state];
 	UIMessage delegateMessage;
 	if (elementArray != NULL) {
@@ -174,9 +187,21 @@ UITopView::Update(UIMessage updateMessage)
 			if (elementArray[i] == NULL) {
 				continue;
 			}
-			if (c_TVLayoutSpecs[i].type == TVLeftTB) {
+			if (c_TVLayoutSpecs[i].type == TVLeftTB && m_state == UIMain) {
 				fprintf(stderr, "Message sent from UITopView\n");
 				delegateMessage = updateMessage.Delegate(UIRank);
+				elementArray[i]->Update(delegateMessage);
+			} else if (c_TVLayoutSpecs[i].type == TVRightTB && m_state == UIMain) {
+				fprintf(stderr, "Message sent from UITopView\n");
+				delegateMessage = updateMessage.Delegate(UIEnergyKJ);
+				elementArray[i]->Update(delegateMessage);
+			} else if (c_TVLayoutSpecs[i].type == TVLeftTB && m_state == UIInfo) {
+				fprintf(stderr, "Message sent from UITopView\n");
+				delegateMessage = updateMessage.Delegate(UIDistanceM);
+				elementArray[i]->Update(delegateMessage);
+			} else if (c_TVLayoutSpecs[i].type == TVRightTB && m_state == UIInfo) {
+				fprintf(stderr, "Message sent from UITopView\n");
+				delegateMessage = updateMessage.Delegate(UISpeedMPM);
 				elementArray[i]->Update(delegateMessage);
 			} else if (c_TVLayoutSpecs[i].type == TVWorkoutView) {
 				fprintf(stderr, "Message sent from UITopView\n");

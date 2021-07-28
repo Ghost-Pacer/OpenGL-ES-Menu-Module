@@ -30,6 +30,12 @@ UIMessage::Write(UIAction action)
 	m_UIAction = action;
 }
 
+void
+UIMessage::Write(UIWorkoutStage newStage)
+{
+	m_WorkoutStage = newStage;
+}
+
 float
 UIMessage::Read(UIFloat key)
 {
@@ -72,6 +78,12 @@ UIMessage::ReadAction()
 	return m_UIAction;
 }
 
+UIWorkoutStage
+UIMessage::ReadWorkoutStage()
+{
+	return m_WorkoutStage;
+}
+
 int
 UIMessage::GetTotalRacers()
 {
@@ -94,6 +106,7 @@ UIMessage::Delegate(UIFloat key)
 	delegate.SetTotalRacers(m_totalRacers);
 	delegate.Write(m_UIAction);
 	delegate.Write(m_UIState);
+	delegate.Write(m_WorkoutStage);
 	return delegate;
 }
 
@@ -107,6 +120,7 @@ UIMessage::Delegate(UIText key)
 	delegate.SetTotalRacers(m_totalRacers);
 	delegate.Write(m_UIAction);
 	delegate.Write(m_UIState);
+	delegate.Write(m_WorkoutStage);
 	return delegate;
 }
 
@@ -120,5 +134,6 @@ UIMessage::Delegate(UIBool key)
 	delegate.SetTotalRacers(m_totalRacers);
 	delegate.Write(m_UIAction);
 	delegate.Write(m_UIState);
+	delegate.Write(m_WorkoutStage);
 	return delegate;
 }

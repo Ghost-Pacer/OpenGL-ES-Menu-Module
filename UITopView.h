@@ -29,12 +29,12 @@ class UITopView : public UIElement
 {
 	protected:
 		UIState m_state;
-		UIWorkoutMode m_startingWorkoutMode;
+		UIWorkoutStage m_startingWorkoutMode;
 		CPVRTMap<UIState, UIElement**> m_stateMap;
-		bool hidden;
+		bool m_hidden;
 	public:
 		UITopView();
-		UITopView(UIState startingState, UIWorkoutMode startingWorkoutState);
+		UITopView(UIState startingState, UIWorkoutStage startingWorkoutState);
 		virtual bool LoadTextures(CPVRTString* const pErrorString);
 		virtual void BuildVertices();
 		virtual bool Render(GLuint uiMVPMatrixLoc);

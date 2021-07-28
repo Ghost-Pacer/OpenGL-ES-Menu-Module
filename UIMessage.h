@@ -13,7 +13,8 @@ enum UIText {
 	UIEnergyKJ,
 	UICalories,
 	UITimeS,
-	UIDistanceM
+	UIDistanceM,
+	UINone
 };
 
 enum UIBool {
@@ -28,7 +29,7 @@ enum UIState {
 	UISummary
 };
 
-enum UIWorkoutMode {
+enum UIWorkoutStage {
 	UIWarmup, 
 	UIWorkout,
 	UICooldown
@@ -47,7 +48,7 @@ class UIMessage
 		CPVRTMap<UIBool, bool> m_bValueMap;
 		UIState m_UIState;
 		UIAction m_UIAction;
-		UIWorkoutMode m_WorkoutStage;
+		UIWorkoutStage m_WorkoutStage;
 		int m_totalRacers;
 	public:
 		void Write(UIFloat key, float value);
@@ -55,14 +56,14 @@ class UIMessage
 		void Write(UIBool key, bool value);
 		void Write(UIState state);
 		void Write(UIAction action);
-		void Write(UIWorkoutMode mode);
+		void Write(UIWorkoutStage stage);
 		void SetTotalRacers(int total);
 		float Read(UIFloat key);
 		char* Read(UIText key);
 		bool Read(UIBool key);
 		UIState ReadState();
 		UIAction ReadAction();
-		UIAction ReadWorkoutStage();
+		UIWorkoutStage ReadWorkoutStage();
 		int GetTotalRacers();
 		UIMessage Delegate(UIFloat key);
 		UIMessage Delegate(UIText key);
