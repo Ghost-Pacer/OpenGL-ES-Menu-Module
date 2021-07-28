@@ -1,4 +1,4 @@
-#include "UICompositeVIew.h"
+#include "UICompositeView.h"
 
 UICompositeView::UICompositeView(float x, float y)
 {
@@ -30,7 +30,7 @@ UICompositeView::AddImage(char* textureName, float xRel, float yRel, float width
 }
 
 void
-UICompositeView::AddText(char* text, GLuint color, float xRel, float yRel, float scale, UIText updateKey)
+UICompositeView::AddText(char* text, GLuint color, float xRel, float yRel, float scale, UITextType updateKey)
 {
 	UITextSpec newText = { text, color, xRel, yRel, scale, updateKey };
 	m_text.Append(newText);
@@ -39,6 +39,10 @@ UICompositeView::AddText(char* text, GLuint color, float xRel, float yRel, float
 bool
 UICompositeView::LoadTextures(CPVRTString* const pErrorStr)
 {
+	if (!m_bg.LoadTextures(pErrorStr)) {
+		fprintf(stderr, "UICompositeView texture failed to load\n");
+		return false;
+	}
 	for ( int i = 0; i < m_children.GetSize(); i ++ ) {
 		if (m_children[i] == NULL) {
 			continue;
@@ -55,6 +59,7 @@ UICompositeView::LoadTextures(CPVRTString* const pErrorStr)
 void
 UICompositeView::BuildVertices()
 {
+	m_bg.BuildVertices();
 	for ( int i = 0; i < m_children.GetSize(); i ++ ) {
 		if (m_children[i] == NULL) {
 			continue;
@@ -77,6 +82,8 @@ UICompositeView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRot
 
 	vWidth = viewport[2];
 	vHeight = viewport[3];
+
+	m_bg.Render(uiMVPMatrixLoc, print3D, isRotated);
 
 	if (m_children.GetSize() > 0) {
 		for ( int i = 0; i < m_children.GetSize(); i ++ ) {
@@ -109,7 +116,7 @@ UICompositeView::Update(UIMessage updateMessage)
 {
 	if (m_text.GetSize() > 0) {
 		for ( int i = 0; i < m_text.GetSize(); i ++ ){
-			UIText updateKey = m_text[i].updateKey;
+			UITextType updateKey = m_text[i].updateKey;
 			if (updateMessage.Read(updateKey) == NULL) {
 				continue;
 			} else {

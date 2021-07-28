@@ -7,7 +7,7 @@ enum UIFloat {
 	UIStageProgress
 };
 
-enum UIText {
+enum UITextType {
 	UISpeedMPM,
 	UIRank,
 	UIEnergyKJ,
@@ -19,7 +19,8 @@ enum UIText {
 
 enum UIBool {
 	UIHidden,
-	UIButtonActive
+	UIButtonActive,
+	UIMileMarker
 };
 
 enum UIState {
@@ -44,7 +45,7 @@ class UIMessage
 {
 	protected:
 		CPVRTMap<UIFloat, float> m_fValueMap;
-		CPVRTMap<UIText, char*> m_sValueMap;
+		CPVRTMap<UITextType, char*> m_sValueMap;
 		CPVRTMap<UIBool, bool> m_bValueMap;
 		UIState m_UIState;
 		UIAction m_UIAction;
@@ -52,21 +53,21 @@ class UIMessage
 		int m_totalRacers;
 	public:
 		void Write(UIFloat key, float value);
-		void Write(UIText key, char* value);
+		void Write(UITextType key, char* value);
 		void Write(UIBool key, bool value);
 		void Write(UIState state);
 		void Write(UIAction action);
 		void Write(UIWorkoutStage stage);
 		void SetTotalRacers(int total);
 		float Read(UIFloat key);
-		char* Read(UIText key);
+		char* Read(UITextType key);
 		bool Read(UIBool key);
 		UIState ReadState();
 		UIAction ReadAction();
 		UIWorkoutStage ReadWorkoutStage();
 		int GetTotalRacers();
 		UIMessage Delegate(UIFloat key);
-		UIMessage Delegate(UIText key);
+		UIMessage Delegate(UITextType key);
 		UIMessage Delegate(UIBool key);
 };
 

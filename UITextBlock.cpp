@@ -13,7 +13,7 @@ UITextBlock::UITextBlock()
     m_print2D = NULL;
 }
 
-UITextBlock::UITextBlock(char* text, float x, float y, GLuint color)
+UITextBlock::UITextBlock(char* text, float x, float y, GLuint color, UITextType updateKey)
 {
 	m_bg = UIImage(c_UITBDefaults.bg, x, y, c_UITBDefaults.width, c_UITBDefaults.height);
 	m_text = text;
@@ -24,9 +24,29 @@ UITextBlock::UITextBlock(char* text, float x, float y, GLuint color)
 	m_textScale = c_UITBDefaults.textScale;
 	m_color = color;
 	m_print2D = NULL;
+	m_updateKey = updateKey;
 }
 
-UITextBlock::UITextBlock(char* bg, char* text, float x, float y, float width, float height, float insetX, float insetY, float textScale, GLuint color)
+UITextBlock::UITextBlock(char* text, char* textSecondary, UIFont fontMain, UIFont fontSec,
+             float x, float y, GLuint color, UITextType m_updateKey)
+{
+	m_bg = UIImage(c_UITBDefaults.bg, x, y, c_UITBDefaults.width, c_UITBDefaults.height);
+	m_text = text;
+	m_textSecondary = textSecondary;
+	m_fontMain = fontMain;
+	m_fontSecondary = fontSec;
+	m_x = x;
+	m_y = y;
+	m_insetX = c_UITBDefaults.insetX;
+	m_insetY = c_UITBDefaults.insetY;
+	m_textScale = c_UITBDefaults.textScale;
+	m_color = color;
+	m_print2D = NULL;
+	m_updateKey = updateKey;
+}
+
+UITextBlock::UITextBlock(char* bg, char* text, float x, float y, float width,
+	 float height, float insetX, float insetY, float textScale, GLuint color, UITextType updateKey)
 {
     m_bg = UIImage(bg, x, y, width, height);
     m_text = text;
@@ -37,6 +57,7 @@ UITextBlock::UITextBlock(char* bg, char* text, float x, float y, float width, fl
     m_textScale = textScale;
     m_color = color;
     m_print2D = NULL;
+	m_updateKey = updateKey;
 }
 
 bool
@@ -103,16 +124,8 @@ UITextBlock::Update(UIMessage updateMessage)
 {
 	fprintf(stderr, "Message\n");
 	char* newText;
-	for ( int i = UISpeedMPM; i != UINone; i ++ ) {
-		UIText iState = static_cast<UIText>(i);
-		char* messageContents = updateMessage.Read(iState);
-		if (messageContents == NULL) {
-			continue;
-		}
-		fprintf(stderr, "Message received: %s\n", messageContents);
-		if (strcmp(messageContents, "0") != 0) {
-			m_text = messageContents;
-		}
+	if ((newText = updateMessage.Read(m_updateKey)) != NULL) {
+		m_text = newText;
 	}
 }
 

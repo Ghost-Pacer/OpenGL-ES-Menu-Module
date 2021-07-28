@@ -12,10 +12,9 @@ struct SUMLayoutSpec {
 	float x, y, width, height;
 };
 
-const int c_numSUMElements = 5;
+const int c_numSUMElements = 4;
 
 const SUMLayoutSpec c_SUMLayouSpecs[] = {
-	{ SVCompleteIcon, 0, 0, 80, 80 },
 	{ SVDistance, -115, -130, 220, 70 },
 	{ SVEnergy, 115, -130, 220, 70 },
 	{ SVPace, -115, -225, 220, 70 },

@@ -7,16 +7,16 @@ UISummaryView::UISummaryView()
 		SUMLayoutSpec spec = c_SUMLayouSpecs[i];
 		switch(spec.type) {
 			case SVDistance:
-				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF);
+				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF, UIDistanceM);
 				break;
 			case SVEnergy:
-				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF);
+				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF, UIEnergyKJ);
 				break;
 			case SVPace:
-				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF);
+				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF, UISpeedMPM);
 				break;
 			case SVCalories:
-				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF);
+				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF, UICalories);
 				break;
 			default:
 				m_elements[i] = NULL;
@@ -68,31 +68,13 @@ UISummaryView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotat
 void
 UISummaryView::Update(UIMessage updateMessage)
 {
-	UIMessage delegateMessage;
+	//UIMessage delegateMessage;
 	m_hidden = !(updateMessage.ReadState() == UISummary);
 	for (int i = 0 ; i < c_numSUMElements; i ++) {
 		if (m_elements[i] == NULL) {
 			continue;
 		}
-		SUMElement type = c_SUMLayouSpecs[i].type;
-		switch(type) {
-			case SVDistance:
-				delegateMessage = updateMessage.Delegate(UIDistanceM);
-				m_elements[i]->Update(delegateMessage);
-				break;
-			case SVPace:
-				delegateMessage = updateMessage.Delegate(UISpeedMPM);
-				m_elements[i]->Update(delegateMessage);
-				break;
-			case SVCalories:
-				delegateMessage = updateMessage.Delegate(UICalories);
-				m_elements[i]->Update(delegateMessage);
-				break;
-			case SVEnergy:
-				delegateMessage = updateMessage.Delegate(UIEnergyKJ);
-				m_elements[i]->Update(delegateMessage);
-				break;
-		}
+		m_elements[i]->Update(updateMessage);
 	}
 }
 

@@ -1,7 +1,7 @@
 #include "UIMessage.h"
 
 void
-UIMessage::Write(UIText key, char* value)
+UIMessage::Write(UITextType key, char* value)
 {
 	m_sValueMap[key] = value;
 }
@@ -47,7 +47,7 @@ UIMessage::Read(UIFloat key)
 }
 
 char*
-UIMessage::Read(UIText key)
+UIMessage::Read(UITextType key)
 {
 	if (m_sValueMap.Exists(key)) {
 		return m_sValueMap[key];
@@ -111,7 +111,7 @@ UIMessage::Delegate(UIFloat key)
 }
 
 UIMessage
-UIMessage::Delegate(UIText key)
+UIMessage::Delegate(UITextType key)
 {
 	UIMessage delegate = UIMessage();
 	if (m_sValueMap.Exists(key)) {

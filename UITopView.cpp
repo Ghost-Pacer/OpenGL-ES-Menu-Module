@@ -20,13 +20,13 @@ UITopView::UITopView(UIState startingState, UIWorkoutStage startingWorkoutMode)
 	for (int i = 0 ; i < c_tvNumElementPositions; i ++) {
 		switch(c_TVLayoutSpecs[i].type) {
 			case TVLeftTB:
-				mainElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor);
-				infoElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor);
+				mainElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UIRank);
+				infoElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UIEnergyKJ);
 				pauseElements[i] = NULL;
 				break;
 			case TVRightTB:
-				mainElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor);
-				infoElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor);
+				mainElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UISpeedMPM);
+				infoElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UIDistanceM);
 				pauseElements[i] = NULL;
 				break;
 			case TVWorkoutView:
@@ -187,27 +187,7 @@ UITopView::Update(UIMessage updateMessage)
 			if (elementArray[i] == NULL) {
 				continue;
 			}
-			if (c_TVLayoutSpecs[i].type == TVLeftTB && m_state == UIMain) {
-				fprintf(stderr, "Message sent from UITopView\n");
-				delegateMessage = updateMessage.Delegate(UIRank);
-				elementArray[i]->Update(delegateMessage);
-			} else if (c_TVLayoutSpecs[i].type == TVRightTB && m_state == UIMain) {
-				fprintf(stderr, "Message sent from UITopView\n");
-				delegateMessage = updateMessage.Delegate(UIEnergyKJ);
-				elementArray[i]->Update(delegateMessage);
-			} else if (c_TVLayoutSpecs[i].type == TVLeftTB && m_state == UIInfo) {
-				fprintf(stderr, "Message sent from UITopView\n");
-				delegateMessage = updateMessage.Delegate(UIDistanceM);
-				elementArray[i]->Update(delegateMessage);
-			} else if (c_TVLayoutSpecs[i].type == TVRightTB && m_state == UIInfo) {
-				fprintf(stderr, "Message sent from UITopView\n");
-				delegateMessage = updateMessage.Delegate(UISpeedMPM);
-				elementArray[i]->Update(delegateMessage);
-			} else if (c_TVLayoutSpecs[i].type == TVWorkoutView) {
-				fprintf(stderr, "Message sent from UITopView\n");
-				delegateMessage = updateMessage.Delegate(UIStageProgress);
-				elementArray[i]->Update(delegateMessage);
-			}
+			elementArray[i] -> Update(updateMessage);
 		}
 	}
 }
