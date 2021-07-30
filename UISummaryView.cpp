@@ -65,6 +65,22 @@ UISummaryView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotat
 	return true;
 }
 
+bool
+UISummaryView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
+{
+	if (m_hidden) {
+		return true;
+	}
+	for ( int i = 0; i < c_numSUMElements; i ++ ) {
+		if (m_elements[i] == NULL) {
+			continue;
+		} else if (!m_elements[i]->Render(uiMVPMatrixLoc, printer)) {
+			fprintf(stderr, "UISummaryView element failed to render\n");
+		}
+	}
+	return true;
+}
+
 void
 UISummaryView::Update(UIMessage updateMessage)
 {

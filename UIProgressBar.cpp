@@ -197,7 +197,7 @@ void
 UIProgressBar::Update(UIMessage updateMessage)
 {
 	float messageContents = updateMessage.Read(UIStageProgress);
-	fprintf(stderr, "Message received to UIProgressBar, contents: %f\n", messageContents);
+	// fprintf(stderr, "Message received to UIProgressBar, contents: %f\n", messageContents);
 	if (messageContents >= 0 && messageContents <= 1) {
 		SetCompletion(messageContents);
 	}

@@ -63,7 +63,7 @@ void
 UIPauseView::Update(UIMessage updateMessage)
 {
 	if (updateMessage.ReadState() != UIPause) {
-		fprintf(stderr, "State: UISummary\n");
+		// fprintf(stderr, "State: UISummary\n");
 		m_hidden = true;
 		return;
 	} else {
@@ -71,7 +71,7 @@ UIPauseView::Update(UIMessage updateMessage)
 	}
 	if (m_elements[PVResumeButton] != NULL && m_elements[PVEndButton] != NULL
 		 && updateMessage.ReadAction() == UIToggleActiveButton) {
-		fprintf(stderr, "Message received from UILayer\n");
+		//fprintf(stderr, "Message received from UILayer\n");
 		m_resume = !m_resume;
 		updateMessage.Write(UIButtonActive, m_resume);
 		m_elements[PVResumeButton]->Update(updateMessage);
