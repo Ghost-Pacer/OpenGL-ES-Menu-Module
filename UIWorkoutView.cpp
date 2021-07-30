@@ -95,7 +95,7 @@ UIWorkoutView::LoadTextures(CPVRTString* const pErrorString)
                 fprintf(stderr, "UIWorkoutView texture %d load failed\n", i);
                 return false;
             } else {
-                fprintf(stderr, "UIWorkoutView texture loaded\n");
+                // fprintf(stderr, "UIWorkoutView texture loaded\n");
             }
         }
     }
@@ -158,7 +158,7 @@ UIWorkoutView::Update(UIMessage updateMessage)
             WVElement type = c_wvLayoutSpecs[i].type;
 			if (type == wvProgressBarRed || type == wvProgressBarGreen 
                     || type == wvProgressBarBlue) {
-                fprintf(stderr, "Valid message received in UIWorkoutView\n");
+                //fprintf(stderr, "Valid message received in UIWorkoutView\n");
 				delegateMessage = updateMessage.Delegate(UIStageProgress);
 				elementArray[i]->Update(delegateMessage);
 			}

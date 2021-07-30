@@ -39,6 +39,7 @@ class UITopView : public UIElement
 		virtual void BuildVertices();
 		virtual bool Render(GLuint uiMVPMatrixLoc);
 		virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated);
+        virtual bool Render(GLuint uiMVPMatrixLoc, UIPrinter* printer) { return true; };
 		virtual bool Text();
 		virtual void Update(UIMessage updateMessage);
 		virtual void Hide();
