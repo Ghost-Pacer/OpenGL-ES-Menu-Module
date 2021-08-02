@@ -21,12 +21,12 @@ UITopView::UITopView(UIState startingState, UIWorkoutStage startingWorkoutMode)
 		switch(c_TVLayoutSpecs[i].type) {
 			case TVLeftTB:
 				mainElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UIRank);
-				infoElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UIEnergyKJ);
+				infoElements[i] = new UITextBlock("0", "kJ", UIFBold, UIFMedium, c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UIEnergyKJ);
 				pauseElements[i] = NULL;
 				break;
 			case TVRightTB:
-				mainElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UISpeedMPM);
-				infoElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UIDistanceM);
+				mainElements[i] = new UITextBlock("0", "/mi", UIFBold, UIFMedium, c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UISpeedMPM);
+				infoElements[i] = new UITextBlock("0", "mi", UIFBold, UIFMedium, c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UIDistanceM);
 				pauseElements[i] = NULL;
 				break;
 			case TVWorkoutView:
@@ -137,16 +137,10 @@ UITopView::BuildVertices()
 }
 
 bool
-UITopView::Render(GLuint uiMVPMatrixLoc)
-{
-	return false;
-}
-
-bool
-UITopView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
+UITopView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
 	if (m_hidden) {
-		return true;
+	return true;
 	}
 
 	UIElement** elementArray = m_stateMap[m_state];
@@ -154,7 +148,7 @@ UITopView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
 	if (elementArray != NULL) {
 		for (int i = 0 ; i < c_tvNumElementPositions; i ++) {
 			if (elementArray[i] != NULL) {
-				if (!elementArray[i]->Render(uiMVPMatrixLoc, print3D, isRotated)) {
+				if (!elementArray[i]->Render(uiMVPMatrixLoc, printer)) {
 					// fprintf(stderr, "UIElement %d  render failed\n", i);
 				} else {
 					// fprintf(stderr, "UIElement %d rendered\n", i);
@@ -164,12 +158,6 @@ UITopView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
 		return true;
 	}
 	return false;
-}
-
-bool
-UITopView::Text()
-{
-	return true;
 }
 
 void

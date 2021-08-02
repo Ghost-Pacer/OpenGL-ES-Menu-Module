@@ -124,9 +124,9 @@ UIWorkoutView::BuildVertices()
 }
 
 bool
-UIWorkoutView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
+UIWorkoutView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
-    if (!m_stateMap.Exists(m_state)) {
+	if (!m_stateMap.Exists(m_state)) {
         return false;
     }
     UIElement** elementArray = m_stateMap[m_state];
@@ -136,7 +136,7 @@ UIWorkoutView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotat
     for ( int i = 0; i < c_numWVLayoutSpecs; i ++ ) {
         if (elementArray[i] == NULL) {
             continue;
-        } else if (!elementArray[i]->Render(uiMVPMatrixLoc, print3D, isRotated)) {
+        } else if (!elementArray[i]->Render(uiMVPMatrixLoc, printer)) {
             fprintf(stderr, "UIWorkoutView element %d render failed\n", i);
         }
     }

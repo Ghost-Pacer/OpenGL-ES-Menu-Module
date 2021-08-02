@@ -1,7 +1,7 @@
 #include "OGLES2Tools.h"
 #include "UIElement.h"
 #include "UIImage.h"
-#include "Print2D.h"
+// #include "Print2D.h"
 
 #ifndef _UICOMPVIEW_H
 #define _UICOMPVIEW_H
@@ -15,6 +15,7 @@ struct UITextSpec {
 	GLuint color;
 	float xRel, yRel, scale;
 	UITextType updateKey;
+	UIFont font;
 };
 
 class UICompositeView : public UIElement
@@ -29,11 +30,10 @@ class UICompositeView : public UIElement
 		UICompositeView(float x, float y);
 		UICompositeView(char* bgTex, float x, float y, float width, float height);
 		void AddImage(char* textureName, float xRel, float yRel, float width, float height);
-		void AddText(char* text, GLuint color, float xRel, float yRel, float scale, UITextType updateKey);
+		void AddText(char* text, GLuint color, float xRel, float yRel, float scale, UITextType updateKey, UIFont font);
         virtual bool LoadTextures(CPVRTString* const pErrorStr);
         virtual void BuildVertices();
-        virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated);
-        virtual bool Render(GLuint uiMVPMatrixLoc, UIPrinter* printer) { return true; };
+        virtual bool Render(GLuint uiMVPMatrixLoc, UIPrinter* printer);
 		virtual void Update(UIMessage updateMessage);
 		virtual void Hide();
 		virtual void Show();

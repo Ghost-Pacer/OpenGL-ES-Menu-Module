@@ -23,11 +23,11 @@ UIPrinter::LoadFonts(int pvrShellWidth, int pvrShellHeight, bool isRotated)
 					return false;
 				}
 				break;
-			// case UIFMedium:
-			// 	if (print3D->SetTextures(0, (void *) _MontserratMedium_pvr, pvrShellWidth, pvrShellHeight, isRotated) != PVR_SUCCESS) {
-			// 		fprintf(stderr, "Error loading print3D\n");
-			// 		return false;
-			// 	}
+			case UIFMedium:
+				if (print3D->SetTextures(0, (void *) _MontserratMedium_pvr, pvrShellWidth, pvrShellHeight, isRotated) != PVR_SUCCESS) {
+					fprintf(stderr, "Error loading print3D\n");
+					return false;
+				}
 			// 	break;
 			// case UIFRegular:
 			// 	if (print3D->SetTextures(0, (void *) _MontserratRegular_pvr, pvrShellWidth, pvrShellHeight, isRotated) != PVR_SUCCESS) {
@@ -55,6 +55,10 @@ UIPrinter::LoadFonts(int pvrShellWidth, int pvrShellHeight, bool isRotated)
 void
 UIPrinter::Print(float x, float y, float scale, GLuint color, UIFont font, char* text)
 {
+	if (!m_fontMap.Exists(font)) {
+		fprintf(stderr, "Invalid call to UIPrinter::Print\n");
+		return;
+	}
 	// fprintf(stderr, "UIPrinter::Print called \n");
     GLint viewport[4];
     GLint vWidth;                           // Viewport width
@@ -76,3 +80,15 @@ UIPrinter::Print(float x, float y, float scale, GLuint color, UIFont font, char*
 	}
 	print3D->Flush();
 }
+
+void
+UIPrinter::Measure(float* width, float* height, float scale, UIFont font, char* text)
+{
+	if (!m_fontMap.Exists(font)) {
+		fprintf(stderr, "Invalid call to UIPrinter::Measure\n");
+		return;
+	}
+
+	CPVRTPrint3D* print3D = m_fontMap[font];
+	print3D->MeasureText(width, height, scale, text);
+} 

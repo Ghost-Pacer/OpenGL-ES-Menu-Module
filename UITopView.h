@@ -37,10 +37,7 @@ class UITopView : public UIElement
 		UITopView(UIState startingState, UIWorkoutStage startingWorkoutState);
 		virtual bool LoadTextures(CPVRTString* const pErrorString);
 		virtual void BuildVertices();
-		virtual bool Render(GLuint uiMVPMatrixLoc);
-		virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated);
-        virtual bool Render(GLuint uiMVPMatrixLoc, UIPrinter* printer) { return true; };
-		virtual bool Text();
+        virtual bool Render(GLuint uiMVPMatrixLoc, UIPrinter* printer);
 		virtual void Update(UIMessage updateMessage);
 		virtual void Hide();
 		virtual void Show();
