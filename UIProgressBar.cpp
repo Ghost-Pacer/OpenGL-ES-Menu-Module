@@ -159,8 +159,17 @@ UIProgressBar::Render(GLuint uiMVPMatrixLoc)
 	return true;
 }
 
+// bool
+// UIProgressBar::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
+// {
+//     m_bg.Render(uiMVPMatrixLoc);
+//     m_progress.Render(uiMVPMatrixLoc);
+
+// 	return true;
+// }
+
 bool
-UIProgressBar::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
+UIProgressBar::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
     m_bg.Render(uiMVPMatrixLoc);
     m_progress.Render(uiMVPMatrixLoc);

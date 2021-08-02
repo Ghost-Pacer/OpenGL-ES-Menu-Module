@@ -330,12 +330,38 @@ UIImage::Render(GLuint uiMVPMatrixLoc)
 	return true;
 }
 
+// /*!****************************************************************************
+//  @Function		Render
+//  @Description	UITextBlock implements a different version of UIElement::Render
+// ******************************************************************************/
+// bool
+// UIImage::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
+// {
+//     glEnableVertexAttribArray(VERTEX_ARRAY);
+// 	glEnableVertexAttribArray(NORMAL_ARRAY);
+// 	glEnableVertexAttribArray(COLOR_ARRAY);
+// 	glEnableVertexAttribArray(TEXCOORD_ARRAY);
+
+//     Draw(uiMVPMatrixLoc);
+
+//     // unbind the vertex buffers as we don't need them bound anymore
+// 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+// 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+// 	glDisableVertexAttribArray(VERTEX_ARRAY);
+// 	glDisableVertexAttribArray(NORMAL_ARRAY);
+// 	glDisableVertexAttribArray(COLOR_ARRAY);
+// 	glDisableVertexAttribArray(TEXCOORD_ARRAY);
+
+// 	return true;
+// }
+
 /*!****************************************************************************
  @Function		Render
  @Description	UITextBlock implements a different version of UIElement::Render
 ******************************************************************************/
 bool
-UIImage::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
+UIImage::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
     glEnableVertexAttribArray(VERTEX_ARRAY);
 	glEnableVertexAttribArray(NORMAL_ARRAY);

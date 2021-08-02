@@ -26,6 +26,7 @@ class UIPrinter
 		UIPrinter();
 		bool LoadFonts(int pvrShellWidth, int pvrShellHeight, bool isRotated);
 		void Print(float x, float y, float scale, GLuint color, UIFont font, char* text);
+		void Measure(float* width, float* height, float scale, UIFont font, char* text);
 };
 
 #endif

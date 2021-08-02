@@ -30,9 +30,9 @@ UICompositeView::AddImage(char* textureName, float xRel, float yRel, float width
 }
 
 void
-UICompositeView::AddText(char* text, GLuint color, float xRel, float yRel, float scale, UITextType updateKey)
+UICompositeView::AddText(char* text, GLuint color, float xRel, float yRel, float scale, UITextType updateKey, UIFont font)
 {
-	UITextSpec newText = { text, color, xRel, yRel, scale, updateKey };
+	UITextSpec newText = { text, color, xRel, yRel, scale, updateKey, font };
 	m_text.Append(newText);
 }
 
@@ -70,7 +70,7 @@ UICompositeView::BuildVertices()
 }
 
 bool
-UICompositeView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
+UICompositeView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
 	if (m_hidden) {
 		return true;
@@ -83,14 +83,14 @@ UICompositeView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRot
 	vWidth = viewport[2];
 	vHeight = viewport[3];
 
-	m_bg.Render(uiMVPMatrixLoc, print3D, isRotated);
+	m_bg.Render(uiMVPMatrixLoc, printer);
 
 	if (m_children.GetSize() > 0) {
 		for ( int i = 0; i < m_children.GetSize(); i ++ ) {
 			if (m_children[i] == NULL) {
 				continue;
 			} else {
-				if (!m_children[i]->Render(uiMVPMatrixLoc, print3D, isRotated)) {
+				if (!m_children[i]->Render(uiMVPMatrixLoc, printer)) {
 					fprintf(stderr, "UICompositeView render failed\n");
 				}
 			}
@@ -98,13 +98,10 @@ UICompositeView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRot
 	}
 
 	if (m_text.GetSize() > 0){
-		Print2D* printer  = new Print2D(print3D, isRotated);
 		float textWidth, textHeight;
 		for ( int i = 0; i < m_text.GetSize(); i ++ ) {
 			UITextSpec iText = m_text[i];
-			print3D->MeasureText(&textWidth, &textHeight, iText.scale, iText.text);
-			printer->renderText((100*(m_x + iText.xRel - (textWidth)/2)/vWidth)+50, 
-				-(100*(m_y + iText.yRel + (textHeight)/2)/vHeight)+50, iText.scale, iText.color, iText.text);
+			printer->Print(m_x + iText.xRel, m_y + iText.yRel, iText.scale, iText.color, iText.font, iText.text);
 		}
 	}
 

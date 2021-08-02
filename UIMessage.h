@@ -20,7 +20,10 @@ enum UITextType {
 enum UIBool {
 	UIHidden,
 	UIButtonActive,
-	UIMileMarker
+	UIMileMarker,
+	UIBadge1,
+	UIBadge2,
+	UIBadge3
 };
 
 enum UIState {

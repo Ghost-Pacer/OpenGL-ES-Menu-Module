@@ -5,18 +5,27 @@ UISummaryView::UISummaryView()
 	m_elements = new UIElement*[c_numSUMElements];
 	for ( int i = 0; i < c_numSUMElements; i ++ ) {
 		SUMLayoutSpec spec = c_SUMLayouSpecs[i];
+		UICompositeView* completeIcon = new UICompositeView("textContainer.pvr", spec.x, spec.y, spec.width, spec.height);
 		switch(spec.type) {
+			case SVComplete:
+				completeIcon->AddText("Workout Complete", 0xFF0000FF, 40, 0, 0.22, UINone, UIFBold);
+				completeIcon->AddImage("checkmark.pvr", -120, 0, 40, 42);
+				m_elements[i] = completeIcon;
+				break;
 			case SVDistance:
-				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF, UIDistanceM);
+				m_elements[i] = new UITextBlock("0", "mi", UIFBold, UIFMedium, spec.x, spec.y, 0xFF0000FF, UIDistanceM);
 				break;
 			case SVEnergy:
-				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF, UIEnergyKJ);
+				m_elements[i] = new UITextBlock("0", "kJ", UIFBold, UIFMedium, spec.x, spec.y, 0xFF0000FF, UIEnergyKJ);
 				break;
 			case SVPace:
-				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF, UISpeedMPM);
+				m_elements[i] = new UITextBlock("0", "/mi", UIFBold, UIFMedium, spec.x, spec.y, 0xFF0000FF, UISpeedMPM);
 				break;
 			case SVCalories:
-				m_elements[i] = new UITextBlock("0", spec.x, spec.y, 0xFF0000FF, UICalories);
+				m_elements[i] = new UITextBlock("0", "cal", UIFBold, UIFMedium, spec.x, spec.y, 0xFF0000FF, UICalories);
+				break;
+			case SVBadges:
+				m_elements[i] = new UIBadges(spec.x, spec.y);
 				break;
 			default:
 				m_elements[i] = NULL;
@@ -28,8 +37,11 @@ UISummaryView::UISummaryView()
 bool
 UISummaryView::LoadTextures(CPVRTString* const pErrorStr)
 {
+	fprintf(stderr, "Loading summaryview elements\n");
 	for ( int i = 0; i < c_numSUMElements; i ++ ) {
+		fprintf(stderr, "Loading element #%d\n", i);
 		if (m_elements[i] == NULL) {
+			fprintf(stderr, "NULL element\n");
 			continue;
 		} else if (!m_elements[i]->LoadTextures(pErrorStr)) {
 			fprintf(stderr, "UISummaryView element failed to load\n");
@@ -47,22 +59,6 @@ UISummaryView::BuildVertices()
 			m_elements[i]->BuildVertices();
 		}
 	}
-}
-
-bool
-UISummaryView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
-{
-	if (m_hidden) {
-		return true;
-	}
-	for ( int i = 0; i < c_numSUMElements; i ++ ) {
-		if (m_elements[i] == NULL) {
-			continue;
-		} else if (!m_elements[i]->Render(uiMVPMatrixLoc, print3D, isRotated)) {
-			fprintf(stderr, "UISummaryView element failed to render\n");
-		}
-	}
-	return true;
 }
 
 bool

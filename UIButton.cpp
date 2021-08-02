@@ -11,7 +11,7 @@ UIButton::UIButton()
     m_height = 0;
     m_insetX = 0;
     m_insetY = 0;
-    m_print2D = NULL;
+    // m_print2D = NULL;
 }
 
 UIButton::UIButton(char* text, float x, float y, GLuint activeColor, GLuint inactiveColor)
@@ -26,11 +26,12 @@ UIButton::UIButton(char* text, float x, float y, GLuint activeColor, GLuint inac
 	m_textScale = c_UIBDefaults.textScale;
 	m_activeColor = activeColor;
 	m_inactiveColor = inactiveColor;
-	m_print2D = NULL;
+	m_font = c_UIBDefaults.font;
+	// m_print2D = NULL;
 }
 
 UIButton::UIButton(char* activeBG, char* inactiveBG, char* text, float x, float y, float width, float height, 
-	float insetX, float insetY, float textScale, GLuint activeColor, GLuint inactiveColor)
+	float insetX, float insetY, float textScale, GLuint activeColor, GLuint inactiveColor, UIFont font)
 {
     m_activeBG = UIImage(activeBG, x, y, width, height);
 	m_inactiveBG = UIImage(inactiveBG, x, y, width, height);
@@ -42,7 +43,8 @@ UIButton::UIButton(char* activeBG, char* inactiveBG, char* text, float x, float 
     m_textScale = textScale;
 	m_activeColor = activeColor;
 	m_inactiveColor = inactiveColor;
-    m_print2D = NULL;
+    // m_print2D = NULL;
+	m_font = font;
 }
 
 void
@@ -64,8 +66,46 @@ UIButton::BuildVertices()
 	m_inactiveBG.BuildVertices();
 }
 
+// bool
+// UIButton::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
+// {
+//     GLint viewport[4];
+//     GLint vWidth;                           // Viewport width
+//     GLint vHeight;                          // Viewport height
+// 	glGetIntegerv(GL_VIEWPORT, viewport);
+
+// 	vWidth = viewport[2];
+// 	vHeight = viewport[3];
+
+// 	if (m_active) {
+// 		m_activeBG.Render(uiMVPMatrixLoc);
+// 	} else {
+// 		m_inactiveBG.Render(uiMVPMatrixLoc);
+// 	}
+
+//     m_print2D = new Print2D(print3D, isRotated);
+
+// 	float textWidth;
+// 	float textHeight;
+
+// 	print3D->MeasureText(&textWidth, &textHeight, m_textScale, m_text);
+
+// 	GLuint textColor;
+// 	if (m_active) {
+// 		textColor = m_activeColor;
+// 		// fprintf(stderr, "Active status + %d\n", m_active);
+// 		// fprintf(stderr, "Text color : %x\n", textColor);
+// 	} else {
+// 		textColor = m_inactiveColor;
+// 		// fprintf(stderr, "Text color : %x\n", textColor);
+// 	}
+//     m_print2D -> renderText((100*(m_x - (textWidth+m_insetX)/2)/vWidth)+50, -(100*(m_y + (textHeight+m_insetY)/2)/vHeight)+50, m_textScale, textColor, m_text);
+	
+//     return true;
+// }
+
 bool
-UIButton::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
+UIButton::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
     GLint viewport[4];
     GLint vWidth;                           // Viewport width
@@ -81,13 +121,6 @@ UIButton::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
 		m_inactiveBG.Render(uiMVPMatrixLoc);
 	}
 
-    m_print2D = new Print2D(print3D, isRotated);
-
-	float textWidth;
-	float textHeight;
-
-	print3D->MeasureText(&textWidth, &textHeight, m_textScale, m_text);
-
 	GLuint textColor;
 	if (m_active) {
 		textColor = m_activeColor;
@@ -97,7 +130,7 @@ UIButton::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
 		textColor = m_inactiveColor;
 		// fprintf(stderr, "Text color : %x\n", textColor);
 	}
-    m_print2D -> renderText((100*(m_x - (textWidth+m_insetX)/2)/vWidth)+50, -(100*(m_y + (textHeight+m_insetY)/2)/vHeight)+50, m_textScale, textColor, m_text);
+    printer -> Print(m_x, m_y, m_textScale, textColor, m_font, m_text);
 	
     return true;
 }

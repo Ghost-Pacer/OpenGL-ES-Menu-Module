@@ -1,7 +1,7 @@
 #include "OGLES2Tools.h"
 #include "UIElement.h"
 #include "UIImage.h"
-#include "Print2D.h"
+// #include "Print2D.h"
 
 #ifndef _UIBUTTON_H
 #define _UIBUTTON_H
@@ -10,10 +10,11 @@ struct ButtonData {
 	char* activeBG;
 	char* inactiveBG;
 	float width, height, insetX, insetY, textScale;
+	UIFont font;
 };
 
 const ButtonData c_UIBDefaults = {
-	"buttonActive.pvr", "buttonInactive.pvr", 360, 40, 0, 0, 0.18 
+	"buttonActive.pvr", "buttonInactive.pvr", 360, 40, 0, 0, 0.18, UIFMedium
 };
 
 class UIButton : public UIElement
@@ -21,8 +22,9 @@ class UIButton : public UIElement
 	protected:
         UIImage m_activeBG;
 		UIImage m_inactiveBG;
-        Print2D* m_print2D;
+        // Print2D* m_print2D;
         char* m_text;
+		UIFont m_font;
         GLuint m_activeColor;
         GLuint m_inactiveColor;
 		bool m_active;
@@ -31,12 +33,12 @@ class UIButton : public UIElement
         UIButton();
 		UIButton(char* text, float x, float y, GLuint activeColor, GLuint inactiveColor);
         UIButton(char* activeBG, char* inactiveBG, char* text, float x, float y, float width, float height, 
-			float insetX, float insetY, float textScale, GLuint activeColor, GLuint inactiveColor);
+			float insetX, float insetY, float textScale, GLuint activeColor, GLuint inactiveColor, UIFont font);
 		void ToggleActive();
         virtual bool LoadTextures(CPVRTString* const pErrorStr);
         virtual void BuildVertices();
-        virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated);
-        virtual bool Render(GLuint uiMVPMatrixLoc, UIPrinter* printer) { return true; };
+        // virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated);
+        virtual bool Render(GLuint uiMVPMatrixLoc, UIPrinter* printer);
 		virtual void Update(UIMessage updateMessage);
 		virtual void Hide(){};
 		virtual void Show(){};

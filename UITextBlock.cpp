@@ -10,7 +10,7 @@ UITextBlock::UITextBlock()
     m_height = 0;
     m_insetX = 0;
     m_insetY = 0;
-    m_print2D = NULL;
+    // m_print2D = NULL;
 }
 
 UITextBlock::UITextBlock(char* text, float x, float y, GLuint color, UITextType updateKey)
@@ -23,41 +23,35 @@ UITextBlock::UITextBlock(char* text, float x, float y, GLuint color, UITextType 
 	m_insetY = c_UITBDefaults.insetY;
 	m_textScale = c_UITBDefaults.textScale;
 	m_color = color;
-	m_print2D = NULL;
+	// m_print2D = NULL;
+	m_updateKey = updateKey;
+	m_textSecondary = NULL;
+	m_fontMain = c_UITBDefaults.font;
+}
+
+UITextBlock::UITextBlock(char* text, char* textSecondary, UIFont fontMain, UIFont fontSec,
+             float x, float y, GLuint color, UITextType updateKey)
+{
+	m_bg = UIImage(c_UITBDefaults.bg, x, y, c_UITBDefaults.width, c_UITBDefaults.height);
+	m_text = text;
+	m_textSecondary = textSecondary;
+	m_fontMain = fontMain;
+	m_fontSecondary = fontSec;
+	m_x = x;
+	m_y = y;
+	m_insetX = c_UITBDefaults.insetX;
+	m_insetY = c_UITBDefaults.insetY;
+	m_textScale = c_UITBDefaults.textScale;
+	m_color = color;
+	// m_print2D = NULL;
 	m_updateKey = updateKey;
 }
 
-// UITextBlock::UITextBlock(char* text, char* textSecondary, UIFont fontMain, UIFont fontSec,
-//              float x, float y, GLuint color, UITextType m_updateKey)
-// {
-// 	m_bg = UIImage(c_UITBDefaults.bg, x, y, c_UITBDefaults.width, c_UITBDefaults.height);
-// 	m_text = text;
-// 	m_textSecondary = textSecondary;
-// 	m_fontMain = fontMain;
-// 	m_fontSecondary = fontSec;
-// 	m_x = x;
-// 	m_y = y;
-// 	m_insetX = c_UITBDefaults.insetX;
-// 	m_insetY = c_UITBDefaults.insetY;
-// 	m_textScale = c_UITBDefaults.textScale;
-// 	m_color = color;
-// 	m_print2D = NULL;
-// 	m_updateKey = updateKey;
-// }
-
-UITextBlock::UITextBlock(char* bg, char* text, float x, float y, float width,
-	 float height, float insetX, float insetY, float textScale, GLuint color, UITextType updateKey)
+void
+UITextBlock::AddSecondaryText(char* text, UIFont fontSecondary)
 {
-    m_bg = UIImage(bg, x, y, width, height);
-    m_text = text;
-    m_x = x;
-    m_y = y;
-    m_insetX = insetX;
-    m_insetY = insetY;
-    m_textScale = textScale;
-    m_color = color;
-    m_print2D = NULL;
-	m_updateKey = updateKey;
+	m_textSecondary = text;
+	m_fontSecondary = fontSecondary;
 }
 
 bool
@@ -72,66 +66,63 @@ UITextBlock::BuildVertices()
     m_bg.BuildVertices();
 }
 
-bool
-UITextBlock::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
-{
-	if (m_hidden) {
-		return true;
-	}
-    GLint viewport[4];
-    GLint vWidth;                           // Viewport width
-    GLint vHeight;                          // Viewport height
-	glGetIntegerv(GL_VIEWPORT, viewport);
+// bool
+// UITextBlock::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
+// {
+// 	if (m_hidden) {
+// 		return true;
+// 	}
+//     GLint viewport[4];
+//     GLint vWidth;                           // Viewport width
+//     GLint vHeight;                          // Viewport height
 
-	vWidth = viewport[2];
-	vHeight = viewport[3];
-	// fprintf(stderr, "Viewport dimensions: %d %d\n", vWidth, vHeight);
+// 	glGetIntegerv(GL_VIEWPORT, viewport);
+// 	vWidth = viewport[2];
+// 	vHeight = viewport[3];
+// 	// fprintf(stderr, "Viewport dimensions: %d %d\n", vWidth, vHeight);
 
-    m_bg.Render(uiMVPMatrixLoc);
+//     m_bg.Render(uiMVPMatrixLoc);
 
-    m_print2D = new Print2D(print3D, isRotated);
+//     m_print2D = new Print2D(print3D, isRotated);
 	
-	float textWidth;
-	float textHeight;
+// 	float textWidth;
+// 	float textHeight;
 
-	print3D->MeasureText(&textWidth, &textHeight, m_textScale, m_text);
+// 	print3D->MeasureText(&textWidth, &textHeight, m_textScale, m_text);
 
-	// fprintf(stderr, "Text coordinates: %f %f\n", (100*(m_x - m_insetX)/vWidth)+50, (100*(m_y - m_insetY)/vHeight)+50);
-    m_print2D -> renderText((100*(m_x - (textWidth+m_insetX)/2)/vWidth)+50, -(100*(m_y + (textHeight+m_insetY)/2)/vHeight)+50, m_textScale, m_color, m_text);
+// 	// fprintf(stderr, "Text coordinates: %f %f\n", (100*(m_x - m_insetX)/vWidth)+50, (100*(m_y - m_insetY)/vHeight)+50);
+//     m_print2D -> renderText((100*(m_x - (textWidth+m_insetX)/2)/vWidth)+50, -(100*(m_y + (textHeight+m_insetY)/2)/vHeight)+50, m_textScale, m_color, m_text);
 	
-    // m_print2D -> renderText(0, 0, m_textScale, m_color, m_text);
-    return true;
-}
+//     // m_print2D -> renderText(0, 0, m_textScale, m_color, m_text);
+//     return true;
+// }
 
 bool
 UITextBlock::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
-	// fprintf(stderr, "Rendering text block with UIPrinter \n");
-
 	if (m_hidden) {
 		return true;
 	}
 
-    m_bg.Render(uiMVPMatrixLoc);
-    printer->Print(m_x, m_y, m_textScale, m_color, UIFBold, m_text);
-	
+	if (printer == NULL) {
+		fprintf(stderr, "Invalid call to UITextBlock::Render\n");
+		return false;
+	}
+
+	m_bg.Render(uiMVPMatrixLoc);
+	if (m_textSecondary == NULL) {
+		printer->Print(m_x, m_y, m_textScale, m_color, UIFBold, m_text);
+	} else {
+		float mainTextWidth, mainTextHeight, secTextWidth, secTextHeight;
+		printer->Measure(&mainTextWidth, &mainTextHeight, m_textScale, m_fontMain, m_text);
+		printer->Measure(&secTextWidth, &secTextHeight, m_textScale/2, m_fontSecondary, m_textSecondary);
+		float mainOffset = (-secTextWidth/2);
+		float secondaryOffset = (mainTextWidth/2) + 10;
+		printer->Print(m_x+mainOffset, m_y, m_textScale, m_color, m_fontMain, m_text);
+		printer->Print(m_x+secondaryOffset, m_y, m_textScale/2, m_color, m_fontSecondary, m_textSecondary);
+	}
+
     // m_print2D -> renderText(0, 0, m_textScale, m_color, m_text);
-    return true;
-}
-
-/*!****************************************************************************
- @Function		Render
- @Description	UITextBlock implements a different version of UIElement::Render
-******************************************************************************/
-bool
-UITextBlock::Render(GLuint uiMVPMatrixLoc)
-{
-    return false;
-}
-
-bool
-UITextBlock::Text()
-{
     return true;
 }
 

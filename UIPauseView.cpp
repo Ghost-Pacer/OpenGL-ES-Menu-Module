@@ -46,13 +46,13 @@ UIPauseView::BuildVertices()
 }
 
 bool
-UIPauseView::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
+UIPauseView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
 	if (m_hidden) {
 		return true;
 	}
 	for ( int i = 0 ; i < c_numPVElements; i ++ ) {
-		if (m_elements == NULL || !m_elements[i]->Render(uiMVPMatrixLoc, print3D, isRotated)) {
+		if (m_elements == NULL || !m_elements[i]->Render(uiMVPMatrixLoc, printer)) {
 			fprintf(stderr, "UIPauseView item render failed\n");
 		}
 	}

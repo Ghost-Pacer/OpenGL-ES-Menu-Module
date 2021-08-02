@@ -87,8 +87,7 @@ class UIImage : public UIElement
         virtual void Draw(GLuint uiMVPMatrixLoc);
 		virtual void DrawMesh();
 		virtual bool Render(GLuint uiMVPMatrixLoc);
-		virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated);
-        virtual bool Render(GLuint uiMVPMatrixLoc, UIPrinter* printer) { return true; };
+        virtual bool Render(GLuint uiMVPMatrixLoc, UIPrinter* printer);
 		virtual void CreateAndDisplay(GLuint uiMVPMatrixLoc);
 		virtual void Update(UIMessage updateMessage);
 		virtual void Hide();
