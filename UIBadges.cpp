@@ -113,3 +113,29 @@ UIBadges::Show()
 {
 	m_hidden = false;
 }
+
+void
+UIBadges::Delete()
+{
+	if (m_badges.GetSize() > 0) {
+		for ( int i = 0; i < c_numBadges; i ++) {
+			UIBool key = c_Badges[i].identifier;
+			if (!m_badges.Exists(key)) {
+				continue;
+			}
+			m_badges[key]->Delete();
+			delete m_badges[key];
+			m_badges[key] = NULL;
+		}
+	}
+
+	if (m_activeBadges.GetSize() > 0) {
+		for ( int i = 0; i < m_activeBadges.GetSize(); i ++ ) {
+			if (m_activeBadges[i] != NULL) {
+				m_activeBadges[i]->Delete();
+				delete m_activeBadges[i];
+				m_activeBadges[i] = NULL;
+			}
+		}
+	}
+}

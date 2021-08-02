@@ -91,4 +91,17 @@ UIPrinter::Measure(float* width, float* height, float scale, UIFont font, char* 
 
 	CPVRTPrint3D* print3D = m_fontMap[font];
 	print3D->MeasureText(width, height, scale, text);
-} 
+}
+
+void
+UIPrinter::Delete()
+{
+	for ( int i = UIFBold; i <= UIFMedium; i ++ ) {
+		UIFont iFont = static_cast<UIFont>(i);
+		if (m_fontMap.Exists(iFont) && m_fontMap[iFont] != NULL) {
+			m_fontMap[iFont]->ReleaseTextures();
+			delete m_fontMap[iFont];
+			m_fontMap[iFont] = NULL;
+		}
+	}
+}

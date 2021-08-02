@@ -36,6 +36,7 @@ class UIPauseView : public UIElement
 		virtual void Hide();
 		virtual void Show();
 		bool ResumeSelected();
+		void Delete();
 };
 
 #endif

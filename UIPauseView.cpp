@@ -97,3 +97,14 @@ UIPauseView::ResumeSelected()
 {
 	return m_resume;
 }
+
+void
+UIPauseView::Delete()
+{
+	for ( int i = 0 ; i < c_numPVElements; i ++ ) {
+		if (m_elements == NULL && m_elements[i] != NULL) {
+			delete m_elements[i];
+			m_elements[i] = NULL;
+		}
+	}
+}

@@ -43,6 +43,7 @@ class UITopView : public UIElement
 		virtual void Show();
 		void SetState(UIState state);
 		UIState GetState();
+		virtual void Delete();
 };
 
 #endif

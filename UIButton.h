@@ -29,6 +29,7 @@ class UIButton : public UIElement
         GLuint m_inactiveColor;
 		bool m_active;
         float m_x, m_y, m_width, m_height, m_insetX, m_insetY, m_textScale;
+		bool m_hidden;
 	public:
         UIButton();
 		UIButton(char* text, float x, float y, GLuint activeColor, GLuint inactiveColor);
@@ -40,8 +41,9 @@ class UIButton : public UIElement
         // virtual bool Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated);
         virtual bool Render(GLuint uiMVPMatrixLoc, UIPrinter* printer);
 		virtual void Update(UIMessage updateMessage);
-		virtual void Hide(){};
-		virtual void Show(){};
+		virtual void Hide();
+		virtual void Show();
+		virtual void Delete();
 };
 
 #endif

@@ -15,6 +15,7 @@ class UIElement
 		virtual void Update(UIMessage updateMessage) = 0;
 		virtual void Hide() = 0;
 		virtual void Show() = 0;
+		virtual void Delete() = 0;
 };
 
 #endif _UIELEMENT_H

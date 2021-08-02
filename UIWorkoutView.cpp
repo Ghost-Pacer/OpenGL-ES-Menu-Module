@@ -177,3 +177,28 @@ UIWorkoutView::Show()
 {
     m_hidden = false;
 }
+
+void
+UIWorkoutView::Delete()
+{
+	for ( int i = UIWarmup; i <= UICooldown; i ++ ) {
+        UIWorkoutStage iState = static_cast<UIWorkoutStage>(i);
+        if (!m_stateMap.Exists(iState)) {
+            continue;
+        }
+        UIElement** elementArray = m_stateMap[iState];
+        if (elementArray == NULL) {
+            continue;
+        }
+        for ( int i = 0; i < c_numWVLayoutSpecs; i ++ ) {
+            if (elementArray[i] == NULL) {
+                continue;
+            }
+            elementArray[i]->Delete();
+			delete elementArray[i];
+			elementArray[i] = NULL;
+        }
+		delete elementArray;
+		elementArray = NULL;
+    }
+}

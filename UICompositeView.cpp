@@ -134,3 +134,14 @@ UICompositeView::Show()
 {
 	m_hidden = false;
 }
+
+void UICompositeView::Delete()
+{
+	if (m_children.GetSize() > 0) {
+		for ( int i = 0; i < m_children.GetSize(); i++ ) {
+			m_children[i]->Delete();
+			delete m_children[i];
+			m_children[i] = NULL;
+		}
+	}
+}

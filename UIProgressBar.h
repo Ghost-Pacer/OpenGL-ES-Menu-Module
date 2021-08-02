@@ -60,6 +60,7 @@ class UIProgressBar : public UIElement
 		virtual void Hide();
 		virtual void Show();
 		bool Text();
+		void Delete();
 };
 
 #endif _UIPROGRESSBAR_H

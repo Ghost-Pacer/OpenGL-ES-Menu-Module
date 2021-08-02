@@ -532,3 +532,9 @@ UIImage::loadTextureFromFile(FILE* pvr, GLuint* texture, PVR_Texture_Header* hea
 		return false;
 	}
 }
+
+void
+UIImage::Delete()
+{
+	return;
+}

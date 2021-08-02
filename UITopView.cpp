@@ -230,3 +230,21 @@ UITopView::GetState()
 {
 	return m_state;
 }
+
+void
+UITopView::Delete()
+{
+	for ( int i = UIMain; i != UISummary; i++ ) {
+		UIState iState = static_cast<UIState>(i);
+		UIElement** elementArray = m_stateMap[iState];
+		for (int i = 0 ; i < c_tvNumElementPositions; i ++) {
+			if (elementArray[i] != NULL) {
+				elementArray[i]->Delete();
+				delete elementArray[i];
+				elementArray[i] = NULL;
+			}
+		}
+		delete elementArray;
+		elementArray = NULL;
+	}
+}

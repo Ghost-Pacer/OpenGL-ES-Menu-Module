@@ -239,3 +239,9 @@ UIProgressBar::Text()
 {
 	return false;
 }
+
+void
+UIProgressBar::Delete()
+{
+	return;
+}

@@ -101,3 +101,14 @@ UISummaryView::Show()
 {
 	m_hidden = false;
 }
+
+void
+UISummaryView::Delete()
+{
+	for ( int i = 0; i < c_numSUMElements; i ++ ) {
+		if (m_elements != NULL && m_elements[i] != NULL)
+		m_elements[i]->Delete();
+		delete m_elements[i];
+		m_elements[i] = NULL;
+	}
+}

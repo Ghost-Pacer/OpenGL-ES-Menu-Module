@@ -141,3 +141,21 @@ UIButton::Update(UIMessage updateMessage)
 	m_active = updateMessage.Read(UIButtonActive);
 	fprintf(stderr, "Active status + %d\n", m_active);
 }
+
+void
+UIButton::Hide()
+{
+	m_hidden = true;
+}
+
+void
+UIButton::Show()
+{
+	m_hidden = false;
+}
+
+void
+UIButton::Delete()
+{
+	return;
+}

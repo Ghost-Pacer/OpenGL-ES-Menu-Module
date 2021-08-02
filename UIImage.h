@@ -93,6 +93,7 @@ class UIImage : public UIElement
 		virtual void Hide();
 		virtual void Show();
 		virtual bool Text();
+		virtual void Delete();
         
 };
 

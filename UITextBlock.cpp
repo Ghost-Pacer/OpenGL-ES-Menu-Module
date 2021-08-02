@@ -131,8 +131,12 @@ UITextBlock::Update(UIMessage updateMessage)
 {
 	//fprintf(stderr, "Message\n");
 	char* newText;
+	char* oldText = m_text;
 	if ((newText = updateMessage.Read(m_updateKey)) != NULL) {
 		m_text = newText;
+		if (strcmp("0", oldText) != 0) {
+			delete oldText;
+		}
 	}
 }
 
@@ -148,4 +152,13 @@ UITextBlock::Show()
 {
 	m_bg.Show();
 	m_hidden = false;
+}
+
+void
+UITextBlock::Delete()
+{
+	if (strcmp(m_text, "0") != 0) {
+		delete m_text;
+		m_text = NULL;
+	}
 }

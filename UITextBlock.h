@@ -42,6 +42,7 @@ class UITextBlock : public UIElement
 		virtual void Update(UIMessage updateMessage);
 		virtual void Hide();
 		virtual void Show();
+		virtual void Delete();
 };
 
 #endif _UITEXTBLOCK_H
