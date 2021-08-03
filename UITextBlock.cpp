@@ -10,6 +10,7 @@ UITextBlock::UITextBlock()
     m_height = 0;
     m_insetX = 0;
     m_insetY = 0;
+	m_hidden = false;
     // m_print2D = NULL;
 }
 
@@ -27,6 +28,7 @@ UITextBlock::UITextBlock(char* text, float x, float y, GLuint color, UITextType 
 	m_updateKey = updateKey;
 	m_textSecondary = NULL;
 	m_fontMain = c_UITBDefaults.font;
+	m_hidden = false;
 }
 
 UITextBlock::UITextBlock(char* text, char* textSecondary, UIFont fontMain, UIFont fontSec,
@@ -45,6 +47,7 @@ UITextBlock::UITextBlock(char* text, char* textSecondary, UIFont fontMain, UIFon
 	m_color = color;
 	// m_print2D = NULL;
 	m_updateKey = updateKey;
+	m_hidden = false;
 }
 
 void

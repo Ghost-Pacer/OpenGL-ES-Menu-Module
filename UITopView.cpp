@@ -21,18 +21,18 @@ UITopView::UITopView(UIState startingState, UIWorkoutStage startingWorkoutMode)
 		switch(c_TVLayoutSpecs[i].type) {
 			case TVLeftTB:
 				mainElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UIRank);
-				infoElements[i] = new UITextBlock("0", "kJ", UIFBold, UIFMedium, c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UIEnergyKJ);
-				pauseElements[i] = NULL;
+				infoElements[i] = new UITextBlock("0", "/mi", UIFBold, UIFMedium, c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UISpeedMPM);
+				pauseElements[i] = new UITextBlock("0", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UIRank);
 				break;
 			case TVRightTB:
-				mainElements[i] = new UITextBlock("0", "/mi", UIFBold, UIFMedium, c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UISpeedMPM);
+				mainElements[i] = new UITextBlock("0", "kJ", UIFBold, UIFMedium, c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UIEnergyKJ);
 				infoElements[i] = new UITextBlock("0", "mi", UIFBold, UIFMedium, c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVDefaultTextColor, UIDistanceM);
 				pauseElements[i] = NULL;
 				break;
 			case TVWorkoutView:
 				mainElements[i] = new UIWorkoutView(m_startingWorkoutMode);
-				infoElements[i] = mainElements[i];
-				pauseElements[i] = mainElements[i];
+				infoElements[i] = new UIWorkoutView(m_startingWorkoutMode);
+				pauseElements[i] = new UIWorkoutView(m_startingWorkoutMode);
 				break;
 			/*
 			case progBG:
@@ -157,7 +157,7 @@ UITopView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 					// fprintf(stderr, "UIElement %d rendered\n", i);
 				}
 			} else {
-				fprintf(stderr, "Null element index %d\n", i);
+				//printf(stderr, "Null element index %d\n", i);
 			}
 		}
 		return true;

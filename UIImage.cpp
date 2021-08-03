@@ -265,7 +265,7 @@ UIImage::Draw(GLuint uiMVPMatrixLoc)
 	PVRTMatrixTranslation(mTrans, pos.x, pos.y, pos.z);
     mScale = PVRTMat4::Scale(m_scale);
     mSize = PVRTMat4::Scale({m_width/(vWidth/2), m_height/(vHeight/2), 1});
-	mRotation = PVRTMat4::RotationZ(M_PI);
+	mRotation = PVRTMat4::RotationZ(0);
 
     // Applies scaling and translations
 	PVRTMat4 mModelView, mMVP;

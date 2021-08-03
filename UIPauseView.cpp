@@ -11,10 +11,10 @@ UIPauseView::UIPauseView()
 				m_elements[i] = new UIImage("pause.pvr", layoutSpec.x, layoutSpec.y, layoutSpec.width, layoutSpec.height);
 				break;
 			case PVResumeButton:
-				m_elements[i] = new UIButton("Resume", layoutSpec.x, layoutSpec.y, 0xFF0000FF, 0xFF000000);
+				m_elements[i] = new UIButton("Resume", layoutSpec.x, layoutSpec.y, 0xFF0000FF, 0xFF000000, UIResumeButtonActive);
 				break;
 			case PVEndButton:
-				m_elements[i] = new UIButton("End", layoutSpec.x, layoutSpec.y, 0xFF0000FF, 0xFF000000);
+				m_elements[i] = new UIButton("End", layoutSpec.x, layoutSpec.y, 0xFF0000FF, 0xFF000000, UIEndButtonActive);
 				break;
 			default:
 				m_elements[i] = NULL;
@@ -69,14 +69,8 @@ UIPauseView::Update(UIMessage updateMessage)
 	} else {
 		m_hidden = false;
 	}
-	if (m_elements[PVResumeButton] != NULL && m_elements[PVEndButton] != NULL
-		 && updateMessage.ReadAction() == UIToggleActiveButton) {
-		//fprintf(stderr, "Message received from UILayer\n");
-		m_resume = !m_resume;
-		updateMessage.Write(UIButtonActive, m_resume);
-		m_elements[PVResumeButton]->Update(updateMessage);
-		updateMessage.Write(UIButtonActive, !m_resume);
-		m_elements[PVEndButton]->Update(updateMessage);
+	for ( int i = 0; i < c_numPVElements; i ++ ) {
+		m_elements[i]->Update(updateMessage);
 	}
 }
 

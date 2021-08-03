@@ -9,6 +9,7 @@ UICompositeView::UICompositeView(float x, float y)
 	m_height = c_bgHeightDefault;
 	m_children = CPVRTArray<UIElement*>();
 	m_text = CPVRTArray<UITextSpec>();
+	m_hidden = false;
 }
 
 UICompositeView::UICompositeView(char* bgTex, float x, float y, float width, float height)
@@ -20,6 +21,7 @@ UICompositeView::UICompositeView(char* bgTex, float x, float y, float width, flo
 	m_height = height;
 	m_children = CPVRTArray<UIElement*>();
 	m_text = CPVRTArray<UITextSpec>();
+	m_hidden = false;
 }
 
 void

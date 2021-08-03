@@ -14,8 +14,8 @@ UIWorkoutView::UIWorkoutView(UIWorkoutStage startingState)
         switch(spec.type) {
             case wvBG:
                 warmupElements[i] = new UIImage("progContainer.pvr", spec.x, spec.y, spec.width, spec.height);
-                workoutElements[i] = warmupElements[i];
-                cooldownElements[i] = warmupElements[i];
+                workoutElements[i] = new UIImage("progContainer.pvr", spec.x, spec.y, spec.width, spec.height);
+                cooldownElements[i] = new UIImage("progContainer.pvr", spec.x, spec.y, spec.width, spec.height);
                 break;
             case wvWarmupIconActive:
                 warmupElements[i] = new UIImage("warmupActive.pvr", spec.x, spec.y, spec.width, spec.height);
@@ -25,7 +25,7 @@ UIWorkoutView::UIWorkoutView(UIWorkoutStage startingState)
             case wvWarmupIconInactive:
                 warmupElements[i] = NULL;
                 workoutElements[i] = new UIImage("warmupInactive.pvr", spec.x, spec.y, spec.width, spec.height);
-                cooldownElements[i] =  workoutElements[i];
+                cooldownElements[i] =  new UIImage("warmupInactive.pvr", spec.x, spec.y, spec.width, spec.height);
                 break;
             case wvWorkoutIconActive:
                 workoutElements[i] = new UIImage("workoutActive.pvr", spec.x, spec.y, spec.width, spec.height);
@@ -35,17 +35,17 @@ UIWorkoutView::UIWorkoutView(UIWorkoutStage startingState)
             case wvWorkoutIconInactive:
                 workoutElements[i] = NULL;
                 warmupElements[i] = new UIImage("workoutInactive.pvr", spec.x, spec.y, spec.width, spec.height);
-                cooldownElements[i] =  warmupElements[i];
+                cooldownElements[i] =  new UIImage("workoutInactive.pvr", spec.x, spec.y, spec.width, spec.height);
                 break;
             case wvCooldownIconActive:
-                cooldownElements[i] = new UIImage("coolDownAct.pvr", spec.x, spec.y, spec.width, spec.height);
+                cooldownElements[i] = new UIImage("cooldownActive.pvr", spec.x, spec.y, spec.width, spec.height);
                 workoutElements[i] = NULL;
                 warmupElements[i] = NULL;
                 break;
             case wvCooldownIconInactive:
                 cooldownElements[i] = NULL;
-                workoutElements[i] = new UIImage("coolDownInact.pvr", spec.x, spec.y, spec.width, spec.height);
-                warmupElements[i] =  workoutElements[i];
+                workoutElements[i] = new UIImage("cooldownInactive.pvr", spec.x, spec.y, spec.width, spec.height);
+                warmupElements[i] =  new UIImage("cooldownInactive.pvr", spec.x, spec.y, spec.width, spec.height);
                 break;
             case wvProgressBarGreen:
                 warmupElements[i] = new UIProgressBar(PBType::PBG, spec.x, spec.y, 1.f);
