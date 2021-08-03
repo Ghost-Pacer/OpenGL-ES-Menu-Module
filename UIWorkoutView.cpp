@@ -135,9 +135,11 @@ UIWorkoutView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
     }
     for ( int i = 0; i < c_numWVLayoutSpecs; i ++ ) {
         if (elementArray[i] == NULL) {
+			//fprintf(stderr, "Null UIWorkoutView element index %d\n", i);
             continue;
         } else if (!elementArray[i]->Render(uiMVPMatrixLoc, printer)) {
             fprintf(stderr, "UIWorkoutView element %d render failed\n", i);
+			return false;
         }
     }
     return true;

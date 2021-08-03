@@ -30,7 +30,8 @@ enum UIState {
 	UIMain,
 	UIInfo,
 	UIPause,
-	UISummary
+	UISummary,
+	noUI
 };
 
 enum UIWorkoutStage {

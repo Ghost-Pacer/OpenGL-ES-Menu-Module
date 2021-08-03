@@ -82,6 +82,9 @@ UISummaryView::Update(UIMessage updateMessage)
 {
 	//UIMessage delegateMessage;
 	m_hidden = !(updateMessage.ReadState() == UISummary);
+	if (m_hidden) {
+		return;
+	}
 	for (int i = 0 ; i < c_numSUMElements; i ++) {
 		if (m_elements[i] == NULL) {
 			continue;

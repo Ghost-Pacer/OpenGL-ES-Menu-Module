@@ -89,7 +89,7 @@ UIBadges::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 void
 UIBadges::Update(UIMessage updateMessage)
 {
-	fprintf(stderr, "Updating badges\n");
+	//fprintf(stderr, "Updating badges\n");
 	if (updateMessage.Read(UIBadge1)) {
 		fprintf(stderr, "Adding badge\n");
 		AddBadge(UIBadge1);

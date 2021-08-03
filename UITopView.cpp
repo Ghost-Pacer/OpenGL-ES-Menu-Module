@@ -94,6 +94,7 @@ bool
 UITopView::LoadTextures(CPVRTString* const pErrorString)
 {
 	if (m_stateMap.GetSize() < 1) {
+		fprintf(stderr, "Unable to load UITopView textures\n");
 		return false;
 	}
 	fprintf(stderr, "Map size: %d\n", m_stateMap.GetSize());
@@ -113,6 +114,7 @@ UITopView::LoadTextures(CPVRTString* const pErrorString)
 				//fprintf(stderr, "Textual element? %d\n", elementArray[i]->Text());
 				if (!elementArray[i]->LoadTextures(pErrorString)) {
 					fprintf(stderr, "Texture failed to load\n");
+					return false;
 				}
 			}
 		}
@@ -140,8 +142,9 @@ bool
 UITopView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
 	if (m_hidden) {
-	return true;
+		return true;
 	}
+	//fprintf(stderr, "Rendering UITopView\n");
 
 	UIElement** elementArray = m_stateMap[m_state];
 
@@ -149,10 +152,12 @@ UITopView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 		for (int i = 0 ; i < c_tvNumElementPositions; i ++) {
 			if (elementArray[i] != NULL) {
 				if (!elementArray[i]->Render(uiMVPMatrixLoc, printer)) {
-					// fprintf(stderr, "UIElement %d  render failed\n", i);
+					 fprintf(stderr, "UIElement %d render failed\n", i);
 				} else {
 					// fprintf(stderr, "UIElement %d rendered\n", i);
 				}
+			} else {
+				fprintf(stderr, "Null element index %d\n", i);
 			}
 		}
 		return true;
@@ -163,7 +168,7 @@ UITopView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 void
 UITopView::Update(UIMessage updateMessage)
 {
-	if (updateMessage.ReadState() == UISummary) {
+	if (updateMessage.ReadState() != UIMain && updateMessage.ReadState() != UIInfo && updateMessage.ReadState() != UIPause) {
 		m_hidden = true;
 		return;
 	}

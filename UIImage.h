@@ -22,10 +22,10 @@
 #define _UIIMAGE_H
 
 // Index to bind the attributes to vertex shaders
-#define VERTEX_ARRAY	0
-#define NORMAL_ARRAY	1
-#define COLOR_ARRAY		2
-#define TEXCOORD_ARRAY	3
+#define IVERTEX_ARRAY	0
+#define INORMAL_ARRAY	1
+#define ICOLOR_ARRAY		2
+#define ITEXCOORD_ARRAY	3
 
 // From OGLES2Coverflow
 const float g_FOV = 0.78539819f;

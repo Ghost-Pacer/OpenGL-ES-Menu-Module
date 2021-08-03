@@ -293,10 +293,10 @@ UIImage::DrawMesh()
 	glBindBuffer(GL_ARRAY_BUFFER, m_uiVbo);
 
 	// Set the vertex attribute offsest
-	glVertexAttribPointer(VERTEX_ARRAY, 3, GL_FLOAT, GL_FALSE, stride, 0);
-	glVertexAttribPointer(NORMAL_ARRAY, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)NormalOffset);
-	glVertexAttribPointer(COLOR_ARRAY, 4, GL_FLOAT, GL_FALSE, stride, (GLvoid*)ColorOffset);
-	glVertexAttribPointer(TEXCOORD_ARRAY, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid*)TexCoordOffset);
+	glVertexAttribPointer(IVERTEX_ARRAY, 3, GL_FLOAT, GL_FALSE, stride, 0);
+	glVertexAttribPointer(INORMAL_ARRAY, 3, GL_FLOAT, GL_FALSE, stride, (GLvoid*)NormalOffset);
+	glVertexAttribPointer(ICOLOR_ARRAY, 4, GL_FLOAT, GL_FALSE, stride, (GLvoid*)ColorOffset);
+	glVertexAttribPointer(ITEXCOORD_ARRAY, 2, GL_FLOAT, GL_FALSE, stride, (GLvoid*)TexCoordOffset);
 	
 	//firstly draw the opaque quad in the center
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_uiOpaqueIndexVbo);
@@ -311,10 +311,10 @@ UIImage::DrawMesh()
 bool
 UIImage::Render(GLuint uiMVPMatrixLoc)
 {
-    glEnableVertexAttribArray(VERTEX_ARRAY);
-	glEnableVertexAttribArray(NORMAL_ARRAY);
-	glEnableVertexAttribArray(COLOR_ARRAY);
-	glEnableVertexAttribArray(TEXCOORD_ARRAY);
+    glEnableVertexAttribArray(IVERTEX_ARRAY);
+	glEnableVertexAttribArray(INORMAL_ARRAY);
+	glEnableVertexAttribArray(ICOLOR_ARRAY);
+	glEnableVertexAttribArray(ITEXCOORD_ARRAY);
 
     Draw(uiMVPMatrixLoc);
 
@@ -322,10 +322,10 @@ UIImage::Render(GLuint uiMVPMatrixLoc)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	glDisableVertexAttribArray(VERTEX_ARRAY);
-	glDisableVertexAttribArray(NORMAL_ARRAY);
-	glDisableVertexAttribArray(COLOR_ARRAY);
-	glDisableVertexAttribArray(TEXCOORD_ARRAY);
+	glDisableVertexAttribArray(IVERTEX_ARRAY);
+	glDisableVertexAttribArray(INORMAL_ARRAY);
+	glDisableVertexAttribArray(ICOLOR_ARRAY);
+	glDisableVertexAttribArray(ITEXCOORD_ARRAY);
 
 	return true;
 }
@@ -363,10 +363,10 @@ UIImage::Render(GLuint uiMVPMatrixLoc)
 bool
 UIImage::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
-    glEnableVertexAttribArray(VERTEX_ARRAY);
-	glEnableVertexAttribArray(NORMAL_ARRAY);
-	glEnableVertexAttribArray(COLOR_ARRAY);
-	glEnableVertexAttribArray(TEXCOORD_ARRAY);
+    glEnableVertexAttribArray(IVERTEX_ARRAY);
+	glEnableVertexAttribArray(INORMAL_ARRAY);
+	glEnableVertexAttribArray(ICOLOR_ARRAY);
+	glEnableVertexAttribArray(ITEXCOORD_ARRAY);
 
     Draw(uiMVPMatrixLoc);
 
@@ -374,10 +374,10 @@ UIImage::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	glDisableVertexAttribArray(VERTEX_ARRAY);
-	glDisableVertexAttribArray(NORMAL_ARRAY);
-	glDisableVertexAttribArray(COLOR_ARRAY);
-	glDisableVertexAttribArray(TEXCOORD_ARRAY);
+	glDisableVertexAttribArray(IVERTEX_ARRAY);
+	glDisableVertexAttribArray(INORMAL_ARRAY);
+	glDisableVertexAttribArray(ICOLOR_ARRAY);
+	glDisableVertexAttribArray(ITEXCOORD_ARRAY);
 
 	return true;
 }

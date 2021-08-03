@@ -139,7 +139,7 @@ void
 UIButton::Update(UIMessage updateMessage)
 {
 	m_active = updateMessage.Read(UIButtonActive);
-	fprintf(stderr, "Active status + %d\n", m_active);
+	//fprintf(stderr, "Active status + %d\n", m_active);
 }
 
 void
