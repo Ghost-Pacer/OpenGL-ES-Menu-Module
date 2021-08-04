@@ -25,14 +25,17 @@ const char c_progBTex[] = "progB.pvr";
 const char c_progBGGTex[] = "progBGG.pvr";
 const char c_progGTex[] = "progG.pvr";
 
+// Default sizing specifications
 const float c_defaultPBWidth = 350;
 const float c_defaultPBHeight = 18;
 const float c_defaultPBInsetX = 12;
 const float c_defaultPBInsetY = 12;
 
+// Enum identifiers for progress bar colors
 enum PBType { PBR, PBG, PBB };
 
 /*!****************************************************************************
+ @class UIProgressBar
  Object Class. A UIProgressBar is a C++ class that displays a Progress Bar that can
  be dynamically animated. It contains functionality for loading, building, rendering 
  and modifying the Progress Bar. It's functionality is implemented in UIProgressBar.cpp
@@ -41,11 +44,17 @@ class UIProgressBar : public UIElement
 {
     protected:
         // instance variables
+
+        // The empty bar UIImage
         UIImage m_bg;
+
+        // The progress filler UIImage
         UIImage m_progress;
+
+        // Completion from 0-1 and positional/layout details
         float m_completion, m_width, m_height, m_insetX, m_insetY, m_x, m_y;
     public:
-        // functions
+        // Exported functions
         UIProgressBar();
         UIProgressBar(float x, float y, float initialCompletion);
         UIProgressBar(PBType type, float x, float y, float initialCompletion);
@@ -59,7 +68,6 @@ class UIProgressBar : public UIElement
 		virtual void Update(UIMessage updateMessage);
 		virtual void Hide();
 		virtual void Show();
-		bool Text();
 		void Delete();
 };
 

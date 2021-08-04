@@ -1,5 +1,23 @@
+/******************************************************************************
+
+ @File          UIPauseView.cpp
+
+ @Title         UIPauseView
+
+ @Author        Siddharth Hathi
+
+ @Description   Implements the functionality of the UIPauseView class defined
+				in UIPauseView.h
+
+******************************************************************************/
+
 #include "UIPauseView.h"
 
+/*!****************************************************************************
+ @Function		Constructor
+ @Description	Initializes all the elements in the UIPV based on class constant
+				layout specifications in UIPauseView.h
+******************************************************************************/
 UIPauseView::UIPauseView()
 {
 	m_hidden = false;
@@ -23,6 +41,11 @@ UIPauseView::UIPauseView()
 	}
 }
 
+/*!****************************************************************************
+ @Function		LoadTextures
+ @Output		pErrorStr		Pointer to the string returned on error
+ @Description	Loads the object's textures into graphics memory
+******************************************************************************/
 bool
 UIPauseView::LoadTextures(CPVRTString* const pErrorString)
 {
@@ -35,6 +58,10 @@ UIPauseView::LoadTextures(CPVRTString* const pErrorString)
 	return true;
 }
 
+/*!****************************************************************************
+ @Function		BuildVertices
+ @Description	Builds the object's vertex buffers
+******************************************************************************/
 void
 UIPauseView::BuildVertices()
 {
@@ -45,6 +72,12 @@ UIPauseView::BuildVertices()
 	}
 }
 
+/*!****************************************************************************
+ @Function		Render
+ @Input			uiMVPMatrixLoc		Address of the shader's MVP matrix
+ @Input			printer				UIPrinter object used to display text
+ @Description	Renders the object using gl
+******************************************************************************/
 bool
 UIPauseView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
@@ -59,6 +92,11 @@ UIPauseView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	return true;
 }
 
+/*!****************************************************************************
+ @Function		Update
+ @Input			updateMessage		UIMessage object containing frame info
+ @Description	Updates the object based on information passed using UIMessage
+******************************************************************************/
 void
 UIPauseView::Update(UIMessage updateMessage)
 {
@@ -74,24 +112,41 @@ UIPauseView::Update(UIMessage updateMessage)
 	}
 }
 
+/*!****************************************************************************
+ @Function		Hide
+ @Description	Makes object hidden
+******************************************************************************/
 void
 UIPauseView::Hide()
 {
 	m_hidden = true;
 }
 
+/*!****************************************************************************
+ @Function		Show
+ @Description	Makes object visibile
+******************************************************************************/
 void
 UIPauseView::Show()
 {
 	m_hidden = false;
 }
 
+/*!****************************************************************************
+ @Function		ResumeSelected
+ @Return		bool	Is the resume button selected
+ @Description	Getter for m_resume
+******************************************************************************/
 bool
 UIPauseView::ResumeSelected()
 {
 	return m_resume;
 }
 
+/*!****************************************************************************
+ @Function		Delete
+ @Description	Frees any memory allocated within the object
+******************************************************************************/
 void
 UIPauseView::Delete()
 {

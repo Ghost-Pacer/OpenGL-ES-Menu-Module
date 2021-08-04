@@ -35,12 +35,9 @@ UIProgressBar::UIProgressBar()
  @Input			type				The type of the Bar (R/G/B)
  @Input			x				    The x Position of the Bar
  @Input			y				    The y position of the Bar
- @Input			width			    The width of the image
- @Input			height			    The height of the image
- @Input			insetX			    The horizontal padding of the bar
- @Input			insetY			    The verical padding of the bar
  @Input			initialCompletion	The initial progress of the bar
- @Description	Constructs a progress bar based on the given parameters
+ @Description	Constructs a dynamicall colored progress bar based on the given 
+                parameters and class constant values
 ******************************************************************************/
 UIProgressBar::UIProgressBar(PBType type, float x, float y, float initialCompletion)
 {
@@ -75,12 +72,8 @@ UIProgressBar::UIProgressBar(PBType type, float x, float y, float initialComplet
  @Function		Constructor
  @Input			x				    The x Position of the Bar
  @Input			y				    The y position of the Bar
- @Input			width			    The width of the image
- @Input			height			    The height of the image
- @Input			insetX			    The horizontal padding of the bar
- @Input			insetY			    The verical padding of the bar
  @Input			initialCompletion	The initial progress of the bar
- @Description	Constructs a progress bar based on the given parameters
+ @Description	Constructs a progress bar based on  class default values
 ******************************************************************************/
 UIProgressBar::UIProgressBar(float x, float y, float initialCompletion)
 {
@@ -160,15 +153,12 @@ UIProgressBar::Render(GLuint uiMVPMatrixLoc)
 	return true;
 }
 
-// bool
-// UIProgressBar::Render(GLuint uiMVPMatrixLoc, CPVRTPrint3D* print3D, bool isRotated)
-// {
-//     m_bg.Render(uiMVPMatrixLoc);
-//     m_progress.Render(uiMVPMatrixLoc);
-
-// 	return true;
-// }
-
+/*!****************************************************************************
+ @Function		Render
+ @Input			uiMVPMatrixLoc		Address of the shader's MVP matrix
+ @Input			printer				UIPrinter object used to display text
+ @Description	Renders the object using gl
+******************************************************************************/
 bool
 UIProgressBar::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
@@ -203,6 +193,11 @@ UIProgressBar::GetCompletion()
     return m_completion;
 }
 
+/*!****************************************************************************
+ @Function		Update
+ @Input			updateMessage		UIMessage object containing frame info
+ @Description	Updates the object based on information passed using UIMessage
+******************************************************************************/
 void
 UIProgressBar::Update(UIMessage updateMessage)
 {
@@ -234,12 +229,10 @@ UIProgressBar::Show()
     m_progress.Show();
 	m_bg.Show();
 }
-
-bool
-UIProgressBar::Text()
-{
-	return false;
-}
+/*!****************************************************************************
+ @Function		Delete
+ @Description	Frees any memory allocated within the object
+******************************************************************************/
 
 void
 UIProgressBar::Delete()

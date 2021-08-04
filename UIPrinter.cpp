@@ -1,5 +1,21 @@
+/******************************************************************************
+
+ @File          UIPrinter.cpp
+
+ @Title         UIPrinter
+
+ @Author        Siddharth Hathi
+
+ @Description   Implements the UIPrinter object class defined in UIPrinter.h
+
+******************************************************************************/
+
 #include "UIPrinter.h"
 
+/*!****************************************************************************
+ @Function		Constructor
+ @Description	Initializes some default values
+******************************************************************************/
 UIPrinter::UIPrinter()
 {
 	for ( int i = UIFBold; i <= UIFMedium; i ++ ) {
@@ -8,6 +24,12 @@ UIPrinter::UIPrinter()
 	}
 }
 
+/*!****************************************************************************
+ @Function		LoadFonts
+ @Input			pvrShellWidth		Width of the PVR Shell
+ @Input			pvrShellHeight		Height of the PVR Shell
+ @Description	Loads the appropriate fonts into each of the print3D object
+******************************************************************************/
 bool
 UIPrinter::LoadFonts(int pvrShellWidth, int pvrShellHeight, bool isRotated)
 {
@@ -52,6 +74,15 @@ UIPrinter::LoadFonts(int pvrShellWidth, int pvrShellHeight, bool isRotated)
 	return true;
 }
 
+/*!****************************************************************************
+ @Function		Print
+ @Input			x, y		Position of the text
+ @Input			scale		Text's scale from 0 to 1
+ @Input			color		Text color
+ @Input			text		The text to print
+ @Description	Prints text of the specified font, scale, and color at the
+				appropriate position.
+******************************************************************************/
 void
 UIPrinter::Print(float x, float y, float scale, GLuint color, UIFont font, char* text)
 {
@@ -81,6 +112,15 @@ UIPrinter::Print(float x, float y, float scale, GLuint color, UIFont font, char*
 	print3D->Flush();
 }
 
+/*!****************************************************************************
+ @Function		Measure
+ @Output		width		Pointer to the width of the text
+ @Output		height		Poiter to the height of the text
+ @Input			scale		Text scale
+ @Input			font		The text's font
+ @Input			text		The actual text being measured
+ @Description	Measures text
+******************************************************************************/
 void
 UIPrinter::Measure(float* width, float* height, float scale, UIFont font, char* text)
 {
@@ -93,6 +133,10 @@ UIPrinter::Measure(float* width, float* height, float scale, UIFont font, char* 
 	print3D->MeasureText(width, height, scale, text);
 }
 
+/*!****************************************************************************
+ @Function		Delete
+ @Description	Frees allocated memory within the printer
+******************************************************************************/
 void
 UIPrinter::Delete()
 {

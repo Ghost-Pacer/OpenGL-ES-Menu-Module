@@ -2,7 +2,7 @@
 
  @File          UIButton.cpp
 
- @Title         UIbutton
+ @Title         UIButton
 
  @Author        Siddharth Hathi
 
@@ -182,7 +182,7 @@ UIButton::Hide()
 }
 
 /*!****************************************************************************
- @Function		Hide
+ @Function		Show
  @Description	Makes object visibile
 ******************************************************************************/
 void
