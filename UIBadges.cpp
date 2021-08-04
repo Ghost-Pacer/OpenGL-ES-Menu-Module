@@ -77,7 +77,7 @@ UIBadges::AddBadge(UIBool identifier)
 /*!****************************************************************************
  @Function		LoadTextures
  @Output		pErrorStr		Pointer to the string returned on error
- @Description	Loads the objects textures into graphics memory
+ @Description	Loads the object's textures into graphics memory
 ******************************************************************************/
 bool
 UIBadges::LoadTextures(CPVRTString* const pErrorStr)

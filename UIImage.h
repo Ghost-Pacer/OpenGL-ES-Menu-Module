@@ -6,7 +6,7 @@
 
  @Author        Siddharth Hathi
 
- @Description   Header file for UIImage.cpp
+ @Description   Header file for the UIImage class.
 
 ******************************************************************************/
 
@@ -45,35 +45,57 @@ const unsigned int ColorOffset = NormalOffset+(unsigned int)sizeof(PVRTVec3);
 const unsigned int TexCoordOffset = ColorOffset+(unsigned int)sizeof(PVRTVec4);
 
 /*!****************************************************************************
+ @class UIImage
  Object class. A UIImage is a prototype C++ class used to load, build, render,
  and display a 2d image UI component using OpenGL ES 2.0 tools. The class, 
  implemented in UIImage.cpp, constructs and stores OpenGL images with modular, 
- user defined heights, widths, positions, and textures. The UIImage respresents an
- evolution on the original StaticImage class in that it supports pixel coordinate
- specifications and dynamic frame-by-frame scaling and movement.
+ user-defined, and dynamic heights, widths, positions, and textures. The UIImage 
+ respresents an evolution on the original StaticImage class in that it supports 
+ pixel coordinate specifications and dynamic frame-by-frame scaling and movement.
 ******************************************************************************/
 class UIImage : public UIElement
 {
     protected:
 		// Instance variables
+
+		// Address of the image's texture in graphic memory
 		GLuint  m_uiImgTex;
+
+		// Address of the image's vertex buffer
         GLuint	m_uiVbo;
+
+		// Address of image's opaque vertex buffer
         GLuint	m_uiOpaqueIndexVbo;
+
+		// Array of image's vertices
         SVertex m_vertices[32];
+		
+		// Array of Image's opaque vertices
         unsigned short m_indicesOpaque[6];
+
+		// Number of opaque vertices
 	    int m_iNumOpaque;
+
+		// Image's projection and view matrices
         PVRTMat4		m_mProjection, m_mView;
 
+		// Name of the image's texture
 		const char* m_texName;
+
+		// Image's position and dimensions
 		float m_x, m_y, m_width, m_height;
+
+		// Image scaling matrix
         PVRTVec3 m_scale;
 
+		// Is the image hidden
 		bool m_hidden;
 
 		// Local Function
         bool loadTextureFromFile(FILE* pvr, GLuint* texture, PVR_Texture_Header* header);
 
     public:
+		// Exported functions
 		UIImage();
         UIImage(const char* textureName, float x, float y, float width, float height);
 		virtual bool LoadTextures(CPVRTString* const pErrorStr);

@@ -99,7 +99,7 @@ UIButton::ToggleActive()
 /*!****************************************************************************
  @Function		LoadTextures
  @Output		pErrorStr		Pointer to the string returned on error
- @Description	Loads the objects textures into graphics memory
+ @Description	Loads the object's textures into graphics memory
 ******************************************************************************/
 bool
 UIButton::LoadTextures(CPVRTString* const pErrorStr)

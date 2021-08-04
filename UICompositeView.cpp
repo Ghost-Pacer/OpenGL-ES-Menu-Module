@@ -1,5 +1,22 @@
+/******************************************************************************
+
+ @File          UICompositeView.cpp
+
+ @Title         UICompositeView
+
+ @Author        Siddharth Hathi
+
+ @Description   Implements the UICompositeView object defined in UICompositeView.h
+
+******************************************************************************/
+
 #include "UICompositeView.h"
 
+/*!****************************************************************************
+ @Function		Constructor
+ @Input			x, y		Pixel-coordinates of the UICV object
+ @Description	Initializes the instance variables to preset defaults
+******************************************************************************/
 UICompositeView::UICompositeView(float x, float y)
 {
 	m_bg = UIImage(c_bgTexDefault, x, y, c_bgWidthDefault, c_bgHeightDefault);
@@ -12,6 +29,14 @@ UICompositeView::UICompositeView(float x, float y)
 	m_hidden = false;
 }
 
+/*!****************************************************************************
+ @Function		Constructor
+ @Input			bgTex			Filename of the the background texture of the
+								UICompositeView
+ @Input			x, y			Pixel-coordinates of the UICV object
+ @Input			width, height	Dimensions of the object
+ @Description	Initializes the UICV with given background texture and dimensions.
+******************************************************************************/
 UICompositeView::UICompositeView(char* bgTex, float x, float y, float width, float height)
 {
 	m_bg = UIImage(bgTex, x, y, width, height);
@@ -24,6 +49,14 @@ UICompositeView::UICompositeView(char* bgTex, float x, float y, float width, flo
 	m_hidden = false;
 }
 
+/*!****************************************************************************
+ @Function		AddImage
+ @Input			textureName		Filename of the image's texture
+ @Input			xRel, yRel		Position of the image relative to the UICV's pos
+ @Input			width, height	Dimensions of the image
+ @Description	Adds a UIImage to the UICV with the supplied position, dimensions, 
+ 				and texture
+******************************************************************************/
 void
 UICompositeView::AddImage(char* textureName, float xRel, float yRel, float width, float height)
 {
@@ -31,6 +64,15 @@ UICompositeView::AddImage(char* textureName, float xRel, float yRel, float width
 	m_children.Append(newImage);
 }
 
+/*!****************************************************************************
+ @Function		AddText
+ @Input			text			The actual text being added to the view
+ @Input			color			The color of the text
+ @Input			xRel, yRel		Position of th etext relative to the UICV's pos
+ @Input			width, height	Dimensions of the object
+ @Description	Initializes the UICompositeView with given background texture
+				and dimensions.
+******************************************************************************/
 void
 UICompositeView::AddText(char* text, GLuint color, float xRel, float yRel, float scale, UITextType updateKey, UIFont font)
 {
@@ -38,6 +80,11 @@ UICompositeView::AddText(char* text, GLuint color, float xRel, float yRel, float
 	m_text.Append(newText);
 }
 
+/*!****************************************************************************
+ @Function		LoadTextures
+ @Output		pErrorStr		Pointer to the string returned on error
+ @Description	Loads the object's textures into graphics memory
+******************************************************************************/
 bool
 UICompositeView::LoadTextures(CPVRTString* const pErrorStr)
 {
@@ -58,6 +105,10 @@ UICompositeView::LoadTextures(CPVRTString* const pErrorStr)
 	return true;
 }
 
+/*!****************************************************************************
+ @Function		BuildVertices
+ @Description	Builds the object's vertex buffers
+******************************************************************************/
 void
 UICompositeView::BuildVertices()
 {
@@ -71,22 +122,23 @@ UICompositeView::BuildVertices()
 	}
 }
 
+/*!****************************************************************************
+ @Function		Render
+ @Input			uiMVPMatrixLoc		Address of the shader's MVP matrix
+ @Input			printer				UIPrinter object used to display text
+ @Description	Renders the object using gl
+******************************************************************************/
 bool
 UICompositeView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
 	if (m_hidden) {
 		return true;
 	}
-    GLint viewport[4];
-    GLint vWidth;                           // Viewport width
-    GLint vHeight;                          // Viewport height
-	glGetIntegerv(GL_VIEWPORT, viewport);
 
-	vWidth = viewport[2];
-	vHeight = viewport[3];
-
+	// Render the background
 	m_bg.Render(uiMVPMatrixLoc, printer);
 
+	// Render the enclosed UIElements
 	if (m_children.GetSize() > 0) {
 		for ( int i = 0; i < m_children.GetSize(); i ++ ) {
 			if (m_children[i] == NULL) {
@@ -99,6 +151,7 @@ UICompositeView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 		}
 	}
 
+	// Renders the text
 	if (m_text.GetSize() > 0){
 		float textWidth, textHeight;
 		for ( int i = 0; i < m_text.GetSize(); i ++ ) {
@@ -110,6 +163,11 @@ UICompositeView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	return true;
 }
 
+/*!****************************************************************************
+ @Function		Update
+ @Input			updateMessage		UIMessage object containing frame info
+ @Description	Updates the object based on information passed using UIMessage
+******************************************************************************/
 void
 UICompositeView::Update(UIMessage updateMessage)
 {
@@ -125,19 +183,32 @@ UICompositeView::Update(UIMessage updateMessage)
 	}
 }
 
+/*!****************************************************************************
+ @Function		Hide
+ @Description	Makes object hidden
+******************************************************************************/
 void
 UICompositeView::Hide()
 {
 	m_hidden = true;
 }
 
+/*!****************************************************************************
+ @Function		Hide
+ @Description	Makes object visibile
+******************************************************************************/
 void
 UICompositeView::Show()
 {
 	m_hidden = false;
 }
 
-void UICompositeView::Delete()
+/*!****************************************************************************
+ @Function		Delete
+ @Description	Frees any memory allocated within the object
+******************************************************************************/
+void
+UICompositeView::Delete()
 {
 	if (m_children.GetSize() > 0) {
 		for ( int i = 0; i < m_children.GetSize(); i++ ) {

@@ -42,13 +42,25 @@ struct UITextSpec {
 class UICompositeView : public UIElement
 {
 	protected:
+		// Instance variables:
 
+		// Is it hidden
 		bool m_hidden;
+
+		// Background UIImage
 		UIImage m_bg;
+
+		// Position/Dimensions of the element
 		float m_x, m_y, m_width, m_height;
+
+		// Array of UIElements within the UICompositeView
 		CPVRTArray<UIElement*> m_children;
+
+		// Array of text specs contained within the UICompositeView
 		CPVRTArray<UITextSpec> m_text;
+
 	public:
+		// Exported functions:
 		UICompositeView(float x, float y);
 		UICompositeView(char* bgTex, float x, float y, float width, float height);
 		void AddImage(char* textureName, float xRel, float yRel, float width, float height);
