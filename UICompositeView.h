@@ -1,15 +1,29 @@
+/******************************************************************************
+
+ @File          UICompositeView.h
+
+ @Title         UICompositeView Header
+
+ @Author        Siddharth Hathi
+
+ @Description   Header file for the UICompositeView object class. Defines UICompositeView
+
+******************************************************************************/
+
 #include "OGLES2Tools.h"
 #include "UIElement.h"
 #include "UIImage.h"
-// #include "Print2D.h"
 
 #ifndef _UICOMPVIEW_H
 #define _UICOMPVIEW_H
 
+// Default background texture
 const char c_bgTexDefault[] = "basicBox.pvr";
+// Default dimensions
 const float c_bgWidthDefault = 220;
 const float c_bgHeightDefault = 70;
 
+// struct used to store updating text 
 struct UITextSpec {
 	char* text;
 	GLuint color;
@@ -18,9 +32,17 @@ struct UITextSpec {
 	UIFont font;
 };
 
+/*!****************************************************************************
+ @class UICompoositeView
+ Object class. A UICompositeView is a an object that stores, loads, builds and
+ renders a collection of UIElements and text over a background UIImage. It supports 
+ adding any number of images and text objects to the array of elements being displayed.
+ It implements the UIElement interface 
+******************************************************************************/
 class UICompositeView : public UIElement
 {
 	protected:
+
 		bool m_hidden;
 		UIImage m_bg;
 		float m_x, m_y, m_width, m_height;
