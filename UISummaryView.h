@@ -7,15 +7,20 @@
 #ifndef _UISUMMARYVIEW_H
 #define _UISUMMARYVIEW_H
 
+// Enum identifiers for fixed SummaryView elements
 enum SUMElement { SVComplete, SVDistance, SVEnergy, SVPace, SVCalories, SVBadges };
 
+// Data structure for defining fixed element dimensions and positions
 struct SUMLayoutSpec {
 	SUMElement type;
 	float x, y, width, height;
 };
 
+// The default number of fixed elements
 const int c_numSUMElements = 6;
 
+// The default dimensions and positions of the elements corresponding to the
+// SUMElement identifiers
 const SUMLayoutSpec c_SUMLayouSpecs[] = {
 	{ SVComplete, 0, -35, 450, 70 },
 	{ SVDistance, -115, -130, 220, 70 },
@@ -25,6 +30,12 @@ const SUMLayoutSpec c_SUMLayouSpecs[] = {
 	{ SVBadges, 0, 80, 0, 0 }
 };
 
+/*!****************************************************************************
+ @class UISummaryView
+ Object class. A UIButton is a peice of text with a background that can dynamically
+ switch between active and inactive states. It stores appearances for both states
+ and it's update function changes the one being displayed.
+******************************************************************************/
 class UISummaryView : public UIElement
 {
 	protected:
