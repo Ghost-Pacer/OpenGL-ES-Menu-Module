@@ -1,5 +1,24 @@
+/******************************************************************************
+
+ @File          UIWorkoutView.cpp
+
+ @Title         UIWorkoutView
+
+ @Author        Siddharth Hathi
+
+ @Description   Implements the UIWorkoutView object class defined in UIWorkoutView.h
+
+******************************************************************************/
+
 #include "UIWorkoutView.h"
 
+
+/*!****************************************************************************
+ @Function		Constructor
+ @Input			startingState		The peloton workout's starting workout stage
+ @Description	Initializes instance variables and child elements based on params
+				and class constant specifications
+******************************************************************************/
 UIWorkoutView::UIWorkoutView(UIWorkoutStage startingState)
 {
     m_state = startingState;
@@ -74,6 +93,11 @@ UIWorkoutView::UIWorkoutView(UIWorkoutStage startingState)
     m_stateMap[UICooldown] = cooldownElements;
 }
 
+/*!****************************************************************************
+ @Function		LoadTextures
+ @Output		pErrorStr		Pointer to the string returned on error
+ @Description	Loads the object's textures into graphics memory
+******************************************************************************/
 bool
 UIWorkoutView::LoadTextures(CPVRTString* const pErrorString)
 {
@@ -102,6 +126,10 @@ UIWorkoutView::LoadTextures(CPVRTString* const pErrorString)
     return true;
 }
 
+/*!****************************************************************************
+ @Function		BuildVertices
+ @Description	Builds the object's vertex buffers
+******************************************************************************/
 void
 UIWorkoutView::BuildVertices()
 {
@@ -123,6 +151,12 @@ UIWorkoutView::BuildVertices()
     }
 }
 
+/*!****************************************************************************
+ @Function		Render
+ @Input			uiMVPMatrixLoc		Address of the shader's MVP matrix
+ @Input			printer				UIPrinter object used to display text
+ @Description	Renders the object using gl
+******************************************************************************/
 bool
 UIWorkoutView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
@@ -145,6 +179,11 @@ UIWorkoutView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
     return true;
 }
 
+/*!****************************************************************************
+ @Function		Update
+ @Input			updateMessage		UIMessage object containing frame info
+ @Description	Updates the object based on information passed using UIMessage
+******************************************************************************/
 void
 UIWorkoutView::Update(UIMessage updateMessage)
 {
@@ -168,18 +207,32 @@ UIWorkoutView::Update(UIMessage updateMessage)
 	}
 }
 
+/*!****************************************************************************
+ @Function		Hide
+ @Description	Makes object hidden
+******************************************************************************/
 void
 UIWorkoutView::Hide()
 {
     m_hidden = true;
 }
 
+/*!****************************************************************************
+ @Function		Show
+ @Description	Makes object visibile
+******************************************************************************/
 void
 UIWorkoutView::Show()
 {
     m_hidden = false;
 }
 
+/*!****************************************************************************
+ @Function		SetState
+ @Input			state		New UI state
+ @Description	Sets the m_state instance variable and sets the corresponding
+				elements to visible.
+******************************************************************************/
 void
 UIWorkoutView::Delete()
 {

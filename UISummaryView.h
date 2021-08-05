@@ -1,3 +1,15 @@
+/******************************************************************************
+
+ @File          UISummaryView.h
+
+ @Title         UISummaryView Header File 
+
+ @Author        Siddharth Hathi
+
+ @Description   Header file for the UISummaryView class.
+
+******************************************************************************/
+
 #include "OGLES2Tools.h"
 #include "UIElement.h"
 #include "UITextBlock.h"
@@ -39,9 +51,16 @@ const SUMLayoutSpec c_SUMLayouSpecs[] = {
 class UISummaryView : public UIElement
 {
 	protected:
+		// Instance variables
+
+		// Child element array
 		UIElement** m_elements;
+
+		// Is the view hidden?
 		bool m_hidden;
+
 	public:
+		// Exported functions
 		UISummaryView();
         virtual bool LoadTextures(CPVRTString* const pErrorStr);
         virtual void BuildVertices();

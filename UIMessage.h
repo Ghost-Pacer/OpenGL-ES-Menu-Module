@@ -69,7 +69,7 @@ enum UIAction {
 /*!****************************************************************************
  @class UIMessage
  Object class. A UIMessage object stores the information needed to update the UI
- based on the current frame data. UIMessage's are intended to be passed from 
+ based on the current frame data. UIMessages are intended to be passed from 
  element to element through the UIElement's Update function.
 ******************************************************************************/
 class UIMessage

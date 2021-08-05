@@ -185,7 +185,6 @@ UIButton::Hide()
  @Function		Show
  @Description	Makes object visibile
 ******************************************************************************/
-void
 UIButton::Show()
 {
 	m_hidden = false;

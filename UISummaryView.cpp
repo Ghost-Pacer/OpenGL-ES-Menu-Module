@@ -1,5 +1,22 @@
+/******************************************************************************
+
+ @File          UISummaryView.cpp
+
+ @Title         UISummaryView
+
+ @Author        Siddharth Hathi
+
+ @Description   Implements the UISummaryView object class defined in UISummaryView.h
+
+******************************************************************************/
+
 #include "UISummaryView.h"
 
+/*!****************************************************************************
+ @Function		Constructor
+ @Description	Initializes predefined elements in the UISummaryView based on
+				class constant values.
+******************************************************************************/
 UISummaryView::UISummaryView()
 {
 	m_elements = new UIElement*[c_numSUMElements];
@@ -34,6 +51,11 @@ UISummaryView::UISummaryView()
 	}
 }
 
+/*!****************************************************************************
+ @Function		LoadTextures
+ @Output		pErrorStr		Pointer to the string returned on error
+ @Description	Loads the object's textures into graphics memory
+******************************************************************************/
 bool
 UISummaryView::LoadTextures(CPVRTString* const pErrorStr)
 {
@@ -51,6 +73,10 @@ UISummaryView::LoadTextures(CPVRTString* const pErrorStr)
 	return true;
 }
 
+/*!****************************************************************************
+ @Function		BuildVertices
+ @Description	Builds the object's vertex buffers
+******************************************************************************/
 void
 UISummaryView::BuildVertices()
 {
@@ -61,6 +87,12 @@ UISummaryView::BuildVertices()
 	}
 }
 
+/*!****************************************************************************
+ @Function		Render
+ @Input			uiMVPMatrixLoc		Address of the shader's MVP matrix
+ @Input			printer				UIPrinter object used to display text
+ @Description	Renders the object using gl
+******************************************************************************/
 bool
 UISummaryView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
@@ -77,6 +109,11 @@ UISummaryView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	return true;
 }
 
+/*!****************************************************************************
+ @Function		Update
+ @Input			updateMessage		UIMessage object containing frame info
+ @Description	Updates the object based on information passed using UIMessage
+******************************************************************************/
 void
 UISummaryView::Update(UIMessage updateMessage)
 {
@@ -93,18 +130,30 @@ UISummaryView::Update(UIMessage updateMessage)
 	}
 }
 
+/*!****************************************************************************
+ @Function		Hide
+ @Description	Makes object hidden
+******************************************************************************/
 void
 UISummaryView::Hide()
 {
 	m_hidden = true;
 }
 
+/*!****************************************************************************
+ @Function		Show
+ @Description	Makes object visibile
+******************************************************************************/
 void
 UISummaryView::Show()
 {
 	m_hidden = false;
 }
 
+/*!****************************************************************************
+ @Function		Delete
+ @Description	Frees any memory allocated within the object
+******************************************************************************/
 void
 UISummaryView::Delete()
 {

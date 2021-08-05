@@ -1,11 +1,34 @@
+/******************************************************************************
+
+ @File          UITopView.cpp
+
+ @Title         UITopView
+
+ @Author        Siddharth Hathi
+
+ @Description   Implements the UITopView object class defined in UITopView.h
+
+******************************************************************************/
+
 #include "UITopView.h"
 
+/*!****************************************************************************
+ @Function		Constructor
+ @Description	Initializes some default values
+******************************************************************************/
 UITopView::UITopView()
 {
 	m_state = UIMain;
 	m_hidden = true;
 }
 
+/*!****************************************************************************
+ @Function		Constructor
+ @Input			startingState			The UI's starting display state
+ @Input			startingWorkoutMode		The peloton workout's starting workout stage
+ @Description	Initializes instance variables and child elements based on params
+				and class constant specifications
+******************************************************************************/
 UITopView::UITopView(UIState startingState, UIWorkoutStage startingWorkoutMode)
 {
 	m_state = startingState;
@@ -34,28 +57,6 @@ UITopView::UITopView(UIState startingState, UIWorkoutStage startingWorkoutMode)
 				infoElements[i] = new UIWorkoutView(m_startingWorkoutMode);
 				pauseElements[i] = new UIWorkoutView(m_startingWorkoutMode);
 				break;
-			/*
-			case progBG:
-				mainElements[i] = new UIImage("progContainer.pvr", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVLayoutSpecs[i].width, c_TVLayoutSpecs[i].height);
-				infoElements[i] = mainElements[i], pauseElements[i] = mainElements[i];
-				break;
-			case warmup:
-				mainElements[i] = new UIImage("warmupActive.pvr", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVLayoutSpecs[i].width, c_TVLayoutSpecs[i].height);
-				infoElements[i] = mainElements[i], pauseElements[i] = mainElements[i];
-				break;
-			case workout:
-				mainElements[i] = new UIImage("workoutActive.pvr", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVLayoutSpecs[i].width, c_TVLayoutSpecs[i].height);
-				infoElements[i] = mainElements[i], pauseElements[i] = mainElements[i];
-				break;
-			case cooldown:
-				mainElements[i] = new UIImage("coolDownAct.pvr", c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, c_TVLayoutSpecs[i].width, c_TVLayoutSpecs[i].height);
-				infoElements[i] = mainElements[i], pauseElements[i] = mainElements[i];
-				break;
-			case progBar:
-				mainElements[i] = new UIProgressBar(c_TVLayoutSpecs[i].x, c_TVLayoutSpecs[i].y, 1);
-				infoElements[i] = mainElements[i], pauseElements[i] = mainElements[i];
-				break;
-			*/
 			default:
 				mainElements[i] = NULL, infoElements[i] = NULL, pauseElements[i] = NULL;
 				break;
@@ -66,30 +67,13 @@ UITopView::UITopView(UIState startingState, UIWorkoutStage startingWorkoutMode)
 	m_stateMap[UIInfo] = infoElements;
 	m_stateMap[UIPause] = pauseElements;
 	m_stateMap[UISummary] = NULL;
-
-	// fprintf(stderr, "Map size: %d\n", m_stateMap.GetSize());
-	// for (int i = main; i != end; i ++) {
-	// 	fprintf(stderr, "State: %d\n", i);
-	// 	TVState iState = static_cast<TVState>(i);
-	// 	UIElement** elementArray = m_stateMap[iState];
-	// 	fprintf(stderr, "Array pointer %p: \n", elementArray);
-	// 	fprintf(stderr, "Size: %d\n", sizeof(elementArray));
-	// 	if (elementArray == NULL) {
-	// 		continue;
-	// 	}
-	// 	for (int i = 0 ; i < c_tvNumElementPositions; i ++) {
-	// 		fprintf(stderr, "Element array index %d\n", i);
-	// 		if (elementArray[i] != NULL) {
-	// 			fprintf(stderr, "Non-null element %p\n", elementArray[i]);
-	// 			fprintf(stderr, "Textual element? %d\n", elementArray[i]->Text());
-	// 			// if (!elementArray[i]->LoadTextures(pErrorString)) {
-	// 			// 	fprintf(stderr, "Texture failed to load\n");
-	// 			// }
-	// 		}
-	// 	}
-	// }
 }
 
+/*!****************************************************************************
+ @Function		LoadTextures
+ @Output		pErrorStr		Pointer to the string returned on error
+ @Description	Loads the object's textures into graphics memory
+******************************************************************************/
 bool
 UITopView::LoadTextures(CPVRTString* const pErrorString)
 {
@@ -97,20 +81,21 @@ UITopView::LoadTextures(CPVRTString* const pErrorString)
 		fprintf(stderr, "Unable to load UITopView textures\n");
 		return false;
 	}
-	fprintf(stderr, "Map size: %d\n", m_stateMap.GetSize());
+	// fprintf(stderr, "Map size: %d\n", m_stateMap.GetSize());
 	for (int i = UIMain; i != UISummary; i ++) {
-		fprintf(stderr, "State: %d\n", i);
+		// Loads textures for every child element in every possible state
+		// fprintf(stderr, "State: %d\n", i);
 		UIState iState = static_cast<UIState>(i);
 		UIElement** elementArray = m_stateMap[iState];
-		fprintf(stderr, "Array pointer %p: \n", elementArray);
-		fprintf(stderr, "Size: %d\n", sizeof(elementArray));
+		// fprintf(stderr, "Array pointer %p: \n", elementArray);
+		// fprintf(stderr, "Size: %d\n", sizeof(elementArray));
 		if (elementArray == NULL) {
 			continue;
 		}
 		for (int i = 0 ; i < c_tvNumElementPositions; i ++) {
-			fprintf(stderr, "Element array index %d\n", i);
+			// fprintf(stderr, "Element array index %d\n", i);
 			if (elementArray[i] != NULL) {
-				fprintf(stderr, "Non-null element %p\n", elementArray[i]);
+				// fprintf(stderr, "Non-null element %p\n", elementArray[i]);
 				//fprintf(stderr, "Textual element? %d\n", elementArray[i]->Text());
 				if (!elementArray[i]->LoadTextures(pErrorString)) {
 					fprintf(stderr, "Texture failed to load\n");
@@ -122,6 +107,10 @@ UITopView::LoadTextures(CPVRTString* const pErrorString)
 	return true;
 }
 
+/*!****************************************************************************
+ @Function		BuildVertices
+ @Description	Builds the object's vertex buffers
+******************************************************************************/
 void
 UITopView::BuildVertices()
 {
@@ -138,6 +127,12 @@ UITopView::BuildVertices()
 	}
 }
 
+/*!****************************************************************************
+ @Function		Render
+ @Input			uiMVPMatrixLoc		Address of the shader's MVP matrix
+ @Input			printer				UIPrinter object used to display text
+ @Description	Renders the object using gl
+******************************************************************************/
 bool
 UITopView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
@@ -165,6 +160,11 @@ UITopView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	return false;
 }
 
+/*!****************************************************************************
+ @Function		Update
+ @Input			updateMessage		UIMessage object containing frame info
+ @Description	Updates the object based on information passed using UIMessage
+******************************************************************************/
 void
 UITopView::Update(UIMessage updateMessage)
 {
@@ -185,6 +185,10 @@ UITopView::Update(UIMessage updateMessage)
 	}
 }
 
+/*!****************************************************************************
+ @Function		Hide
+ @Description	Makes object hidden
+******************************************************************************/
 void
 UITopView::Hide()
 {
@@ -198,6 +202,10 @@ UITopView::Hide()
 	}
 }
 
+/*!****************************************************************************
+ @Function		Show
+ @Description	Makes object visibile
+******************************************************************************/
 void
 UITopView::Show()
 {
@@ -211,6 +219,12 @@ UITopView::Show()
 	}
 }
 
+/*!****************************************************************************
+ @Function		SetState
+ @Input			state		New UI state
+ @Description	Sets the m_state instance variable and sets the corresponding
+				elements to visible.
+******************************************************************************/
 void
 UITopView::SetState(UIState state)
 {
@@ -230,12 +244,21 @@ UITopView::SetState(UIState state)
 	}
 }
 
+/*!****************************************************************************
+ @Function		GetState
+ @Return		UIState
+ @Description	Returns the current m_state variable
+******************************************************************************/
 UIState
 UITopView::GetState()
 {
 	return m_state;
 }
 
+/*!****************************************************************************
+ @Function		Delete
+ @Description	Frees any memory allocated within the object
+******************************************************************************/
 void
 UITopView::Delete()
 {
