@@ -106,8 +106,14 @@ UIPrinter::Print(float x, float y, float scale, GLuint color, UIFont font, char*
 
 	print3D->MeasureText(&textWidth, &textHeight, scale, text);
 
-    if (print3D->Print3D((100*(x - (textWidth)/2)/vWidth)+50, -(100*(y + (textHeight)/2)/vHeight)+50, scale, color, text) != PVR_SUCCESS) {
-		fprintf(stderr, "UIPrint failed \n");
+	if (m_isRotated) {
+		if (print3D->Print3D((100*(x - (textWidth)/2)/vHeight)+50, -(100*(y + (textHeight)/2)/vWidth)+50, scale, color, text) != PVR_SUCCESS) {
+			fprintf(stderr, "UIPrint failed \n");
+		}	
+	} else {
+		if (print3D->Print3D((100*(x - (textWidth)/2)/vWidth)+50, -(100*(y + (textHeight)/2)/vHeight)+50, scale, color, text) != PVR_SUCCESS) {
+			fprintf(stderr, "UIPrint failed \n");
+		}	
 	}
 	print3D->Flush();
 }

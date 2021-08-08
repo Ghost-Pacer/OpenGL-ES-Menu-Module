@@ -32,9 +32,9 @@ UIWorkoutView::UIWorkoutView(UIWorkoutStage startingState)
         WVLayoutSpec spec = c_wvLayoutSpecs[i];
         switch(spec.type) {
             case wvBG:
-                warmupElements[i] = new UIImage("progContainer.pvr", spec.x, spec.y, spec.width, spec.height);
-                workoutElements[i] = new UIImage("progContainer.pvr", spec.x, spec.y, spec.width, spec.height);
-                cooldownElements[i] = new UIImage("progContainer.pvr", spec.x, spec.y, spec.width, spec.height);
+                warmupElements[i] = new UIImage("progContainer40.pvr", spec.x, spec.y, spec.width, spec.height);
+                workoutElements[i] = new UIImage("progContainer40.pvr", spec.x, spec.y, spec.width, spec.height);
+                cooldownElements[i] = new UIImage("progContainer40.pvr", spec.x, spec.y, spec.width, spec.height);
                 break;
             case wvWarmupIconActive:
                 warmupElements[i] = new UIImage("warmupActive.pvr", spec.x, spec.y, spec.width, spec.height);

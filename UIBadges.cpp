@@ -25,10 +25,11 @@ UIBadges::UIBadges(float x, float y)
 	m_badges.Reserve(c_numBadges);
 	m_activeBadges = CPVRTArray<UIImage*>(c_numBadges);
 	for ( int i = 0; i < c_numBadges; i ++) {
+		fprintf(stderr, "adding badge\n");
 		UIBadge badge = c_Badges[i];
 		m_badges[badge.identifier] = new UIImage(badge.imageName, m_x, m_y, 2*c_badgeDim, 2*c_badgeDim);
 	}
-	m_hidden = true;
+	m_hidden = false;
 	Test();
 }
 
@@ -41,7 +42,7 @@ UIBadges::Test()
 {
 	AddBadge(UIBadge1);
 	AddBadge(UIBadge2);
-	AddBadge(UIBadge3);
+	//AddBadge(UIBadge3);
 }
 
 /*!****************************************************************************
@@ -55,12 +56,14 @@ bool
 UIBadges::AddBadge(UIBool identifier)
 {
 	if (!m_badges.Exists(identifier)) {
+		fprintf(stderr, "Badge does not exist\n");
 		return false;
 	} else {
 		UIImage* badge = m_badges[identifier];
 		int numImages;
 		if ((numImages = m_activeBadges.GetSize()) == 0) {
 			m_activeBadges.Append(badge);
+			fprintf(stderr, "Badge added successfully\n");
 			return true;
 		} else {
 			for ( int i = 0; i < numImages; i ++ ) {
@@ -68,6 +71,7 @@ UIBadges::AddBadge(UIBool identifier)
 			}
 			badge->Move(numImages*c_badgeDim+c_badgePadding, 0);
 			m_activeBadges.Append(badge);
+			fprintf(stderr, "Badge added successfully\n");
 			return true;
 		}
 	}

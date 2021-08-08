@@ -21,7 +21,6 @@
 // Struct used to initialize a badge image
 struct UIBadge {
 	char* imageName;
-	float width, height;
 	UIBool identifier;
 };
 
@@ -34,8 +33,8 @@ const int c_numBadges = 3;
  */
 const UIBadge c_Badges[] = {
 	{ "century.pvr", UIBadge1 },
-	{ "20weeks.pvr", UIBadge2 },
-	{ "badge3.pvr", UIBadge3 }
+	{ "badge3.pvr", UIBadge2 },
+	{ "century.pvr", UIBadge3 }
 };
 
 // The radial size of a badge
