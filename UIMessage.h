@@ -29,6 +29,7 @@ enum UITextType {
 	UICalories,
 	UITimeS,
 	UIDistanceM,
+	UIBrightness,
 	UINone
 };
 
@@ -50,6 +51,9 @@ enum UIState {
 	UIInfo,
 	UIPause,
 	UISummary,
+	UIMenuBrightness,
+	UIMenuSpeed,
+	UIMenuMain,
 	noUI
 };
 

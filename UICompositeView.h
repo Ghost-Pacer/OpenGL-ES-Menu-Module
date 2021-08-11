@@ -48,7 +48,7 @@ class UICompositeView : public UIElement
 		bool m_hidden;
 
 		// Background UIImage
-		UIImage m_bg;
+		UIImage* m_bg;
 
 		// Position/Dimensions of the element
 		float m_x, m_y, m_width, m_height;

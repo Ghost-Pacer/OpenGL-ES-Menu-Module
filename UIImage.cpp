@@ -233,7 +233,7 @@ UIImage::BuildVertices()
                 with the correct positions and scales
 ******************************************************************************/
 void
-UIImage::Draw(GLuint uiMVPMatrixLoc)
+UIImage::Draw(GLuint uiMVPMatrixLoc, bool rotate)
 {
 	GLint viewport[4];
     GLint vWidth;                           // Viewport width
@@ -256,8 +256,14 @@ UIImage::Draw(GLuint uiMVPMatrixLoc)
 
     PVRTVec3 pos;
     // Scales pixel coordinates to device normalized coordinates
-	pos.x = m_x/(vWidth/2);
-	pos.y = m_y/(vHeight/2);
+	if (!rotate) {
+		pos.x = m_x/(vWidth/2);
+		pos.y = m_y/(vHeight/2);
+	} else {
+		//fprintf(stderr, "Image rotated\n");
+		pos.x = m_y/(vWidth/2);
+		pos.y = m_x/(vHeight/2);
+	}
 	pos.z = 0;
 
     // Builds scaling, sizing, and translation matrices
@@ -265,7 +271,13 @@ UIImage::Draw(GLuint uiMVPMatrixLoc)
 	PVRTMatrixTranslation(mTrans, pos.x, pos.y, pos.z);
     mScale = PVRTMat4::Scale(m_scale);
     mSize = PVRTMat4::Scale({m_width/(vWidth/2), m_height/(vHeight/2), 1});
+	if (rotate) {
+    	mSize = PVRTMat4::Scale({m_height/(vWidth/2), m_width/(vHeight/2), 1});
+	}
 	mRotation = PVRTMat4::RotationZ(0);
+	if (rotate) {
+		mRotation = PVRTMat4::RotationZ(M_PI/2);
+	}
 
     // Applies scaling and translations
 	PVRTMat4 mModelView, mMVP;
@@ -316,7 +328,7 @@ UIImage::Render(GLuint uiMVPMatrixLoc)
 	glEnableVertexAttribArray(ICOLOR_ARRAY);
 	glEnableVertexAttribArray(ITEXCOORD_ARRAY);
 
-    Draw(uiMVPMatrixLoc);
+    Draw(uiMVPMatrixLoc, false);
 
     // unbind the vertex buffers as we don't need them bound anymore
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -343,7 +355,7 @@ UIImage::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	glEnableVertexAttribArray(ICOLOR_ARRAY);
 	glEnableVertexAttribArray(ITEXCOORD_ARRAY);
 
-    Draw(uiMVPMatrixLoc);
+    Draw(uiMVPMatrixLoc, printer->Rotated());
 
     // unbind the vertex buffers as we don't need them bound anymore
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

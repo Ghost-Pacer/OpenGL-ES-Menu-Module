@@ -19,7 +19,7 @@
 ******************************************************************************/
 UICompositeView::UICompositeView(float x, float y)
 {
-	m_bg = UIImage(c_bgTexDefault, x, y, c_bgWidthDefault, c_bgHeightDefault);
+	m_bg = new UIImage(c_bgTexDefault, x, y, c_bgWidthDefault, c_bgHeightDefault);
 	m_x = x;
 	m_y = y;
 	m_width = c_bgWidthDefault;
@@ -39,7 +39,7 @@ UICompositeView::UICompositeView(float x, float y)
 ******************************************************************************/
 UICompositeView::UICompositeView(char* bgTex, float x, float y, float width, float height)
 {
-	m_bg = UIImage(bgTex, x, y, width, height);
+	m_bg = NULL;
 	m_x = x;
 	m_y = y;
 	m_width = width;
@@ -88,7 +88,7 @@ UICompositeView::AddText(char* text, GLuint color, float xRel, float yRel, float
 bool
 UICompositeView::LoadTextures(CPVRTString* const pErrorStr)
 {
-	if (!m_bg.LoadTextures(pErrorStr)) {
+	if (m_bg != NULL && !m_bg->LoadTextures(pErrorStr)) {
 		fprintf(stderr, "UICompositeView texture failed to load\n");
 		return false;
 	}
@@ -112,7 +112,9 @@ UICompositeView::LoadTextures(CPVRTString* const pErrorStr)
 void
 UICompositeView::BuildVertices()
 {
-	m_bg.BuildVertices();
+	if (m_bg != NULL) {
+		m_bg->BuildVertices();
+	}
 	for ( int i = 0; i < m_children.GetSize(); i ++ ) {
 		if (m_children[i] == NULL) {
 			continue;
@@ -136,7 +138,9 @@ UICompositeView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	}
 
 	// Render the background
-	m_bg.Render(uiMVPMatrixLoc, printer);
+	if (m_bg != NULL) {
+		m_bg->Render(uiMVPMatrixLoc, printer);
+	}
 
 	// Render the enclosed UIElements
 	if (m_children.GetSize() > 0) {
@@ -210,6 +214,11 @@ UICompositeView::Show()
 void
 UICompositeView::Delete()
 {
+	if (m_bg != NULL) {
+		m_bg->Delete();
+		delete m_bg;
+		m_bg = NULL;
+	}
 	if (m_children.GetSize() > 0) {
 		for ( int i = 0; i < m_children.GetSize(); i++ ) {
 			m_children[i]->Delete();

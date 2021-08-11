@@ -140,6 +140,17 @@ UIPrinter::Measure(float* width, float* height, float scale, UIFont font, char* 
 }
 
 /*!****************************************************************************
+ @Function		Rotated
+ @Return		bool	Is the text rotated
+ @Description	Frees allocated memory within the printer
+******************************************************************************/
+bool
+UIPrinter::Rotated()
+{
+	return m_isRotated;
+}
+
+/*!****************************************************************************
  @Function		Delete
  @Description	Frees allocated memory within the printer
 ******************************************************************************/

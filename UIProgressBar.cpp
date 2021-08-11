@@ -162,8 +162,8 @@ UIProgressBar::Render(GLuint uiMVPMatrixLoc)
 bool
 UIProgressBar::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
-    m_bg.Render(uiMVPMatrixLoc);
-    m_progress.Render(uiMVPMatrixLoc);
+    m_bg.Render(uiMVPMatrixLoc, printer);
+    m_progress.Render(uiMVPMatrixLoc, printer);
 
 	return true;
 }

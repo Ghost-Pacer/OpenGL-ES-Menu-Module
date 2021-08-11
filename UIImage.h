@@ -106,7 +106,7 @@ class UIImage : public UIElement
         virtual void Move(float x, float y);
 		virtual void SetPosition(float x, float y);
         virtual void Scale(float scaleX, float scaleY, float scaleZ);
-        virtual void Draw(GLuint uiMVPMatrixLoc);
+        virtual void Draw(GLuint uiMVPMatrixLoc, bool rotate);
 		virtual void DrawMesh();
 		virtual bool Render(GLuint uiMVPMatrixLoc);
         virtual bool Render(GLuint uiMVPMatrixLoc, UIPrinter* printer);
