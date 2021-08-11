@@ -168,7 +168,7 @@ UIButton::Update(UIMessage updateMessage)
 {
 
 	m_active = updateMessage.Read(m_updateKey);
-	fprintf(stderr, "Active status + %d\n", m_active);
+	//fprintf(stderr, "Active status + %d\n", m_active);
 }
 
 /*!****************************************************************************
@@ -185,6 +185,7 @@ UIButton::Hide()
  @Function		Show
  @Description	Makes object visibile
 ******************************************************************************/
+void
 UIButton::Show()
 {
 	m_hidden = false;

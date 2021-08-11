@@ -61,7 +61,7 @@ UISummaryView::LoadTextures(CPVRTString* const pErrorStr)
 {
 	fprintf(stderr, "Loading summaryview elements\n");
 	for ( int i = 0; i < c_numSUMElements; i ++ ) {
-		fprintf(stderr, "Loading element #%d\n", i);
+		//fprintf(stderr, "Loading element #%d\n", i);
 		if (m_elements[i] == NULL) {
 			fprintf(stderr, "NULL element\n");
 			continue;

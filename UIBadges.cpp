@@ -182,7 +182,7 @@ UIBadges::Delete()
 	if (m_badges.GetSize() > 0) {
 		for ( int i = 0; i < c_numBadges; i ++) {
 			UIBool key = c_Badges[i].identifier;
-			if (!m_badges.Exists(key)) {
+			if (!m_badges.Exists(key) || m_badges[key] == NULL) {
 				continue;
 			}
 			m_badges[key]->Delete();
