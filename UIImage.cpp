@@ -215,11 +215,11 @@ UIImage::BuildVertices()
 
 	glGenBuffers(1, &m_uiVbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_uiVbo);
-	glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(SVertex), m_vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 32 * sizeof(SVertex), m_vertices, GL_STATIC_DRAW);
 
 	glGenBuffers(1, &m_uiOpaqueIndexVbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_uiOpaqueIndexVbo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iNumOpaque, m_indicesOpaque, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2*m_iNumOpaque, m_indicesOpaque, GL_STATIC_DRAW);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
