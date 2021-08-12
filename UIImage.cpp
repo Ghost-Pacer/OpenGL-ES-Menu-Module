@@ -77,9 +77,8 @@ UIImage::LoadTextures(CPVRTString* const pErrorStr)
 
     FILE* fp;
     fp = fopen(filename, "rb");
-    free(filename);
     if (fp != NULL) {
-        if (loadTextureFromFile(fp, &m_uiImgTex, NULL) != true) {
+        if (loadTextureFromFilename(filename, &m_uiImgTex, NULL) != true) {
             //fprintf(stderr, "ERROR: Failed to load texture\n");
             *pErrorStr = "ERROR: Failed to load texture";
             fclose(fp);
@@ -90,6 +89,7 @@ UIImage::LoadTextures(CPVRTString* const pErrorStr)
         *pErrorStr = "ERROR: PVR file does not exist";
         return false;
     }
+    free(filename);
     fclose(fp);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -509,6 +509,21 @@ UIImage::loadTextureFromFile(FILE* pvr, GLuint* texture, PVR_Texture_Header* hea
 		free(fileContentPointer);
 		return true;
 	} else {
+		return false;
+	}
+}
+
+
+bool
+UIImage::loadTextureFromFilename(char* filename, GLuint* texture, PVR_Texture_Header* header)
+{
+	void* buffer = file_readBinary(filename);
+	if (buffer != NULL) {
+		PVRTTextureLoadFromPointer(buffer, texture, header, false, 0, NULL, NULL);
+		free(buffer);
+		return true;
+	} else {
+		fprintf(stderr, "Binary file buffer returned null\n");
 		return false;
 	}
 }

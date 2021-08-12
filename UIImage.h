@@ -91,8 +91,9 @@ class UIImage : public UIElement
 		// Is the image hidden
 		bool m_hidden;
 
-		// Local Function
+		// Local Functions
         bool loadTextureFromFile(FILE* pvr, GLuint* texture, PVR_Texture_Header* header);
+		bool loadTextureFromFilename(char* filename, GLuint* texture, PVR_Texture_Header* header);
 
     public:
 		// Exported functions
