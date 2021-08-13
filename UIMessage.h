@@ -30,6 +30,7 @@ enum UITextType {
 	UITimeS,
 	UIDistanceM,
 	UIBrightness,
+	UIAvatarDistance,
 	UINone
 };
 
@@ -42,7 +43,9 @@ enum UIBool {
 	UIMileMarker,
 	UIBadge1,
 	UIBadge2,
-	UIBadge3
+	UIBadge3,
+	UIBrightnessSelected,
+	UISpeedSelected
 };
 
 // Enum identifiers for the UI's display states

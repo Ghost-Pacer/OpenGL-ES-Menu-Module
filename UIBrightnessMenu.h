@@ -11,8 +11,9 @@ class UIBrightnessMenu : public UIElement
 {
 	protected:
 		bool m_hidden;
-		UICompositeView* m_infoDisplay;
-		UIProgressBar* m_brightnessBar;
+		bool m_brightSelected;
+		UICompositeView* m_selected;
+		UICompositeView* m_deselected;
 	public:
 		UIBrightnessMenu();
 		virtual bool LoadTextures(CPVRTString* const pErrorStr);

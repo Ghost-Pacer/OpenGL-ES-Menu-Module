@@ -24,15 +24,20 @@ const char c_progBGBTex[] = "progBGB.pvr";
 const char c_progBTex[] = "progB.pvr";
 const char c_progBGGTex[] = "progBGG.pvr";
 const char c_progGTex[] = "progG.pvr";
+const char c_brightRTex[] = "brightBarR.pvr";
+const char c_brightRBGTex[] = "brightBGR.pvr";
+const char c_brightBTex[] = "brightBarB.pvr";
+const char c_brightBBGTex[] = "brightBGB.pvr";
 
 // Default sizing specifications
 const float c_defaultPBWidth = 350;
 const float c_defaultPBHeight = 18;
+const float c_defaultBrightWidth = 200;
 const float c_defaultPBInsetX = 12;
 const float c_defaultPBInsetY = 12;
 
 // Enum identifiers for progress bar colors
-enum PBType { PBR, PBG, PBB };
+enum PBType { PBR, PBG, PBB, BrightnessB, BrightnessR };
 
 /*!****************************************************************************
  @class UIProgressBar

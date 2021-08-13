@@ -69,11 +69,13 @@ bool
 UIImage::LoadTextures(CPVRTString* const pErrorStr)
 {
     if (m_texName == NULL) {
+		fprintf(stderr, "NULL texture\n");
         return false;
     }
 
     char* filename = (char*)malloc(strlen(m_texName) + strlen("../../../assets/") + 1);
     sprintf(filename, "../../../assets/%s", m_texName);
+	fprintf(stderr, "img: %s \n", filename);
 
     FILE* fp;
     fp = fopen(filename, "rb");
@@ -261,7 +263,7 @@ UIImage::Draw(GLuint uiMVPMatrixLoc, bool rotate)
 		pos.y = m_y/(vHeight/2);
 	} else {
 		//fprintf(stderr, "Image rotated\n");
-		pos.x = m_y/(vWidth/2);
+		pos.x = -m_y/(vWidth/2);
 		pos.y = m_x/(vHeight/2);
 	}
 	pos.z = 0;
@@ -270,7 +272,11 @@ UIImage::Draw(GLuint uiMVPMatrixLoc, bool rotate)
 	PVRTMat4 mTrans, mScale, mSize, mRotation;
 	PVRTMatrixTranslation(mTrans, pos.x, pos.y, pos.z);
     mScale = PVRTMat4::Scale(m_scale);
-    mSize = PVRTMat4::Scale({m_width/(vWidth/2), m_height/(vHeight/2), 1});
+	if (rotate) {
+		mScale = PVRTMat4::Scale({m_scale.y, m_scale.x, m_scale.z});
+	}
+
+    mSize = PVRTMat4::Scale({m_width/(vHeight/2), m_height/(vWidth/2), 1});
 	if (rotate) {
     	mSize = PVRTMat4::Scale({m_height/(vWidth/2), m_width/(vHeight/2), 1});
 	}

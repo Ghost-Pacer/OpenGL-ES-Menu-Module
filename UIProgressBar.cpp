@@ -54,7 +54,17 @@ UIProgressBar::UIProgressBar(PBType type, float x, float y, float initialComplet
             m_bg = UIImage(c_progBGBTex, x, y, c_defaultPBWidth, c_defaultPBHeight);
             m_progress = UIImage(c_progBTex, x, y, (c_defaultPBWidth-c_defaultPBInsetX), (c_defaultPBHeight-c_defaultPBInsetY));
             break;
+        case BrightnessB:
+            fprintf(stderr, "Initting blue progbar\n");
+            m_bg = UIImage(c_brightBBGTex, x, y, c_defaultBrightWidth, c_defaultPBHeight);
+            m_progress = UIImage(c_brightBTex, x, y, (c_defaultBrightWidth-c_defaultPBInsetX), (c_defaultPBHeight-c_defaultPBInsetY));
+            break;
+        case BrightnessR:
+            m_bg = UIImage(c_brightRBGTex, x, y, c_defaultBrightWidth, c_defaultPBHeight);
+            m_progress = UIImage(c_brightRTex, x, y, (c_defaultBrightWidth-c_defaultPBInsetX), (c_defaultPBHeight-c_defaultPBInsetY));
+            break;
         default:
+            fprintf(stderr, "Initting default progbar\n");
             m_bg = UIImage(c_progBGRTex, x, y, c_defaultPBWidth, c_defaultPBHeight);
             m_progress = UIImage(c_progRTex, x, y, (c_defaultPBWidth-c_defaultPBInsetX), (c_defaultPBHeight-c_defaultPBInsetY));
             break;

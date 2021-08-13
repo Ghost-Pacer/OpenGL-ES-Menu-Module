@@ -39,7 +39,11 @@ UICompositeView::UICompositeView(float x, float y)
 ******************************************************************************/
 UICompositeView::UICompositeView(char* bgTex, float x, float y, float width, float height)
 {
-	m_bg = NULL;
+	if (bgTex == NULL) {
+		m_bg = NULL;
+	} else {
+		m_bg = new UIImage(bgTex, x, y, width, height);
+	}
 	m_x = x;
 	m_y = y;
 	m_width = width;
@@ -47,6 +51,17 @@ UICompositeView::UICompositeView(char* bgTex, float x, float y, float width, flo
 	m_children = CPVRTArray<UIElement*>();
 	m_text = CPVRTArray<UITextSpec>();
 	m_hidden = false;
+}
+
+/*!****************************************************************************
+ @Function		AddElement
+ @Input			newElement		New, preinitialized element to be added
+ @Description	Adds the UIElement passed as a parameter to the UICV
+******************************************************************************/
+void
+UICompositeView::AddElement(UIElement* newElement)
+{
+	m_children.Append(newElement);
 }
 
 /*!****************************************************************************

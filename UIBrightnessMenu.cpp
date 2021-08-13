@@ -3,20 +3,23 @@
 UIBrightnessMenu::UIBrightnessMenu()
 {
 	m_hidden = true;
-	m_infoDisplay = new UICompositeView(NULL, 0, -30, 0, 0);
-	if (m_infoDisplay != NULL) {
-		m_infoDisplay->AddText("Brightness: ", 0xFF0000FF, -40, 0, 0.5, UIBrightness, UIFBold);
-		m_infoDisplay->AddImage("arrows.pvr", 100, 0, 16, 16);
-	}
-	m_brightnessBar = new UIProgressBar(PBB, 0, -30, 1); 
+	m_brightSelected = false;
+	m_selected = new UICompositeView("brightnessBG.pvr", 0, 50, 300, 300);
+	m_deselected = new UICompositeView("brightnessBG.pvr", 0, 50, 300, 300);
+	m_selected->AddImage("brightImgB.pvr", 0, 25, 150, 150);
+	m_deselected->AddImage("brightImgR.pvr", 0, 25, 150, 150);
+	UIProgressBar* progBlue = new UIProgressBar(PBType::BrightnessB, 0, -40, 0.75);
+	m_selected->AddElement(progBlue);
+	UIProgressBar* progRed = new UIProgressBar(PBType::BrightnessR, 0, -40, 0.75);
+	m_deselected->AddElement(progRed);
 }
 
 bool
 UIBrightnessMenu::LoadTextures(CPVRTString* const pErrorStr)
 {
-	if (m_infoDisplay != NULL && m_brightnessBar != NULL) {
-		m_infoDisplay->LoadTextures(pErrorStr);
-		m_brightnessBar->LoadTextures(pErrorStr);
+	if (m_selected != NULL && m_deselected != NULL) {
+		m_selected->LoadTextures(pErrorStr);
+		m_deselected->LoadTextures(pErrorStr);
 		return true;
 	} else {
 		return false;
@@ -26,9 +29,9 @@ UIBrightnessMenu::LoadTextures(CPVRTString* const pErrorStr)
 void
 UIBrightnessMenu::BuildVertices()
 {
-	if (m_infoDisplay != NULL && m_brightnessBar != NULL) {
-		m_infoDisplay->BuildVertices();
-		m_brightnessBar->BuildVertices();
+	if (m_selected != NULL && m_deselected != NULL) {
+		m_selected->BuildVertices();
+		m_deselected->BuildVertices();
 	}
 }
 
@@ -38,24 +41,34 @@ UIBrightnessMenu::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	if (m_hidden) {
 		return true;
 	}
-	if (m_infoDisplay != NULL && m_brightnessBar != NULL) {
-		m_infoDisplay->Render(uiMVPMatrixLoc, printer);
-		m_brightnessBar->Render(uiMVPMatrixLoc, printer);
+	if (m_selected != NULL && m_deselected != NULL) {
+		if (m_brightSelected) {
+			m_selected->Render(uiMVPMatrixLoc, printer);
+		} else {
+			m_deselected->Render(uiMVPMatrixLoc, printer);
+		}
 	}
+	GLuint color;
+	if (!m_brightSelected) {
+		color = 0xFFFF0000;
+	} else {
+		color = 0xFF0000FF;
+	}
+	printer->Print(0, -200, 0.325, color, UIFBold, "Back");
 	return true;
 }
 
 void
 UIBrightnessMenu::Update(UIMessage updateMessage)
 {
-	if (m_infoDisplay == NULL || m_brightnessBar == NULL) {
+	if (m_selected == NULL || m_deselected == NULL) {
 		return;
 	}
 
 	if (updateMessage.ReadState() == UIMenuBrightness) {
 		m_hidden = false;
-		m_infoDisplay->Update(updateMessage);
-		m_brightnessBar->Update(updateMessage);
+		m_selected->Update(updateMessage);
+		m_deselected->Update(updateMessage);
 	}
 }
 
@@ -74,15 +87,15 @@ UIBrightnessMenu::Show()
 void
 UIBrightnessMenu::Delete()
 {
-	if (m_infoDisplay != NULL) {
-		m_infoDisplay->Delete();
-		delete m_infoDisplay;
-		m_infoDisplay = NULL;
+	if (m_deselected != NULL) {
+		m_deselected->Delete();
+		delete m_deselected;
+		m_deselected = NULL;
 	}
-	if (m_brightnessBar != NULL) {
-		m_brightnessBar->Delete();
-		delete m_brightnessBar;
-		m_brightnessBar = NULL;
+	if (m_selected != NULL) {
+		m_selected->Delete();
+		delete m_selected;
+		m_selected = NULL;
 	}
 	return;
 }

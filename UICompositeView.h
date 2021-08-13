@@ -63,6 +63,7 @@ class UICompositeView : public UIElement
 		// Exported functions:
 		UICompositeView(float x, float y);
 		UICompositeView(char* bgTex, float x, float y, float width, float height);
+		void AddElement(UIElement* newElement);
 		void AddImage(char* textureName, float xRel, float yRel, float width, float height);
 		void AddText(char* text, GLuint color, float xRel, float yRel, float scale, UITextType updateKey, UIFont font);
         virtual bool LoadTextures(CPVRTString* const pErrorStr);

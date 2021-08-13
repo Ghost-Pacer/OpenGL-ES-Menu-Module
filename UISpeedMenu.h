@@ -12,7 +12,6 @@ class UISpeedMenu : public UIElement
 	protected:
 		bool m_hidden;
 		UICompositeView* m_infoDisplay;
-		UIProgressBar* m_speedBar;
 	public:
 		UISpeedMenu();
 		virtual bool LoadTextures(CPVRTString* const pErrorStr);
