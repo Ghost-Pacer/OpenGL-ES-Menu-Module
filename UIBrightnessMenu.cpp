@@ -39,14 +39,22 @@ bool
 UIBrightnessMenu::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
 	if (m_hidden) {
+		//fprintf(stderr, "UIBM hidden\n");
 		return true;
 	}
 	if (m_selected != NULL && m_deselected != NULL) {
+		//fprintf(stderr, "UIBM rendering\n");
 		if (m_brightSelected) {
-			m_selected->Render(uiMVPMatrixLoc, printer);
+			if (!m_flash) {
+				m_selected->Render(uiMVPMatrixLoc, printer);
+			}
 		} else {
-			m_deselected->Render(uiMVPMatrixLoc, printer);
+			if (!m_flash) {
+				m_deselected->Render(uiMVPMatrixLoc, printer);
+			}
 		}
+	} else {
+		fprintf(stderr, "UIBM NULL element\n");
 	}
 	GLuint color;
 	if (!m_brightSelected) {
@@ -66,9 +74,14 @@ UIBrightnessMenu::Update(UIMessage updateMessage)
 	}
 
 	if (updateMessage.ReadState() == UIMenuBrightness) {
+		//fprintf(stderr, "UIBM message received\n");
 		m_hidden = false;
+		m_flash = updateMessage.Read(UIFlash);
+		m_brightSelected = updateMessage.Read(UIBrightnessSelected);
 		m_selected->Update(updateMessage);
 		m_deselected->Update(updateMessage);
+	} else {
+		m_hidden = true;
 	}
 }
 

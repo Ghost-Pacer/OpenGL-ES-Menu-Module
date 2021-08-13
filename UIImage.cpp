@@ -75,27 +75,19 @@ UIImage::LoadTextures(CPVRTString* const pErrorStr)
 
     char* filename = (char*)malloc(strlen(m_texName) + strlen("../../../assets/") + 1);
     sprintf(filename, "../../../assets/%s", m_texName);
-	fprintf(stderr, "img: %s \n", filename);
-
-    FILE* fp;
-    fp = fopen(filename, "rb");
+	if (loadTextureFromFilename(filename, &m_uiImgTex, NULL) != true) {
+		//fprintf(stderr, "ERROR: Failed to load texture\n");
+		*pErrorStr = "ERROR: Failed to load texture";
+    	free(filename);
+		// fclose(fp);
+		return false;
+	}
     free(filename);
-    if (fp != NULL) {
-        if (loadTextureFromFile(fp, &m_uiImgTex, NULL) != true) {
-            //fprintf(stderr, "ERROR: Failed to load texture\n");
-            *pErrorStr = "ERROR: Failed to load texture";
-            fclose(fp);
-            return false;
-        }
-    } else {
-        fprintf(stderr, "ERROR: PVR file does not exist\n");
-        *pErrorStr = "ERROR: PVR file does not exist";
-        return false;
-    }
-    fclose(fp);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    return true;
 
     return true;
 }
@@ -217,11 +209,11 @@ UIImage::BuildVertices()
 
 	glGenBuffers(1, &m_uiVbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_uiVbo);
-	glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(SVertex), m_vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 32 * sizeof(SVertex), m_vertices, GL_STATIC_DRAW);
 
 	glGenBuffers(1, &m_uiOpaqueIndexVbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_uiOpaqueIndexVbo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_iNumOpaque, m_indicesOpaque, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2*m_iNumOpaque, m_indicesOpaque, GL_STATIC_DRAW);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -525,6 +517,20 @@ UIImage::loadTextureFromFile(FILE* pvr, GLuint* texture, PVR_Texture_Header* hea
 		char* fileContentPointer = file_readFile(pvr);
 		PVRTTextureLoadFromPointer(fileContentPointer, texture, header, true, 0, NULL, NULL);
 		free(fileContentPointer);
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+bool
+UIImage::loadTextureFromFilename(char* filename, GLuint* texture, PVR_Texture_Header* header)
+{
+	void* buffer = file_readBinary(filename);
+	if (buffer != NULL) {
+		PVRTTextureLoadFromPointer(buffer, texture, header, true, 0, NULL, NULL);
+		free(buffer);
 		return true;
 	} else {
 		return false;

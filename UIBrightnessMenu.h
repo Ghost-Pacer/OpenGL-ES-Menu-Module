@@ -11,6 +11,7 @@ class UIBrightnessMenu : public UIElement
 {
 	protected:
 		bool m_hidden;
+		bool m_flash;
 		bool m_brightSelected;
 		UICompositeView* m_selected;
 		UICompositeView* m_deselected;

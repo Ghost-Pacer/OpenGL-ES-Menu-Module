@@ -170,7 +170,7 @@ UITextBlock::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 		return false;
 	}
 
-	m_bg.Render(uiMVPMatrixLoc);
+	m_bg.Render(uiMVPMatrixLoc, printer);
 	if (m_textSecondary == NULL) {
 		printer->Print(m_x, m_y, m_textScale, m_color, UIFBold, m_text);
 	} else {

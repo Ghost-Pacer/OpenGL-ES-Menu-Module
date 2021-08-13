@@ -17,6 +17,7 @@
 
 #include "Fonts/CustomMontserratBold.h"
 #include "Fonts/MontserratMedium.h"
+#include "UIMessage.h"
 // #include "Fonts/MontserratRegular.h"
 // #include "Fonts/MontserratThin.h"
 // #include "Fonts/MontserratLight.h"
@@ -28,6 +29,15 @@ enum UIFont {
 	// UIFRegular,
 	// UIFThin,
 	// UIFLight
+};
+
+// struct used to store updating text 
+struct UITextSpec {
+	char* text;
+	GLuint color;
+	float xRel, yRel, scale;
+	UITextType updateKey;
+	UIFont font;
 };
 
 /*!****************************************************************************

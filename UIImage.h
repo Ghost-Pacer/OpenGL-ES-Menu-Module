@@ -71,7 +71,7 @@ class UIImage : public UIElement
         SVertex m_vertices[32];
 		
 		// Array of Image's opaque vertices
-        unsigned short m_indicesOpaque[6];
+        unsigned short m_indicesOpaque[12];
 
 		// Number of opaque vertices
 	    int m_iNumOpaque;
@@ -93,6 +93,7 @@ class UIImage : public UIElement
 
 		// Local Function
         bool loadTextureFromFile(FILE* pvr, GLuint* texture, PVR_Texture_Header* header);
+		bool loadTextureFromFilename(char* filename, GLuint* texture, PVR_Texture_Header* header);
 
     public:
 		// Exported functions

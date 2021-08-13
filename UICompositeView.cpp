@@ -149,6 +149,7 @@ bool
 UICompositeView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
 	if (m_hidden) {
+		fprintf(stderr, "UICV hidden\n");
 		return true;
 	}
 
@@ -163,6 +164,7 @@ UICompositeView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 			if (m_children[i] == NULL) {
 				continue;
 			} else {
+				m_children[i]->Show();
 				if (!m_children[i]->Render(uiMVPMatrixLoc, printer)) {
 					fprintf(stderr, "UICompositeView render failed\n");
 				}
@@ -190,6 +192,12 @@ UICompositeView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 void
 UICompositeView::Update(UIMessage updateMessage)
 {
+	if (m_children.GetSize() > 0) {
+		for (int i = 0; i < m_children.GetSize(); i ++ ) {
+			m_children[i]->Update(updateMessage);
+		}
+	}
+
 	if (m_text.GetSize() > 0) {
 		for ( int i = 0; i < m_text.GetSize(); i ++ ){
 			UITextType updateKey = m_text[i].updateKey;

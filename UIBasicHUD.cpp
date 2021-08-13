@@ -5,7 +5,7 @@ UIBasicHUD::UIBasicHUD()
     m_hidden = false;
     for ( int i = 0; i < c_numBHElements; i ++ ) {
         UITextBlock* element = new UITextBlock("0", c_UIBHSpecs[i].subtext, UIFBold, UIFBold, 
-            c_UIBHSpecs[i].x, c_UIBHSpecs[i].y, 0xFFFF00FF, c_UIBHSpecs[i].updateKey);
+            c_UIBHSpecs[i].x, c_UIBHSpecs[i].y, 0xFFFF0000, c_UIBHSpecs[i].updateKey);
         m_elements[i] = element;
     }
 }

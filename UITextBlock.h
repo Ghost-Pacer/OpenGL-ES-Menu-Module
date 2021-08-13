@@ -26,7 +26,7 @@ struct TextblockData {
 
 // Default textblock appearance
 const TextblockData c_UITBDefaults = {
-	"basicBox40.pvr", 221, 70, 0, -5, 0.36, UIFont::UIFBold
+	"basicBox.pvr", 221, 70, 0, -5, 0.36, UIFont::UIFBold
 };
 
 /*!****************************************************************************

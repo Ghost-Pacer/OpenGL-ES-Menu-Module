@@ -45,7 +45,8 @@ enum UIBool {
 	UIBadge2,
 	UIBadge3,
 	UIBrightnessSelected,
-	UISpeedSelected
+	UISpeedSelected,
+	UIFlash
 };
 
 // Enum identifiers for the UI's display states

@@ -159,7 +159,6 @@ UIProgressBar::Render(GLuint uiMVPMatrixLoc)
     m_bg.Render(uiMVPMatrixLoc);
     m_progress.Render(uiMVPMatrixLoc);
 
-
 	return true;
 }
 

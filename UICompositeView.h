@@ -23,15 +23,6 @@ const char c_bgTexDefault[] = "basicBox.pvr";
 const float c_bgWidthDefault = 220;
 const float c_bgHeightDefault = 70;
 
-// struct used to store updating text 
-struct UITextSpec {
-	char* text;
-	GLuint color;
-	float xRel, yRel, scale;
-	UITextType updateKey;
-	UIFont font;
-};
-
 /*!****************************************************************************
  @class UICompoositeView
  Object class. A UICompositeView is a an object that stores, loads, builds and
