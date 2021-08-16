@@ -1,5 +1,21 @@
+/******************************************************************************
+
+ @File          UIBrightnessMenu.cpp
+
+ @Title         UIBrightnessMenu
+
+ @Author        Siddharth Hathi
+
+ @Description   Implements the UIBrightnessMenu object class defined in UIBrightnessMenu.h
+
+******************************************************************************/
+
 #include "UIBrightnessMenu.h"
 
+/*!****************************************************************************
+ @Function		Constructor
+ @Description	Initializes the UIBM elements
+******************************************************************************/
 UIBrightnessMenu::UIBrightnessMenu()
 {
 	m_hidden = true;
@@ -14,6 +30,11 @@ UIBrightnessMenu::UIBrightnessMenu()
 	m_deselected->AddElement(progRed);
 }
 
+/*!****************************************************************************
+ @Function		LoadTextures
+ @Output		pErrorStr		Pointer to the string returned on error
+ @Description	Loads the object's textures into graphics memory
+******************************************************************************/
 bool
 UIBrightnessMenu::LoadTextures(CPVRTString* const pErrorStr)
 {
@@ -26,6 +47,10 @@ UIBrightnessMenu::LoadTextures(CPVRTString* const pErrorStr)
 	}
 }
 
+/*!****************************************************************************
+ @Function		BuildVertices
+ @Description	Builds the object's vertex buffers
+******************************************************************************/
 void
 UIBrightnessMenu::BuildVertices()
 {
@@ -35,6 +60,12 @@ UIBrightnessMenu::BuildVertices()
 	}
 }
 
+/*!****************************************************************************
+ @Function		Render
+ @Input			uiMVPMatrixLoc		Address of the shader's MVP matrix
+ @Input			printer				UIPrinter object used to display text
+ @Description	Renders the object using gl
+******************************************************************************/
 bool
 UIBrightnessMenu::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
@@ -66,6 +97,11 @@ UIBrightnessMenu::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	return true;
 }
 
+/*!****************************************************************************
+ @Function		Update
+ @Input			updateMessage		UIMessage object containing frame info
+ @Description	Updates the object based on information passed using UIMessage
+******************************************************************************/
 void
 UIBrightnessMenu::Update(UIMessage updateMessage)
 {
@@ -85,18 +121,32 @@ UIBrightnessMenu::Update(UIMessage updateMessage)
 	}
 }
 
+/*!****************************************************************************
+ @Function		Hide
+ @Description	Makes object hidden
+******************************************************************************/
 void
 UIBrightnessMenu::Hide()
 {
 	m_hidden = true;
 }
 
+/*!****************************************************************************
+ @Function		Show
+ @Description	Makes object visibile
+******************************************************************************/
 void
 UIBrightnessMenu::Show()
 {
 	m_hidden = false;
 }
 
+/*!****************************************************************************
+ @Function		SetState
+ @Input			state		New UI state
+ @Description	Sets the m_state instance variable and sets the corresponding
+				elements to visible.
+******************************************************************************/
 void
 UIBrightnessMenu::Delete()
 {

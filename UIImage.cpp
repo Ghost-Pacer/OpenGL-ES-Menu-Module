@@ -223,8 +223,10 @@ UIImage::BuildVertices()
 /*!****************************************************************************
  @Function		Draw
  @Input			uiMVPMatrixLoc	GLuint reference to the shader Matrix
+ @Input			rotate			Is the display side projected?
  @Description	Draws the image with the appropriate vertices and textures,
-                with the correct positions and scales
+                with the correct positions and scales. Switches coordinate
+				axes if rotate parameter is true
 ******************************************************************************/
 void
 UIImage::Draw(GLuint uiMVPMatrixLoc, bool rotate)
@@ -249,7 +251,8 @@ UIImage::Draw(GLuint uiMVPMatrixLoc, bool rotate)
 	}
 
     PVRTVec3 pos;
-    // Scales pixel coordinates to device normalized coordinates
+    // Scales pixel coordinates to device normalized coordinates,
+	// rotates coordinate axes if asked to
 	if (!rotate) {
 		pos.x = m_x/(vWidth/2);
 		pos.y = m_y/(vHeight/2);

@@ -1,5 +1,21 @@
+/******************************************************************************
+
+ @File          UIBasicHUD.cpp
+
+ @Title         UIBasicHUD
+
+ @Author        Siddharth Hathi
+
+ @Description   Implements the UIBasicHUD object class defined in UIBasicHUD.h
+
+******************************************************************************/
+
 #include "UIBasicHUD.h"
 
+/*!****************************************************************************
+ @Function		Constructor
+ @Description	Initializes the UIBH elements
+******************************************************************************/
 UIBasicHUD::UIBasicHUD()
 {
     m_hidden = false;
@@ -10,6 +26,11 @@ UIBasicHUD::UIBasicHUD()
     }
 }
 
+/*!****************************************************************************
+ @Function		LoadTextures
+ @Output		pErrorStr		Pointer to the string returned on error
+ @Description	Loads the object's textures into graphics memory
+******************************************************************************/
 bool
 UIBasicHUD::LoadTextures(CPVRTString* const pErrorStr)
 {
@@ -21,6 +42,10 @@ UIBasicHUD::LoadTextures(CPVRTString* const pErrorStr)
     return true;
 }
 
+/*!****************************************************************************
+ @Function		BuildVertices
+ @Description	Builds the object's vertex buffers
+******************************************************************************/
 void
 UIBasicHUD::BuildVertices()
 {
@@ -31,6 +56,12 @@ UIBasicHUD::BuildVertices()
     }
 }
 
+/*!****************************************************************************
+ @Function		Render
+ @Input			uiMVPMatrixLoc		Address of the shader's MVP matrix
+ @Input			printer				UIPrinter object used to display text
+ @Description	Renders the object using gl
+******************************************************************************/
 bool
 UIBasicHUD::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
@@ -45,6 +76,11 @@ UIBasicHUD::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
     return true;
 }
 
+/*!****************************************************************************
+ @Function		Update
+ @Input			updateMessage		UIMessage object containing frame info
+ @Description	Updates the object based on information passed using UIMessage
+******************************************************************************/
 void
 UIBasicHUD::Update(UIMessage updateMessage)
 {
@@ -55,18 +91,30 @@ UIBasicHUD::Update(UIMessage updateMessage)
     }
 }
 
+/*!****************************************************************************
+ @Function		Hide
+ @Description	Makes object hidden
+******************************************************************************/
 void
 UIBasicHUD::Hide()
 {
     m_hidden = true;
 }
 
+/*!****************************************************************************
+ @Function		Show
+ @Description	Makes object visibile
+******************************************************************************/
 void
 UIBasicHUD::Show()
 {
     m_hidden = false;
 }
 
+/*!****************************************************************************
+ @Function		Delete
+ @Description	Frees memory allocated by the object
+******************************************************************************/
 void
 UIBasicHUD::Delete()
 {

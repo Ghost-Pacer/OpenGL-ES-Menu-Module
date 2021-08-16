@@ -1,5 +1,21 @@
+/******************************************************************************
+
+ @File          UISpeedMenu.cpp
+
+ @Title         UISpeedMenu
+
+ @Author        Siddharth Hathi
+
+ @Description   Implements the UISpeedMenu object class defined in UISpeedMenu.h
+
+******************************************************************************/
+
 #include "UISpeedMenu.h"
 
+/*!****************************************************************************
+ @Function		Constructor
+ @Description	Initializes the UISM elements
+******************************************************************************/
 UISpeedMenu::UISpeedMenu()
 {
 	m_hidden = false;
@@ -11,6 +27,11 @@ UISpeedMenu::UISpeedMenu()
 	m_arrows = new UIImage(imgSpec.imgTex, imgSpec.x, imgSpec.y, imgSpec.width, imgSpec.height);
 }
 
+/*!****************************************************************************
+ @Function		LoadTextures
+ @Output		pErrorStr		Pointer to the string returned on error
+ @Description	Loads the object's textures into graphics memory
+******************************************************************************/
 bool
 UISpeedMenu::LoadTextures(CPVRTString* const pErrorStr)
 {
@@ -20,6 +41,10 @@ UISpeedMenu::LoadTextures(CPVRTString* const pErrorStr)
 	return true;
 }
 
+/*!****************************************************************************
+ @Function		BuildVertices
+ @Description	Builds the object's vertex buffers
+******************************************************************************/
 void
 UISpeedMenu::BuildVertices()
 {
@@ -28,6 +53,12 @@ UISpeedMenu::BuildVertices()
 	}
 }
 
+/*!****************************************************************************
+ @Function		Render
+ @Input			uiMVPMatrixLoc		Address of the shader's MVP matrix
+ @Input			printer				UIPrinter object used to display text
+ @Description	Renders the object using gl
+******************************************************************************/
 bool
 UISpeedMenu::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
@@ -68,6 +99,11 @@ UISpeedMenu::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	return true;
 }
 
+/*!****************************************************************************
+ @Function		Update
+ @Input			updateMessage		UIMessage object containing frame info
+ @Description	Updates the object based on information passed using UIMessage
+******************************************************************************/
 void
 UISpeedMenu::Update(UIMessage updateMessage)
 {
@@ -88,18 +124,30 @@ UISpeedMenu::Update(UIMessage updateMessage)
 	return;
 }
 
+/*!****************************************************************************
+ @Function		Hide
+ @Description	Makes object hidden
+******************************************************************************/
 void
 UISpeedMenu::Hide()
 {
 	m_hidden = true;
 }
 
+/*!****************************************************************************
+ @Function		Show
+ @Description	Makes object visibile
+******************************************************************************/
 void
 UISpeedMenu::Show()
 {
 	m_hidden = false;
 }
 
+/*!****************************************************************************
+ @Function		Delete
+ @Description	Frees memory allocated by the object
+******************************************************************************/
 void
 UISpeedMenu::Delete()
 {
