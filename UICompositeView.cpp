@@ -164,7 +164,7 @@ UICompositeView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 			if (m_children[i] == NULL) {
 				continue;
 			} else {
-				m_children[i]->Show();
+				//m_children[i]->Show();
 				if (!m_children[i]->Render(uiMVPMatrixLoc, printer)) {
 					fprintf(stderr, "UICompositeView render failed\n");
 				}

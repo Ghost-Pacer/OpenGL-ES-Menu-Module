@@ -17,7 +17,8 @@
 
 // Enum identifiers for messages containing float values
 enum UIFloat {
-	UIStageProgress
+	UIStageProgress,
+	UIBrightnessProg
 };
 
 

@@ -30,17 +30,16 @@ enum UISMType {
 // Specification structure that stores data for each statically initialized element
 struct UISMSpec {
 	char* text;
-	char* imgTex;
 	float x, y, scale, width, height;
 	UISMType type;
 };
 
 // Array of layout specifications for the menu
 const UISMSpec c_UISMSpecs[] = {
-	{ "Speed", NULL, 0, 120, 0.325, 0, 0, Title },
-	{ NULL, "updown.pvr", 120, 20, 0, 30, 40, Arrows },
-	{ "00:00", NULL, -40, 20, 0.75, 0, 0, Value },
-	{ "Back", NULL, 0, -200, 0.325, 0, 0, Back }
+	{ "Speed", 0, 120, 0.325, 0, 0, Title },
+	{ NULL, 120, 20, 0, 30, 40, Arrows },
+	{ "00:00", -40, 20, 0.75, 0, 0, Value },
+	{ "Back", 0, -200, 0.325, 0, 0, Back }
 };
 
 // number of statically initialized elements
@@ -69,8 +68,11 @@ class UISpeedMenu : public UIElement
 		// The current speed string displayed to the user
 		char* m_currentSpeed;
 
-		// The UIImage object used to display the toggling arrows
-		UIImage* m_arrows;
+		// The UIImage object used to display the toggling arrows (white)
+		UIImage* m_arrowsActive;
+
+		// The UIImage object used to display the toggling arrows (gray)
+		UIImage* m_arrowsInactive;
 	public:
 		// Publicly exported functions
 		UISpeedMenu();

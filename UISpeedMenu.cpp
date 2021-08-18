@@ -23,8 +23,8 @@ UISpeedMenu::UISpeedMenu()
 	m_selected = false;
 	m_currentSpeed = "0";
 	UISMSpec imgSpec = c_UISMSpecs[Arrows];
-	fprintf(stderr, "img tex: %s\n", imgSpec.imgTex);
-	m_arrows = new UIImage(imgSpec.imgTex, imgSpec.x, imgSpec.y, imgSpec.width, imgSpec.height);
+	m_arrowsActive = new UIImage("updown.pvr", imgSpec.x, imgSpec.y, imgSpec.width, imgSpec.height);
+	m_arrowsInactive = new UIImage("updownGray.pvr", imgSpec.x, imgSpec.y, imgSpec.width, imgSpec.height);
 }
 
 /*!****************************************************************************
@@ -35,8 +35,8 @@ UISpeedMenu::UISpeedMenu()
 bool
 UISpeedMenu::LoadTextures(CPVRTString* const pErrorStr)
 {
-	if (m_arrows != NULL) {
-		return m_arrows->LoadTextures(pErrorStr);
+	if (m_arrowsActive != NULL & m_arrowsInactive != NULL) {
+		return m_arrowsActive->LoadTextures(pErrorStr) && m_arrowsInactive->LoadTextures(pErrorStr);
 	}
 	return true;
 }
@@ -48,8 +48,9 @@ UISpeedMenu::LoadTextures(CPVRTString* const pErrorStr)
 void
 UISpeedMenu::BuildVertices()
 {
-	if (m_arrows != NULL) {
-		m_arrows->BuildVertices();
+	if (m_arrowsActive != NULL & m_arrowsInactive != NULL) {
+		m_arrowsActive->BuildVertices();
+		m_arrowsInactive->BuildVertices();
 	}
 }
 
@@ -66,15 +67,16 @@ UISpeedMenu::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 		return true;
 	}
 	GLuint selectedColor = 0xFFFF0000;
-	GLuint deselectedColor = 0xFF0000FF;
-	if (m_arrows != NULL) {
-		m_arrows->Render(uiMVPMatrixLoc, printer);
-	}
+	GLuint deselectedColor = 0x99999999;
 	for ( int i = 0; i < c_numUISMElems; i ++ ) {
 		UISMSpec spec = c_UISMSpecs[i];
 		switch (spec.type) {
 			case Title:
-				printer->Print(spec.x, spec.y, spec.scale, deselectedColor, UIFBold, spec.text);
+					if (m_selected) {
+						printer->Print(spec.x, spec.y, spec.scale, selectedColor, UIFBold, spec.text);
+					} else {
+						printer->Print(spec.x, spec.y, spec.scale, deselectedColor, UIFBold, spec.text);
+					}
 				break;
 			case Value:
 				if (!m_flash) {
@@ -83,6 +85,17 @@ UISpeedMenu::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 					} else {
 						printer->Print(spec.x, spec.y, spec.scale, deselectedColor, UIFBold, m_currentSpeed);
 					}
+				}
+				break;
+			case Arrows:
+				if (m_arrowsActive == NULL || m_arrowsInactive == NULL) {
+					break;
+				}
+
+				if (m_selected) {
+					m_arrowsActive->Render(uiMVPMatrixLoc, printer);
+				} else {
+					m_arrowsInactive->Render(uiMVPMatrixLoc, printer);
 				}
 				break;
 			case Back:
@@ -151,9 +164,15 @@ UISpeedMenu::Show()
 void
 UISpeedMenu::Delete()
 {
-	if (m_arrows != NULL) {
-		m_arrows->Delete();
-		delete m_arrows;
-		m_arrows = NULL;
+	if (m_arrowsInactive != NULL) {
+		m_arrowsInactive->Delete();
+		delete m_arrowsInactive;
+		m_arrowsInactive = NULL;
+	}
+
+	if (m_arrowsActive != NULL) {
+		m_arrowsActive->Delete();
+		delete m_arrowsActive;
+		m_arrowsActive = NULL;
 	}
 }

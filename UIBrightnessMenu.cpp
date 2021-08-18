@@ -23,10 +23,10 @@ UIBrightnessMenu::UIBrightnessMenu()
 	m_selected = new UICompositeView("brightnessBG.pvr", 0, 50, 300, 300);
 	m_deselected = new UICompositeView("brightnessBG.pvr", 0, 50, 300, 300);
 	m_selected->AddImage("brightImgB.pvr", 0, 25, 150, 150);
-	m_deselected->AddImage("brightImgR.pvr", 0, 25, 150, 150);
-	UIProgressBar* progBlue = new UIProgressBar(PBType::BrightnessB, 0, -40, 0.75);
+	m_deselected->AddImage("brightImgGray.pvr", 0, 25, 150, 150);
+	UIProgressBar* progBlue = new UIProgressBar(PBType::BrightnessSelected, 0, -40, 0.75);
 	m_selected->AddElement(progBlue);
-	UIProgressBar* progRed = new UIProgressBar(PBType::BrightnessR, 0, -40, 0.75);
+	UIProgressBar* progRed = new UIProgressBar(PBType::BrightnessUnselected, 0, -40, 0.75);
 	m_deselected->AddElement(progRed);
 }
 
@@ -76,13 +76,9 @@ UIBrightnessMenu::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	if (m_selected != NULL && m_deselected != NULL) {
 		//fprintf(stderr, "UIBM rendering\n");
 		if (m_brightSelected) {
-			if (!m_flash) {
-				m_selected->Render(uiMVPMatrixLoc, printer);
-			}
+			m_selected->Render(uiMVPMatrixLoc, printer);
 		} else {
-			if (!m_flash) {
-				m_deselected->Render(uiMVPMatrixLoc, printer);
-			}
+			m_deselected->Render(uiMVPMatrixLoc, printer);
 		}
 	} else {
 		fprintf(stderr, "UIBM NULL element\n");
@@ -91,7 +87,7 @@ UIBrightnessMenu::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	if (!m_brightSelected) {
 		color = 0xFFFF0000;
 	} else {
-		color = 0xFF0000FF;
+		color = 0x99999999;
 	}
 	printer->Print(0, -200, 0.325, color, UIFBold, "Back");
 	return true;
