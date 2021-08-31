@@ -7,7 +7,7 @@
 
 ### Implementation
 
-The UIKit is implemented across a series of c++ UI classes. Version 1.5 includes `UIImage`, `UICompositeView`, `UITextBlock`, `UIButton`, `UIWorkoutView`, `UITopView`, `UIPauseView`, `UISummaryView`, and `UIBadges`. All of these classes extend the `UIElement` interfacing structure to provide uniform implementation structure.
+The UIKit is implemented across a series of c++ UI classes. Version 1.7 includes `UIImage`, `UICompositeView`, `UITextBlock`, `UIButton`, `UIWorkoutView`, `UITopView`, `UIPauseView`, `UISummaryView`, and `UIBadges`. All of these classes extend the `UIElement` interfacing structure to provide uniform implementation structure.
 The `UIMessage` and `UIPrinter` classes enable render-time updating and text-drawing respectively.
 
 #### UIElement
@@ -272,7 +272,7 @@ Use [UILayer](https://github.com/Ghost-Pacer/PowerVR-SDK/tree/master/Projects/UI
 
 ## Legacy Modules
 
-Version 1.0 of the Ghost Pacer used a text-only UI created by Ronith K. These legacy modules are still used in parts of the 1.5, and they are included in the final product.
+Version 1.0 of the Ghost Pacer used a text-only UI created by Ronith K. These legacy modules are still used in parts of the 1.7, and they are included in the final product.
 
 ### Overview
 Print2D and MenuController are dependent on OGLESTools2.h, which is provided by the PowerVR SDK.
