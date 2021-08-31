@@ -211,6 +211,8 @@ Assumes that assets are in "assets" folder in same root directory as the ui-modu
 * `UIElement.h` - Defines UIElement
 * `UIImage.cpp` - Implements UIImage
 * `UIImage.h` - Header for UIImage
+* `UIMessage.cpp` - Implements UIMessage
+* `UIMessage.h` - Header for UIMessage
 * `UIPrinter.cpp` - Implements UIPrinter
 * `UIPrinter.h` - Header for UIPrinter
 * `UIProgressBar.cpp` - Implements UIProgressBar
