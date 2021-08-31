@@ -20,7 +20,7 @@
 // Enum font identifiers
 enum UIFont {
 	UIFBold,
-	UIFMedium
+	UIFMedium,
 	UIFRegular,
 	UIFThin,
 	UIFLight

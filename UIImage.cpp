@@ -243,15 +243,26 @@ UIImage::Draw(GLuint uiMVPMatrixLoc, bool rotate)
 		return;
 	}
 
+	float yOffset;
+	if (rotate) {
+		if (m_y > 0) {
+			yOffset = 200;
+		} else if (m_y < 0) {
+			yOffset = -200;
+		} else {
+			yOffset = 0;
+		}
+	}
+
     PVRTVec3 pos;
     // Scales pixel coordinates to device normalized coordinates,
 	// rotates coordinate axes if asked to
 	if (!rotate) {
 		pos.x = m_x/(vWidth/2);
-		pos.y = m_y/(vHeight/2);
+		pos.y = (m_y+yOffset)/(vHeight/2);
 	} else {
 		//fprintf(stderr, "Image rotated\n");
-		pos.x = -m_y/(vWidth/2);
+		pos.x = -(m_y+yOffset)/(vWidth/2);
 		pos.y = m_x/(vHeight/2);
 	}
 	pos.z = 0;
@@ -264,13 +275,13 @@ UIImage::Draw(GLuint uiMVPMatrixLoc, bool rotate)
 		mScale = PVRTMat4::Scale({m_scale.y, m_scale.x, m_scale.z});
 	}
 
-    mSize = PVRTMat4::Scale({m_width/(vHeight/2), m_height/(vWidth/2), 1});
+    mSize = PVRTMat4::Scale({m_width/(vWidth/2), m_height/(vHeight/2), 1});
 	if (rotate) {
     	mSize = PVRTMat4::Scale({m_height/(vWidth/2), m_width/(vHeight/2), 1});
 	}
 	mRotation = PVRTMat4::RotationZ(0);
 	if (rotate) {
-		mRotation = PVRTMat4::RotationZ(M_PI/2);
+		mRotation = PVRTMat4::RotationZ(-M_PI/2);
 	}
 
     // Applies scaling and translations

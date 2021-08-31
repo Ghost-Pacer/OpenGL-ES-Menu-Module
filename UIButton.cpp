@@ -136,9 +136,9 @@ UIButton::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	vHeight = viewport[3];
 
 	if (m_active) {
-		m_activeBG.Render(uiMVPMatrixLoc);
+		m_activeBG.Render(uiMVPMatrixLoc, printer);
 	} else {
-		m_inactiveBG.Render(uiMVPMatrixLoc);
+		m_inactiveBG.Render(uiMVPMatrixLoc, printer);
 	}
 
 	GLuint textColor;

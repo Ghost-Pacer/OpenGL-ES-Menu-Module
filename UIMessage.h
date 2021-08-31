@@ -1,13 +1,8 @@
 /******************************************************************************
-
  @File          UIMessage.h
-
  @Title         UIMessage Header
-
  @Author        Siddharth Hathi
-
  @Description   Header file for the UIMessage object class. Defines UIMessgae
-
 ******************************************************************************/
 
 #include "OGLES2Tools.h"
@@ -17,7 +12,8 @@
 
 // Enum identifiers for messages containing float values
 enum UIFloat {
-	UIStageProgress
+	UIStageProgress,
+	UIBrightnessProg
 };
 
 
@@ -29,6 +25,8 @@ enum UITextType {
 	UICalories,
 	UITimeS,
 	UIDistanceM,
+	UIBrightness,
+	UIAvatarDistance,
 	UINone
 };
 
@@ -41,7 +39,10 @@ enum UIBool {
 	UIMileMarker,
 	UIBadge1,
 	UIBadge2,
-	UIBadge3
+	UIBadge3,
+	UIBrightnessSelected,
+	UISpeedSelected,
+	UIFlash
 };
 
 // Enum identifiers for the UI's display states
@@ -50,6 +51,9 @@ enum UIState {
 	UIInfo,
 	UIPause,
 	UISummary,
+	UIMenuBrightness,
+	UIMenuSpeed,
+	UIMenuMain,
 	noUI
 };
 

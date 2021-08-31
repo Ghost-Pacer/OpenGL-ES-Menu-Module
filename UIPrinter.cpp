@@ -1,13 +1,8 @@
 /******************************************************************************
-
  @File          UIPrinter.cpp
-
  @Title         UIPrinter
-
  @Author        Siddharth Hathi
-
  @Description   Implements the UIPrinter object class defined in UIPrinter.h
-
 ******************************************************************************/
 
 #include "UIPrinter.h"
@@ -90,6 +85,15 @@ UIPrinter::Print(float x, float y, float scale, GLuint color, UIFont font, char*
 		fprintf(stderr, "Invalid call to UIPrinter::Print\n");
 		return;
 	}
+
+	if (m_isRotated) {
+		if (y > 0) {
+			y += 200;
+		} else if (y < 0) {
+			y -= 200;
+		}
+	}
+
 	// fprintf(stderr, "UIPrinter::Print called \n");
     GLint viewport[4];
     GLint vWidth;                           // Viewport width
@@ -106,8 +110,14 @@ UIPrinter::Print(float x, float y, float scale, GLuint color, UIFont font, char*
 
 	print3D->MeasureText(&textWidth, &textHeight, scale, text);
 
-    if (print3D->Print3D((100*(x - (textWidth)/2)/vWidth)+50, -(100*(y + (textHeight)/2)/vHeight)+50, scale, color, text) != PVR_SUCCESS) {
-		fprintf(stderr, "UIPrint failed \n");
+	if (m_isRotated) {
+		if (print3D->Print3D((100*(x - (textWidth)/2)/vHeight)+50, -(100*(y + (textHeight)/2)/vWidth)+50, scale, color, text) != PVR_SUCCESS) {
+			fprintf(stderr, "UIPrint failed \n");
+		}	
+	} else {
+		if (print3D->Print3D((100*(x - (textWidth)/2)/vWidth)+50, -(100*(y + (textHeight)/2)/vHeight)+50, scale, color, text) != PVR_SUCCESS) {
+			fprintf(stderr, "UIPrint failed \n");
+		}	
 	}
 	print3D->Flush();
 }
@@ -131,6 +141,17 @@ UIPrinter::Measure(float* width, float* height, float scale, UIFont font, char* 
 
 	CPVRTPrint3D* print3D = m_fontMap[font];
 	print3D->MeasureText(width, height, scale, text);
+}
+
+/*!****************************************************************************
+ @Function		Rotated
+ @Return		bool	Is the text rotated
+ @Description	Frees allocated memory within the printer
+******************************************************************************/
+bool
+UIPrinter::Rotated()
+{
+	return m_isRotated;
 }
 
 /*!****************************************************************************
