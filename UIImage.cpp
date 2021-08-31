@@ -1,13 +1,8 @@
 /******************************************************************************
-
  @File          UIImage.cpp
-
  @Title         UIImage
-
  @Author        Siddharth Hathi
-
  @Description   Creates the functionality of the UIImage object class.
-
 ******************************************************************************/
 
 #include "UIImage.h"
@@ -69,31 +64,25 @@ bool
 UIImage::LoadTextures(CPVRTString* const pErrorStr)
 {
     if (m_texName == NULL) {
+		fprintf(stderr, "NULL texture\n");
         return false;
     }
 
     char* filename = (char*)malloc(strlen(m_texName) + strlen("../../../assets/") + 1);
     sprintf(filename, "../../../assets/%s", m_texName);
-
-    FILE* fp;
-    fp = fopen(filename, "rb");
-    if (fp != NULL) {
-        if (loadTextureFromFilename(filename, &m_uiImgTex, NULL) != true) {
-            //fprintf(stderr, "ERROR: Failed to load texture\n");
-            *pErrorStr = "ERROR: Failed to load texture";
-            fclose(fp);
-            return false;
-        }
-    } else {
-        fprintf(stderr, "ERROR: PVR file does not exist\n");
-        *pErrorStr = "ERROR: PVR file does not exist";
-        return false;
-    }
+	if (loadTextureFromFilename(filename, &m_uiImgTex, NULL) != true) {
+		//fprintf(stderr, "ERROR: Failed to load texture\n");
+		*pErrorStr = "ERROR: Failed to load texture";
+    	free(filename);
+		// fclose(fp);
+		return false;
+	}
     free(filename);
-    fclose(fp);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    return true;
 
     return true;
 }
@@ -112,7 +101,6 @@ UIImage::BuildVertices()
 
     /* The images are made up of 16 vertices, 9 quads, 18 triangles. The four colours of the center vertices are fully opaque while all the 
 	outside vertices are fully transparent. This produces a thin fade out at the edges which avoids antialiasing.
-
 	0--1------2--3
 	|  |      |  |
 	4--5------6--7
@@ -122,7 +110,6 @@ UIImage::BuildVertices()
 	8--9-----10--11
 	|  |      |  |
 	12-13----14--15
-
     */
 
     m_vertices[0].p	=	PVRTVec3(-dim, dim, 0);
@@ -229,11 +216,13 @@ UIImage::BuildVertices()
 /*!****************************************************************************
  @Function		Draw
  @Input			uiMVPMatrixLoc	GLuint reference to the shader Matrix
+ @Input			rotate			Is the display side projected?
  @Description	Draws the image with the appropriate vertices and textures,
-                with the correct positions and scales
+                with the correct positions and scales. Switches coordinate
+				axes if rotate parameter is true
 ******************************************************************************/
 void
-UIImage::Draw(GLuint uiMVPMatrixLoc)
+UIImage::Draw(GLuint uiMVPMatrixLoc, bool rotate)
 {
 	GLint viewport[4];
     GLint vWidth;                           // Viewport width
@@ -255,17 +244,34 @@ UIImage::Draw(GLuint uiMVPMatrixLoc)
 	}
 
     PVRTVec3 pos;
-    // Scales pixel coordinates to device normalized coordinates
-	pos.x = m_x/(vWidth/2);
-	pos.y = m_y/(vHeight/2);
+    // Scales pixel coordinates to device normalized coordinates,
+	// rotates coordinate axes if asked to
+	if (!rotate) {
+		pos.x = m_x/(vWidth/2);
+		pos.y = m_y/(vHeight/2);
+	} else {
+		//fprintf(stderr, "Image rotated\n");
+		pos.x = -m_y/(vWidth/2);
+		pos.y = m_x/(vHeight/2);
+	}
 	pos.z = 0;
 
     // Builds scaling, sizing, and translation matrices
 	PVRTMat4 mTrans, mScale, mSize, mRotation;
 	PVRTMatrixTranslation(mTrans, pos.x, pos.y, pos.z);
     mScale = PVRTMat4::Scale(m_scale);
-    mSize = PVRTMat4::Scale({m_width/(vWidth/2), m_height/(vHeight/2), 1});
+	if (rotate) {
+		mScale = PVRTMat4::Scale({m_scale.y, m_scale.x, m_scale.z});
+	}
+
+    mSize = PVRTMat4::Scale({m_width/(vHeight/2), m_height/(vWidth/2), 1});
+	if (rotate) {
+    	mSize = PVRTMat4::Scale({m_height/(vWidth/2), m_width/(vHeight/2), 1});
+	}
 	mRotation = PVRTMat4::RotationZ(0);
+	if (rotate) {
+		mRotation = PVRTMat4::RotationZ(M_PI/2);
+	}
 
     // Applies scaling and translations
 	PVRTMat4 mModelView, mMVP;
@@ -316,7 +322,7 @@ UIImage::Render(GLuint uiMVPMatrixLoc)
 	glEnableVertexAttribArray(ICOLOR_ARRAY);
 	glEnableVertexAttribArray(ITEXCOORD_ARRAY);
 
-    Draw(uiMVPMatrixLoc);
+    Draw(uiMVPMatrixLoc, false);
 
     // unbind the vertex buffers as we don't need them bound anymore
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -343,7 +349,7 @@ UIImage::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	glEnableVertexAttribArray(ICOLOR_ARRAY);
 	glEnableVertexAttribArray(ITEXCOORD_ARRAY);
 
-    Draw(uiMVPMatrixLoc);
+    Draw(uiMVPMatrixLoc, printer->Rotated());
 
     // unbind the vertex buffers as we don't need them bound anymore
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -513,17 +519,22 @@ UIImage::loadTextureFromFile(FILE* pvr, GLuint* texture, PVR_Texture_Header* hea
 	}
 }
 
-
+/*!****************************************************************************
+ @Function		loadTextureFromFilename
+ @Input			filename	Name of the file
+ @Output		texture		The GLuint* pointer to the generated gl texture
+ @Output		header		The header file generated by PVR
+ @Description	HELPER - loads a pvr texture from a .pvr file into a GL texture
+******************************************************************************/
 bool
 UIImage::loadTextureFromFilename(char* filename, GLuint* texture, PVR_Texture_Header* header)
 {
 	void* buffer = file_readBinary(filename);
 	if (buffer != NULL) {
-		PVRTTextureLoadFromPointer(buffer, texture, header, false, 0, NULL, NULL);
+		PVRTTextureLoadFromPointer(buffer, texture, header, true, 0, NULL, NULL);
 		free(buffer);
 		return true;
 	} else {
-		fprintf(stderr, "Binary file buffer returned null\n");
 		return false;
 	}
 }

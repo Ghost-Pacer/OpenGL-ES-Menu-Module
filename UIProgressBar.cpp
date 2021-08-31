@@ -1,13 +1,8 @@
 /******************************************************************************
-
  @File          UIProgressBar.cpp
-
  @Title         UIProgressBar
-
  @Author        Siddharth Hathi
-
  @Description   Creates the functionality of the PrgoressBar object class.
-
 ******************************************************************************/
 
 #include "UIProgressBar.h"
@@ -19,6 +14,7 @@
 ******************************************************************************/
 UIProgressBar::UIProgressBar()
 {
+    m_type = PBType::PBR;
     m_bg = UIImage();
     m_progress = UIImage();
     m_completion = 0;
@@ -28,6 +24,7 @@ UIProgressBar::UIProgressBar()
     m_insetY = 0;
     m_x = 0;
     m_y = 0;
+    m_hidden = false;
 }
 
 /*!****************************************************************************
@@ -41,31 +38,54 @@ UIProgressBar::UIProgressBar()
 ******************************************************************************/
 UIProgressBar::UIProgressBar(PBType type, float x, float y, float initialCompletion)
 {
+    m_type = type;
     switch(type) {
         case PBR:
             m_bg = UIImage(c_progBGRTex, x, y, c_defaultPBWidth, c_defaultPBHeight);
             m_progress = UIImage(c_progRTex, x, y, (c_defaultPBWidth-c_defaultPBInsetX), (c_defaultPBHeight-c_defaultPBInsetY));
+            m_width = c_defaultPBWidth;
+            m_height = c_defaultPBHeight;
             break;
         case PBG:
             m_bg = UIImage(c_progBGGTex, x, y, c_defaultPBWidth, c_defaultPBHeight);
             m_progress = UIImage(c_progGTex, x, y, (c_defaultPBWidth-c_defaultPBInsetX), (c_defaultPBHeight-c_defaultPBInsetY));
+            m_width = c_defaultPBWidth;
+            m_height = c_defaultPBHeight;
             break;
         case PBB:
             m_bg = UIImage(c_progBGBTex, x, y, c_defaultPBWidth, c_defaultPBHeight);
             m_progress = UIImage(c_progBTex, x, y, (c_defaultPBWidth-c_defaultPBInsetX), (c_defaultPBHeight-c_defaultPBInsetY));
+            m_width = c_defaultPBWidth;
+            m_height = c_defaultPBHeight;
+            break;
+        case BrightnessSelected:
+            fprintf(stderr, "Initting blue progbar\n");
+            m_bg = UIImage(c_brightBBGTex, x, y, c_defaultBrightWidth, c_defaultPBHeight);
+            m_progress = UIImage(c_brightBTex, x, y, (c_defaultBrightWidth-c_defaultPBInsetX), (c_defaultPBHeight-c_defaultPBInsetY));
+            m_width = c_defaultBrightWidth;
+            m_height = c_defaultPBHeight;
+            break;
+        case BrightnessUnselected:
+            m_bg = UIImage(c_brightGrayBGTex, x, y, c_defaultBrightWidth, c_defaultPBHeight);
+            m_progress = UIImage(c_brightGrayTex, x, y, (c_defaultBrightWidth-c_defaultPBInsetX), (c_defaultPBHeight-c_defaultPBInsetY));
+            m_width = c_defaultBrightWidth;
+            m_height = c_defaultPBHeight;
             break;
         default:
+            fprintf(stderr, "Initting default progbar\n");
             m_bg = UIImage(c_progBGRTex, x, y, c_defaultPBWidth, c_defaultPBHeight);
             m_progress = UIImage(c_progRTex, x, y, (c_defaultPBWidth-c_defaultPBInsetX), (c_defaultPBHeight-c_defaultPBInsetY));
+            m_width = c_defaultPBWidth;
+            m_height = c_defaultPBHeight;
             break;
     }
-    m_completion = initialCompletion;
-    m_width = c_defaultPBWidth;
-    m_height = c_defaultPBHeight;
     m_insetX = c_defaultPBInsetX; 
     m_insetY = c_defaultPBInsetY;
     m_x = x;
     m_y = y;
+    m_hidden = false;
+    m_completion = 1;
+    SetCompletion(initialCompletion);
 }
 
 /*!****************************************************************************
@@ -77,15 +97,18 @@ UIProgressBar::UIProgressBar(PBType type, float x, float y, float initialComplet
 ******************************************************************************/
 UIProgressBar::UIProgressBar(float x, float y, float initialCompletion)
 {
+    m_type = PBR;
     m_bg = UIImage(c_progBGRTex, x, y, c_defaultPBWidth, c_defaultPBHeight);
     m_progress = UIImage(c_progRTex, x, y, (c_defaultPBWidth-c_defaultPBInsetX), (c_defaultPBHeight-c_defaultPBInsetY));
-    m_completion = initialCompletion;
     m_width = c_defaultPBWidth;
     m_height = c_defaultPBHeight;
     m_insetX = c_defaultPBInsetX; 
     m_insetY = c_defaultPBInsetY;
     m_x = x;
     m_y = y;
+    m_hidden = false;
+    m_completion = 1;
+    SetCompletion(initialCompletion);
 }
 
 /*!****************************************************************************
@@ -101,15 +124,17 @@ UIProgressBar::UIProgressBar(float x, float y, float initialCompletion)
 ******************************************************************************/
 UIProgressBar::UIProgressBar(float x, float y, float width, float height, float insetX, float insetY, float initialCompletion)
 {
+    m_type = PBR;
     m_bg = UIImage(c_progBGRTex, x, y, width, height);
     m_progress = UIImage(c_progRTex, x, y, (width-insetX), (height-insetY));
-    m_completion = initialCompletion;
     m_width = width;
     m_height = height;
     m_insetX = insetX; 
     m_insetY = insetY;
     m_x = x;
     m_y = y;
+    m_hidden = false;
+    SetCompletion(initialCompletion);
 }
 
 /*!****************************************************************************
@@ -149,7 +174,6 @@ UIProgressBar::Render(GLuint uiMVPMatrixLoc)
     m_bg.Render(uiMVPMatrixLoc);
     m_progress.Render(uiMVPMatrixLoc);
 
-
 	return true;
 }
 
@@ -162,8 +186,13 @@ UIProgressBar::Render(GLuint uiMVPMatrixLoc)
 bool
 UIProgressBar::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
-    m_bg.Render(uiMVPMatrixLoc);
-    m_progress.Render(uiMVPMatrixLoc);
+    if (m_hidden) {
+        //fprintf(stderr, "Progress bar hidden\n");
+        return true;
+    }
+
+    m_bg.Render(uiMVPMatrixLoc, printer);
+    m_progress.Render(uiMVPMatrixLoc, printer);
 
 	return true;
 }
@@ -176,7 +205,11 @@ UIProgressBar::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 void
 UIProgressBar::SetCompletion(float newCompletion)
 {
-    float xTranslation = (m_width-m_insetX)*(newCompletion-m_completion)/2;
+    //fprintf(stderr, "new completion : %f, old completion %f\n", newCompletion, m_completion);
+    //fprintf(stderr, "Effective width : %f", (m_width-(m_insetX)));
+    //fprintf(stderr, "%d, %d\n", m_progress.GetPosition().x, m_progress.GetPosition().y);
+    float xTranslation = (m_width-(m_insetX))*(newCompletion-m_completion)/2;
+   // fprintf(stderr, "x translation: %f\n", xTranslation);
 	m_progress.Scale(newCompletion, 1, 1);
 	m_progress.Move(xTranslation, 0);
     m_completion = newCompletion;
@@ -201,7 +234,20 @@ UIProgressBar::GetCompletion()
 void
 UIProgressBar::Update(UIMessage updateMessage)
 {
-	float messageContents = updateMessage.Read(UIStageProgress);
+    UIFloat updateKey;
+    if (m_type == BrightnessSelected || m_type == BrightnessUnselected) {
+        //fprintf(stderr, "Brightness bar received message\n");
+        if (updateMessage.Read(UIFlash)) {
+            //fprintf(stderr, "Brightness bar flashed\n");
+            m_hidden = true;
+        } else {
+            m_hidden = false;
+        }
+        updateKey = UIBrightnessProg;
+    } else {
+        updateKey = UIStageProgress;
+    }
+	float messageContents = updateMessage.Read(updateKey);
 	// fprintf(stderr, "Message received to UIProgressBar, contents: %f\n", messageContents);
 	if (messageContents >= 0 && messageContents <= 1) {
 		SetCompletion(messageContents);
@@ -215,8 +261,7 @@ UIProgressBar::Update(UIMessage updateMessage)
 void
 UIProgressBar::Hide()
 {
-    m_bg.Hide();
-	m_progress.Hide();
+    m_hidden = true;
 }
 
 /*!****************************************************************************
@@ -226,8 +271,7 @@ UIProgressBar::Hide()
 void
 UIProgressBar::Show()
 {
-    m_progress.Show();
-	m_bg.Show();
+    m_hidden = false;
 }
 /*!****************************************************************************
  @Function		Delete

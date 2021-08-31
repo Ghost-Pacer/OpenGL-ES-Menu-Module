@@ -1,13 +1,8 @@
 /******************************************************************************
-
  @File          UICompositeView.h
-
  @Title         UICompositeView Header
-
  @Author        Siddharth Hathi
-
  @Description   Header file for the UICompositeView object class. Defines UICompositeView
-
 ******************************************************************************/
 
 #include "OGLES2Tools.h"
@@ -22,15 +17,6 @@ const char c_bgTexDefault[] = "basicBox.pvr";
 // Default dimensions
 const float c_bgWidthDefault = 220;
 const float c_bgHeightDefault = 70;
-
-// struct used to store updating text 
-struct UITextSpec {
-	char* text;
-	GLuint color;
-	float xRel, yRel, scale;
-	UITextType updateKey;
-	UIFont font;
-};
 
 /*!****************************************************************************
  @class UICompoositeView
@@ -48,7 +34,7 @@ class UICompositeView : public UIElement
 		bool m_hidden;
 
 		// Background UIImage
-		UIImage m_bg;
+		UIImage* m_bg;
 
 		// Position/Dimensions of the element
 		float m_x, m_y, m_width, m_height;
@@ -63,6 +49,7 @@ class UICompositeView : public UIElement
 		// Exported functions:
 		UICompositeView(float x, float y);
 		UICompositeView(char* bgTex, float x, float y, float width, float height);
+		void AddElement(UIElement* newElement);
 		void AddImage(char* textureName, float xRel, float yRel, float width, float height);
 		void AddText(char* text, GLuint color, float xRel, float yRel, float scale, UITextType updateKey, UIFont font);
         virtual bool LoadTextures(CPVRTString* const pErrorStr);

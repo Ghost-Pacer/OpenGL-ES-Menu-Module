@@ -1,13 +1,8 @@
 /******************************************************************************
-
  @File          UIImage.h
-
  @Title         UIImage Header File 
-
  @Author        Siddharth Hathi
-
  @Description   Header file for the UIImage class.
-
 ******************************************************************************/
 
 #include "PVRShell.h"
@@ -91,7 +86,7 @@ class UIImage : public UIElement
 		// Is the image hidden
 		bool m_hidden;
 
-		// Local Functions
+		// Local Function
         bool loadTextureFromFile(FILE* pvr, GLuint* texture, PVR_Texture_Header* header);
 		bool loadTextureFromFilename(char* filename, GLuint* texture, PVR_Texture_Header* header);
 
@@ -107,7 +102,7 @@ class UIImage : public UIElement
         virtual void Move(float x, float y);
 		virtual void SetPosition(float x, float y);
         virtual void Scale(float scaleX, float scaleY, float scaleZ);
-        virtual void Draw(GLuint uiMVPMatrixLoc);
+        virtual void Draw(GLuint uiMVPMatrixLoc, bool rotate);
 		virtual void DrawMesh();
 		virtual bool Render(GLuint uiMVPMatrixLoc);
         virtual bool Render(GLuint uiMVPMatrixLoc, UIPrinter* printer);

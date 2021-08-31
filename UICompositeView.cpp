@@ -1,13 +1,8 @@
 /******************************************************************************
-
  @File          UICompositeView.cpp
-
  @Title         UICompositeView
-
  @Author        Siddharth Hathi
-
  @Description   Implements the UICompositeView object defined in UICompositeView.h
-
 ******************************************************************************/
 
 #include "UICompositeView.h"
@@ -19,7 +14,7 @@
 ******************************************************************************/
 UICompositeView::UICompositeView(float x, float y)
 {
-	m_bg = UIImage(c_bgTexDefault, x, y, c_bgWidthDefault, c_bgHeightDefault);
+	m_bg = new UIImage(c_bgTexDefault, x, y, c_bgWidthDefault, c_bgHeightDefault);
 	m_x = x;
 	m_y = y;
 	m_width = c_bgWidthDefault;
@@ -39,7 +34,11 @@ UICompositeView::UICompositeView(float x, float y)
 ******************************************************************************/
 UICompositeView::UICompositeView(char* bgTex, float x, float y, float width, float height)
 {
-	m_bg = UIImage(bgTex, x, y, width, height);
+	if (bgTex == NULL) {
+		m_bg = NULL;
+	} else {
+		m_bg = new UIImage(bgTex, x, y, width, height);
+	}
 	m_x = x;
 	m_y = y;
 	m_width = width;
@@ -47,6 +46,17 @@ UICompositeView::UICompositeView(char* bgTex, float x, float y, float width, flo
 	m_children = CPVRTArray<UIElement*>();
 	m_text = CPVRTArray<UITextSpec>();
 	m_hidden = false;
+}
+
+/*!****************************************************************************
+ @Function		AddElement
+ @Input			newElement		New, preinitialized element to be added
+ @Description	Adds the UIElement passed as a parameter to the UICV
+******************************************************************************/
+void
+UICompositeView::AddElement(UIElement* newElement)
+{
+	m_children.Append(newElement);
 }
 
 /*!****************************************************************************
@@ -88,7 +98,7 @@ UICompositeView::AddText(char* text, GLuint color, float xRel, float yRel, float
 bool
 UICompositeView::LoadTextures(CPVRTString* const pErrorStr)
 {
-	if (!m_bg.LoadTextures(pErrorStr)) {
+	if (m_bg != NULL && !m_bg->LoadTextures(pErrorStr)) {
 		fprintf(stderr, "UICompositeView texture failed to load\n");
 		return false;
 	}
@@ -112,7 +122,9 @@ UICompositeView::LoadTextures(CPVRTString* const pErrorStr)
 void
 UICompositeView::BuildVertices()
 {
-	m_bg.BuildVertices();
+	if (m_bg != NULL) {
+		m_bg->BuildVertices();
+	}
 	for ( int i = 0; i < m_children.GetSize(); i ++ ) {
 		if (m_children[i] == NULL) {
 			continue;
@@ -132,11 +144,14 @@ bool
 UICompositeView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 {
 	if (m_hidden) {
+		fprintf(stderr, "UICV hidden\n");
 		return true;
 	}
 
 	// Render the background
-	m_bg.Render(uiMVPMatrixLoc, printer);
+	if (m_bg != NULL) {
+		m_bg->Render(uiMVPMatrixLoc, printer);
+	}
 
 	// Render the enclosed UIElements
 	if (m_children.GetSize() > 0) {
@@ -144,6 +159,7 @@ UICompositeView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 			if (m_children[i] == NULL) {
 				continue;
 			} else {
+				//m_children[i]->Show();
 				if (!m_children[i]->Render(uiMVPMatrixLoc, printer)) {
 					fprintf(stderr, "UICompositeView render failed\n");
 				}
@@ -171,6 +187,12 @@ UICompositeView::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 void
 UICompositeView::Update(UIMessage updateMessage)
 {
+	if (m_children.GetSize() > 0) {
+		for (int i = 0; i < m_children.GetSize(); i ++ ) {
+			m_children[i]->Update(updateMessage);
+		}
+	}
+
 	if (m_text.GetSize() > 0) {
 		for ( int i = 0; i < m_text.GetSize(); i ++ ){
 			UITextType updateKey = m_text[i].updateKey;
@@ -210,6 +232,11 @@ UICompositeView::Show()
 void
 UICompositeView::Delete()
 {
+	if (m_bg != NULL) {
+		m_bg->Delete();
+		delete m_bg;
+		m_bg = NULL;
+	}
 	if (m_children.GetSize() > 0) {
 		for ( int i = 0; i < m_children.GetSize(); i++ ) {
 			m_children[i]->Delete();
