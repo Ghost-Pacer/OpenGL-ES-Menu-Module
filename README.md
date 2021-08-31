@@ -12,7 +12,7 @@ The `UIMessage` and `UIPrinter` classes enable render-time updating and text-dra
 
 #### UIElement
 
-The UIElement abstract/header class provides defines the functionality that every rendering UIKit element must implement. By defining this set of common functionality, we unlock a desirable level of implementation simplicity. Many of the UIElement implementations in the UIKit feature nested arrays of other UIElements. By using such a structure, texture loading, vertex construction, and rendering take place in a single loop pass. The functions themselves are below:
+The UIElement abstract/header class defines the functionality that every rendering UIKit element must implement. By defining this set of common functionality, we unlock a desirable level of implementation simplicity. Many of the UIElement implementations in the UIKit feature nested arrays of other UIElements. By using such a structure, texture loading, vertex construction, and rendering take place in a single loop pass. The functions themselves are below:
 
 ```c++
 virtual bool LoadTextures(CPVRTString* const pErrorStr) = 0;
