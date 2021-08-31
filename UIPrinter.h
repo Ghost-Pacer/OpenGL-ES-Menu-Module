@@ -41,7 +41,7 @@ struct UITextSpec {
 };
 
 /*!****************************************************************************
- @class UIImage
+ @class UIPrinter
  Object class. A UIPrinter is a wrapper for a map of enum identifiers to CPVRTPrint3D
  objects. Each identifier represents a font and each CPVRTPrint3D object is intended
  to be preloaded with said font's textures. The UIPrinter contains functionality
