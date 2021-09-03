@@ -87,7 +87,7 @@ UIBrightnessMenu::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 	if (!m_brightSelected) {
 		color = 0xFFFF0000;
 	} else {
-		color = 0x99999999;
+		color = 0xdddddddd;
 	}
 	printer->Print(0, -200, 0.325, color, UIFBold, "Back");
 	return true;

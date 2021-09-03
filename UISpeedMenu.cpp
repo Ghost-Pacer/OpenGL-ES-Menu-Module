@@ -67,7 +67,7 @@ UISpeedMenu::Render(GLuint uiMVPMatrixLoc, UIPrinter* printer)
 		return true;
 	}
 	GLuint selectedColor = 0xFFFF0000;
-	GLuint deselectedColor = 0x99999999;
+	GLuint deselectedColor = 0xdddddddd;
 	for ( int i = 0; i < c_numUISMElems; i ++ ) {
 		UISMSpec spec = c_UISMSpecs[i];
 		switch (spec.type) {
