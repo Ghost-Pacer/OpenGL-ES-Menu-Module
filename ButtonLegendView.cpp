@@ -74,9 +74,9 @@ char* ButtonLegendView::stringRepresentationOfButton(int buttonIndex) {
     case 0:
         return const_cast<char*>(UP_BUTTON);
     case 1:
-        return const_cast<char*>(DOWN_BUTTON);
-    case 2:
         return const_cast<char*>(OK_BUTTON);
+    case 2:
+        return const_cast<char*>(DOWN_BUTTON);
     default:
         return "\0";
     }
@@ -93,9 +93,9 @@ unsigned int ButtonLegendView::selectedColorOfButton(int buttonIndex) {
     case 0:
         return enabledNavigationButtonColor;
     case 1:
-        return enabledNavigationButtonColor;
-    case 2:
         return enabledOkButtonColor;
+    case 2:
+        return enabledNavigationButtonColor;
     default:
         return disabledButtonColor;
     }
